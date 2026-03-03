@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Copilot CLI — Complete Reference & Links</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-inset: #0d1117;
+            --border: #30363d;
+            --border-light: #21262d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-subtle: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-pink: #f778ba;
+            --accent-cyan: #39d2c0;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            --radius: 6px;
+            --radius-lg: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            height: 56px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-logo:hover { text-decoration: none; }
+        .nav-logo svg { flex-shrink: 0; }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.15s, background 0.15s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); text-decoration: none; }
+        .nav-links a.active { color: var(--text); background: rgba(255,255,255,0.08); }
+
+        .nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .nav-back:hover { color: var(--text); border-color: var(--text-subtle); text-decoration: none; }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 60px 24px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 16px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: var(--text-subtle);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* CATEGORY HEADER */
+        .cat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .cat-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .cat-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-subtle);
+            background: rgba(255,255,255,0.06);
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: auto;
+        }
+
+        /* LINK GRID */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .link-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: border-color 0.2s, transform 0.1s;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .link-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .link-card-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .link-card-body { flex: 1; min-width: 0; }
+
+        .link-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: var(--accent-blue);
+        }
+
+        .link-card:hover .link-card-title { text-decoration: underline; }
+
+        .link-card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .link-card-url {
+            font-size: 11px;
+            color: var(--text-subtle);
+            font-family: var(--mono);
+            margin-top: 6px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .link-card-tags {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .link-tag {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            color: var(--text-subtle);
+            border: 1px solid var(--border-light);
+        }
+
+        .tag-new {
+            background: rgba(63,185,80,0.15);
+            color: var(--accent-green);
+            border-color: rgba(63,185,80,0.3);
+        }
+
+        .tag-essential {
+            background: rgba(88,166,255,0.15);
+            color: var(--accent-blue);
+            border-color: rgba(88,166,255,0.3);
+        }
+
+        .tag-reference {
+            background: rgba(163,113,247,0.15);
+            color: var(--accent-purple);
+            border-color: rgba(163,113,247,0.3);
+        }
+
+        .tag-tutorial {
+            background: rgba(210,153,34,0.15);
+            color: var(--accent-orange);
+            border-color: rgba(210,153,34,0.3);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-subtle);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 28px; }
+            .link-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-back">← Home</a>
+        <a href="references.html" class="nav-logo">
+            <svg height="24" width="24" viewBox="0 0 16 16" fill="white"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+            References
+        </a>
+        <ul class="nav-links">
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#cli-reference">CLI Reference</a></li>
+            <li><a href="#customization">Customization</a></li>
+            <li><a href="#advanced">Advanced</a></li>
+            <li><a href="#concepts">Concepts</a></li>
+            <li><a href="#coding-agent">Coding Agent</a></li>
+            <li><a href="#ides">IDEs</a></li>
+            <li><a href="#billing">Billing</a></li>
+            <li><a href="#tutorials">Tutorials</a></li>
+            <li><a href="#repos">Repos</a></li>
+            <li><a href="#blog">Blog</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <h1 class="hero-title">Complete Reference &amp; Links</h1>
+    <p class="hero-sub">Every official documentation link for GitHub Copilot — organized, categorized, and ready for your demo. Only github.com and microsoft.com sources.</p>
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="hero-stat-num" id="total-links">100+</div>
+            <div class="hero-stat-label">Official Links</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-num">11</div>
+            <div class="hero-stat-label">Categories</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-num">2</div>
+            <div class="hero-stat-label">Sources</div>
+        </div>
+    </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- GETTING STARTED                                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="getting-started">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(63,185,80,0.15);">🚀</div>
+        <h2 class="cat-title">Getting Started with Copilot CLI</h2>
+        <span class="cat-count">8 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli" target="_blank">
+            <span class="link-card-icon">📖</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About GitHub Copilot CLI</div>
+                <div class="link-card-desc">Comprehensive overview of Copilot CLI — modes of use, use cases, security considerations, model usage, and the ACP protocol. The best starting point.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/about-copilot-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/cli-getting-started" target="_blank">
+            <span class="link-card-icon">⚡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Getting Started Guide</div>
+                <div class="link-card-desc">Quickstart walkthrough — install, launch, authenticate, and start coding with Copilot CLI in minutes.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/cli-getting-started</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli" target="_blank">
+            <span class="link-card-icon">📦</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Installing Copilot CLI</div>
+                <div class="link-card-desc">Installation instructions for all platforms — curl script, Homebrew, WinGet, npm. Includes version pinning and custom install paths.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli" target="_blank">
+            <span class="link-card-icon">🔑</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Authenticating Copilot CLI</div>
+                <div class="link-card-desc">OAuth device flow, Personal Access Tokens (PAT), GH_TOKEN and GITHUB_TOKEN environment variables, multi-account support.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/configure-copilot-cli" target="_blank">
+            <span class="link-card-icon">⚙️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Configure Copilot CLI</div>
+                <div class="link-card-desc">Trusted directories, allowed tools, path and URL permissions, config.json settings, themes, and terminal configuration.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/configure-copilot-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/troubleshoot-copilot-cli-auth" target="_blank">
+            <span class="link-card-icon">🔧</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Troubleshooting Authentication</div>
+                <div class="link-card-desc">Diagnose authentication failures — token issues, proxy configs, enterprise SSO, and common error messages.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/troubleshoot-copilot-cli-auth</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli" target="_blank">
+            <span class="link-card-icon">💡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Using GitHub Copilot CLI</div>
+                <div class="link-card-desc">Complete usage guide — plan mode, autopilot, custom instructions, custom agents, skills, MCP servers, delegating to coding agent, session management, and more.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/cli-best-practices" target="_blank">
+            <span class="link-card-icon">🏆</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Best Practices for Copilot CLI</div>
+                <div class="link-card-desc">Expert tips — custom instructions, model selection, plan mode workflow, infinite sessions, delegating work, TDD, codebase onboarding, multi-repo patterns, and advanced CLI patterns.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/cli-best-practices</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CLI REFERENCE                                              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="cli-reference">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(88,166,255,0.15);">📚</div>
+        <h2 class="cat-title">CLI Reference Documentation</h2>
+        <span class="cat-count">8 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/cli-command-reference" target="_blank">
+            <span class="link-card-icon">⌨️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Command Reference</div>
+                <div class="link-card-desc">Complete reference for all CLI commands, slash commands, keyboard shortcuts, command-line options, and environment variables. The definitive cheat sheet.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/cli-command-reference</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/customization-cheat-sheet" target="_blank">
+            <span class="link-card-icon">📋</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Customization Cheat Sheet</div>
+                <div class="link-card-desc">Side-by-side comparison of all customization features — custom instructions, prompt files, custom agents, subagents, skills, MCP servers. Includes IDE support matrix.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/customization-cheat-sheet</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/cli-plugin-reference" target="_blank">
+            <span class="link-card-icon">📦</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Plugin Reference</div>
+                <div class="link-card-desc">Complete plugin system reference — plugin.json schema, marketplace.json schema, install formats, file locations, loading order, precedence rules, and deduplication.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/cli-plugin-reference</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/hooks-configuration" target="_blank">
+            <span class="link-card-icon">🪝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Hooks Configuration Reference</div>
+                <div class="link-card-desc">All hook types with input/output JSON schemas, script examples (Bash + PowerShell), advanced patterns — compliance audit trails, cost tracking, code quality enforcement, notifications.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/hooks-configuration</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/custom-agents-configuration" target="_blank">
+            <span class="link-card-icon">🧑‍💼</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Custom Agents Configuration Reference</div>
+                <div class="link-card-desc">Agent profile Markdown format, YAML frontmatter schema, tool restrictions, MCP server connections, infer settings, and naming conventions.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/custom-agents-configuration</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/custom-instructions-support" target="_blank">
+            <span class="link-card-icon">📄</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Custom Instructions Support Matrix</div>
+                <div class="link-card-desc">Detailed breakdown of which types of custom instructions are supported in each IDE and surface — VS Code, Visual Studio, JetBrains, Eclipse, Xcode, CLI, Coding Agent.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/custom-instructions-support</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/copilot-feature-matrix" target="_blank">
+            <span class="link-card-icon">📊</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Feature Matrix</div>
+                <div class="link-card-desc">Full feature-by-IDE matrix — which features are supported (✓), under preview (P), or not supported (✗) in VS Code, Visual Studio, JetBrains, Eclipse, Xcode, Neovim.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/copilot-feature-matrix</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/reference/acp-server" target="_blank">
+            <span class="link-card-icon">🔗</span>
+            <div class="link-card-body">
+                <div class="link-card-title">ACP Server Reference</div>
+                <div class="link-card-desc">Agent Client Protocol server documentation — use Copilot CLI as an agent in third-party tools, IDEs, or automation systems via the open ACP standard.</div>
+                <div class="link-card-tags"><span class="link-tag tag-reference">Reference</span><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/reference/acp-server</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CUSTOMIZATION                                              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="customization">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(163,113,247,0.15);">🎨</div>
+        <h2 class="cat-title">Customization &amp; Configuration</h2>
+        <span class="cat-count">10 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/quickstart-for-customizing" target="_blank">
+            <span class="link-card-icon">🗺️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Customization Quickstart Overview</div>
+                <div class="link-card-desc">Overview of all customization options available for Copilot CLI — the best starting point for understanding what can be configured and when to use each option.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/quickstart-for-customizing</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/add-custom-instructions" target="_blank">
+            <span class="link-card-icon">📋</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Adding Custom Instructions</div>
+                <div class="link-card-desc">Repository-wide (.github/copilot-instructions.md), path-specific (.github/instructions/**/*.instructions.md), agent instructions (AGENTS.md, CLAUDE.md, GEMINI.md), local (~/.copilot/copilot-instructions.md), and COPILOT_CUSTOM_INSTRUCTIONS_DIRS.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/add-custom-instructions</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-skills" target="_blank">
+            <span class="link-card-icon">⚡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Creating Agent Skills</div>
+                <div class="link-card-desc">Create SKILL.md with YAML frontmatter, project vs personal skills, skill directory structure, referencing scripts and resources, /skills commands, auto-detection vs manual invocation.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-skills</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers" target="_blank">
+            <span class="link-card-icon">🔌</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Adding MCP Servers</div>
+                <div class="link-card-desc">Add MCP servers with /mcp add, mcp-config.json format, GitHub MCP server (built-in), session-only servers with --additional-mcp-config, enabling/disabling servers.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-custom-agents-for-cli" target="_blank">
+            <span class="link-card-icon">🧑‍💼</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Creating Custom Agents for CLI</div>
+                <div class="link-card-desc">Write .agent.md files with YAML frontmatter, define tools, MCP connections, infer settings. User-level (~/.copilot/agents/), repo-level (.github/agents/), org-level (.github-private/agents/).</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-custom-agents-for-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/use-hooks" target="_blank">
+            <span class="link-card-icon">🪝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Using Hooks with Copilot CLI</div>
+                <div class="link-card-desc">Configure hooks in .github/hooks/*.json — sessionStart/End, preToolUse/postToolUse, userPromptSubmitted, agentStop, subagentStop, errorOccurred. Approve/deny tools programmatically.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/use-hooks</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating" target="_blank">
+            <span class="link-card-icon">📦</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Creating a Plugin</div>
+                <div class="link-card-desc">Plugin directory structure, plugin.json manifest, bundling agents + skills + hooks + MCP configs, local testing with copilot plugin install, iterating on development.</div>
+                <div class="link-card-tags"><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-finding-installing" target="_blank">
+            <span class="link-card-icon">🔍</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Finding &amp; Installing Plugins</div>
+                <div class="link-card-desc">Browse marketplaces, install from GitHub repos or local paths, plugin update, list, enable/disable, uninstall. Multiple install specification formats.</div>
+                <div class="link-card-tags"><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-finding-installing</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-marketplace" target="_blank">
+            <span class="link-card-icon">🏪</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Creating a Plugin Marketplace</div>
+                <div class="link-card-desc">Build a marketplace.json registry, host on GitHub or local filesystem, share plugins with teams. Users add with /plugin marketplace add org/repo.</div>
+                <div class="link-card-tags"><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-marketplace</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/comparing-cli-features" target="_blank">
+            <span class="link-card-icon">⚖️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Comparing CLI Customization Features</div>
+                <div class="link-card-desc">Deep comparison of custom instructions vs skills vs tools vs MCP servers vs hooks vs subagents vs custom agents vs plugins — when to use what, with decision table.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/copilot-cli/comparing-cli-features</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- ADVANCED                                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="advanced">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(210,153,34,0.15);">🔥</div>
+        <h2 class="cat-title">Advanced Features</h2>
+        <span class="cat-count">5 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/autopilot" target="_blank">
+            <span class="link-card-icon">🤖</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Autopilot Mode</div>
+                <div class="link-card-desc">Let Copilot work autonomously until a task is complete. Permissions, --max-autopilot-continues, comparison with --allow-all and --no-ask-user, typical workflow, programmatic usage.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/copilot-cli/autopilot</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/fleet" target="_blank">
+            <span class="link-card-icon">🚢</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Fleet Mode (/fleet)</div>
+                <div class="link-card-desc">Parallel subagent execution — speed up multi-step implementation plans by running multiple subagents simultaneously. The /fleet command details.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/copilot-cli/fleet</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/speeding-up-task-completion" target="_blank">
+            <span class="link-card-icon">⚡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Speeding Up Task Completion</div>
+                <div class="link-card-desc">How to use the /fleet command to parallelize multi-step plans for faster completion of large tasks.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/speeding-up-task-completion</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-with-actions" target="_blank">
+            <span class="link-card-icon">🔄</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Automating with GitHub Actions</div>
+                <div class="link-card-desc">Integrate Copilot CLI into CI/CD pipelines — run copilot programmatically in GitHub Actions workflows for automated code generation, review, and testing.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/automate-with-actions</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/copilot-cli/administer-copilot-cli-for-your-enterprise" target="_blank">
+            <span class="link-card-icon">🏢</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Administering CLI for Enterprise</div>
+                <div class="link-card-desc">Enterprise administration — control Copilot CLI usage, policies, permissions, and MCP server restrictions at the organization and enterprise level.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/copilot-cli/administer-copilot-cli-for-your-enterprise</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONCEPTS                                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="concepts">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(57,210,192,0.15);">🧠</div>
+        <h2 class="cat-title">Core Concepts</h2>
+        <span class="cat-count">9 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills" target="_blank">
+            <span class="link-card-icon">⚡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Agent Skills</div>
+                <div class="link-card-desc">Conceptual overview of the agent skills system — open standard (agentskills spec), project vs personal skills, how Copilot decides when to use a skill.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/about-agent-skills</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-hooks" target="_blank">
+            <span class="link-card-icon">🪝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Hooks</div>
+                <div class="link-card-desc">Conceptual overview of hooks — types (sessionStart, preToolUse, postToolUse, etc.), configuration format, JSON input/output, performance and security considerations.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/coding-agent/about-hooks</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-custom-agents" target="_blank">
+            <span class="link-card-icon">🧑‍💼</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Custom Agents</div>
+                <div class="link-card-desc">Conceptual overview of custom agents — what they are, how they differ from subagents, agent profiles, auto-inference, tool restrictions, and scoping.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/coding-agent/about-custom-agents</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/copilot-memory" target="_blank">
+            <span class="link-card-icon">🧠</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Copilot Memory</div>
+                <div class="link-card-desc">Persistent understanding of your repository — how Copilot stores and uses "memories" about coding conventions, patterns, and preferences across sessions.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/copilot-memory</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/context/mcp" target="_blank">
+            <span class="link-card-icon">🔌</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Model Context Protocol (MCP)</div>
+                <div class="link-card-desc">What MCP is, how it works, server vs client architecture, tool discovery, and how Copilot uses MCP to connect to external systems.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/context/mcp</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/mcp-management" target="_blank">
+            <span class="link-card-icon">🔐</span>
+            <div class="link-card-body">
+                <div class="link-card-title">MCP Server Management &amp; Policies</div>
+                <div class="link-card-desc">Organization-level MCP policies, MCP registry URLs, controlling which MCP servers can be used, enterprise MCP governance.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/mcp-management</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-cli-plugins" target="_blank">
+            <span class="link-card-icon">📦</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About CLI Plugins</div>
+                <div class="link-card-desc">Conceptual overview of the plugin system — what plugins are, how they bundle customizations, install/update lifecycle, and how they interact with other features.</div>
+                <div class="link-card-tags"><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/copilot-cli/about-cli-plugins</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/prompting/response-customization" target="_blank">
+            <span class="link-card-icon">✍️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Customizing Copilot Responses</div>
+                <div class="link-card-desc">How to write effective custom instructions, prompt files, and tips for guiding Copilot's responses to match your preferences and project standards.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/prompting/response-customization</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-copilot-cli" target="_blank">
+            <span class="link-card-icon">⚖️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Responsible Use of Copilot CLI</div>
+                <div class="link-card-desc">Guidelines for responsible AI usage — limitations, security considerations, code review practices, and understanding AI-generated outputs.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-copilot-cli</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CODING AGENT                                               -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="coding-agent">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(63,185,80,0.15);">🤖</div>
+        <h2 class="cat-title">Copilot Coding Agent (Cloud)</h2>
+        <span class="cat-count">7 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/agents/about-copilot-coding-agent" target="_blank">
+            <span class="link-card-icon">📖</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Copilot Coding Agent</div>
+                <div class="link-card-desc">The cloud-based async AI teammate — assign issues, spin up dev environments in GitHub Actions, create PRs automatically. The conceptual overview.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/agents/about-copilot-coding-agent</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent" target="_blank">
+            <span class="link-card-icon">💡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Using Copilot Coding Agent</div>
+                <div class="link-card-desc">How to use coding agent — assign issues, track work in the Agents panel, review PRs, customize the dev environment, and manage agent tasks.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-custom-agents" target="_blank">
+            <span class="link-card-icon">🧑‍💼</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Custom Agents for Coding Agent</div>
+                <div class="link-card-desc">Create specialized agents for the cloud-based coding agent — shared across your organization via the .github-private repository.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-custom-agents</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-skills" target="_blank">
+            <span class="link-card-icon">⚡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Skills for Coding Agent</div>
+                <div class="link-card-desc">Create agent skills for the cloud-based coding agent — same SKILL.md format, project-level skills in .github/skills/.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-skills</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/extend-coding-agent-with-mcp" target="_blank">
+            <span class="link-card-icon">🔌</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Extend Coding Agent with MCP</div>
+                <div class="link-card-desc">Connect MCP servers to the cloud-based coding agent — configure via repo settings, JSON config format for MCP server definitions.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/extend-coding-agent-with-mcp</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/use-hooks" target="_blank">
+            <span class="link-card-icon">🪝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Hooks for Coding Agent</div>
+                <div class="link-card-desc">Use hooks with the cloud-based coding agent — same .github/hooks/*.json format, runs in the Actions dev environment.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/use-hooks</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/managing-policies-for-copilot-in-your-organization" target="_blank">
+            <span class="link-card-icon">🏢</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Managing Copilot Policies (Org)</div>
+                <div class="link-card-desc">Organization-level policies for enabling/disabling Copilot features, coding agent, CLI, and managing member access.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/managing-copilot/.../managing-policies-for-copilot-in-your-organization</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- IDEs                                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="ides">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(247,120,186,0.15);">💻</div>
+        <h2 class="cat-title">Copilot in IDEs &amp; Editors</h2>
+        <span class="cat-count">8 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=vscode" target="_blank">
+            <span class="link-card-icon">💻</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Chat in VS Code</div>
+                <div class="link-card-desc">Agent mode, chat panel, inline completions, next edit suggestions, multi-file edits, MCP servers, custom agents, subagents, vision — the flagship experience.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=vscode</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=visualstudio" target="_blank">
+            <span class="link-card-icon">🏢</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Chat in Visual Studio</div>
+                <div class="link-card-desc">Agent mode, chat, completions, and code review in Visual Studio for .NET, C#, C++ development.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=visualstudio</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=jetbrains" target="_blank">
+            <span class="link-card-icon">🔧</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Chat in JetBrains</div>
+                <div class="link-card-desc">Agent mode (GA), chat, completions, custom agents, subagents, plan mode — IntelliJ, PyCharm, WebStorm, Rider, and more.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=jetbrains</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=eclipse" target="_blank">
+            <span class="link-card-icon">☕</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot in Eclipse</div>
+                <div class="link-card-desc">Agent mode GA for Eclipse — autonomous multi-step task execution for Java and JVM languages.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=eclipse</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=xcode" target="_blank">
+            <span class="link-card-icon">🍎</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot in Xcode</div>
+                <div class="link-card-desc">Agent mode GA for Xcode — autonomous coding for Swift and Objective-C with inline completions.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=xcode</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=vimneovim" target="_blank">
+            <span class="link-card-icon">📟</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot in Neovim / Vim</div>
+                <div class="link-card-desc">Inline completions and chat via the Copilot.vim plugin for terminal-native editors.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=vimneovim</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-on-github" target="_blank">
+            <span class="link-card-icon">🌐</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Chat on GitHub.com</div>
+                <div class="link-card-desc">Use Copilot Chat directly on GitHub.com — ask about repos, PRs, issues, code, and GitHub features.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-on-github</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-on-mobile" target="_blank">
+            <span class="link-card-icon">📱</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Chat on GitHub Mobile</div>
+                <div class="link-card-desc">Copilot Chat on iOS and Android — ask questions, assign issues to coding agent on the go.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-on-mobile</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- BILLING                                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="billing">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(248,81,73,0.15);">💰</div>
+        <h2 class="cat-title">Plans, Billing &amp; Premium Requests</h2>
+        <span class="cat-count">4 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://github.com/features/copilot/plans" target="_blank">
+            <span class="link-card-icon">📋</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Plans &amp; Pricing</div>
+                <div class="link-card-desc">Compare Free, Pro, Business, and Enterprise plans — features, pricing, premium request quotas, and model access.</div>
+                <span class="link-card-url">github.com/features/copilot/plans</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/billing/copilot-requests" target="_blank">
+            <span class="link-card-icon">🔢</span>
+            <div class="link-card-body">
+                <div class="link-card-title">About Premium Requests</div>
+                <div class="link-card-desc">How premium requests work — model multipliers, what counts as a request, monthly quotas, and how different models affect your usage.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/billing/copilot-requests</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/concepts/billing/billing-for-individuals" target="_blank">
+            <span class="link-card-icon">👤</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Billing for Individual Plans</div>
+                <div class="link-card-desc">Individual plan billing details — Free tier limits, Pro plan features, premium request allowances, and overage handling.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/concepts/billing/billing-for-individuals</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests" target="_blank">
+            <span class="link-card-icon">📊</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Monitoring Usage &amp; Entitlements</div>
+                <div class="link-card-desc">Track premium request consumption, view usage dashboards, monitor team entitlements, and manage cost across your organization.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TUTORIALS                                                  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="tutorials">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(210,153,34,0.15);">🎓</div>
+        <h2 class="cat-title">Tutorials &amp; Examples</h2>
+        <span class="cat-count">5 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://docs.github.com/en/copilot/tutorials/customization-library" target="_blank">
+            <span class="link-card-icon">📚</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Customization Library</div>
+                <div class="link-card-desc">Curated collection of customization examples — custom instructions, agent configs, skill templates, and MCP server setups you can use as starting points.</div>
+                <div class="link-card-tags"><span class="link-tag tag-tutorial">Tutorial</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/tutorials/customization-library</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/tutorials/customization-library/custom-instructions" target="_blank">
+            <span class="link-card-icon">📋</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Custom Instructions Examples</div>
+                <div class="link-card-desc">Ready-to-use custom instruction templates — coding standards, framework-specific guidelines, testing patterns, and documentation requirements.</div>
+                <div class="link-card-tags"><span class="link-tag tag-tutorial">Tutorial</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/tutorials/customization-library/custom-instructions</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/tutorials/copilot-cli-hooks" target="_blank">
+            <span class="link-card-icon">🪝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">CLI Hooks Tutorial</div>
+                <div class="link-card-desc">Step-by-step tutorial on creating hooks for predictable, policy-compliant execution — real-world examples for security scanning, logging, and guardrails.</div>
+                <div class="link-card-tags"><span class="link-tag tag-tutorial">Tutorial</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/tutorials/copilot-cli-hooks</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/tutorials/use-custom-instructions" target="_blank">
+            <span class="link-card-icon">✍️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Using Custom Instructions for Code Review</div>
+                <div class="link-card-desc">Tutorial on using custom instructions to unlock the power of Copilot code review — configure review standards and enforce consistency.</div>
+                <div class="link-card-tags"><span class="link-tag tag-tutorial">Tutorial</span></div>
+                <span class="link-card-url">docs.github.com/en/copilot/tutorials/use-custom-instructions</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions" target="_blank">
+            <span class="link-card-icon">📝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Adding Repository Instructions (General)</div>
+                <div class="link-card-desc">Add custom instructions for all Copilot surfaces (not just CLI) — .github/copilot-instructions.md for repo-wide standards across VS Code, GitHub.com, and more.</div>
+                <span class="link-card-url">docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- REPOS                                                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="repos">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(88,166,255,0.15);">📂</div>
+        <h2 class="cat-title">GitHub Repositories &amp; Resources</h2>
+        <span class="cat-count">8 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://github.com/github/copilot-cli" target="_blank">
+            <span class="link-card-icon">⌨️</span>
+            <div class="link-card-body">
+                <div class="link-card-title">github/copilot-cli</div>
+                <div class="link-card-desc">The official Copilot CLI repository — README, changelog, issues, discussions, and the install script. File bug reports and feature requests here.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">github.com/github/copilot-cli</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/github/copilot-plugins" target="_blank">
+            <span class="link-card-icon">📦</span>
+            <div class="link-card-body">
+                <div class="link-card-title">github/copilot-plugins</div>
+                <div class="link-card-desc">Official GitHub-maintained plugin marketplace — curated collection of plugins ready to install with /plugin marketplace add github/copilot-plugins.</div>
+                <div class="link-card-tags"><span class="link-tag tag-new">New</span></div>
+                <span class="link-card-url">github.com/github/copilot-plugins</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/github/awesome-copilot" target="_blank">
+            <span class="link-card-icon">⭐</span>
+            <div class="link-card-body">
+                <div class="link-card-title">github/awesome-copilot</div>
+                <div class="link-card-desc">Community-curated collection of Copilot resources — skills, plugins, custom agents, MCP servers, and examples. Also serves as a plugin marketplace.</div>
+                <div class="link-card-tags"><span class="link-tag tag-essential">Essential</span></div>
+                <span class="link-card-url">github.com/github/awesome-copilot</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/agentskills/agentskills" target="_blank">
+            <span class="link-card-icon">⚡</span>
+            <div class="link-card-body">
+                <div class="link-card-title">agentskills/agentskills</div>
+                <div class="link-card-desc">The Agent Skills open standard specification — defines the SKILL.md format used by Copilot CLI, Claude Code, and other AI systems.</div>
+                <span class="link-card-url">github.com/agentskills/agentskills</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/anthropics/skills" target="_blank">
+            <span class="link-card-icon">🧩</span>
+            <div class="link-card-body">
+                <div class="link-card-title">anthropics/skills</div>
+                <div class="link-card-desc">Anthropic's collection of agent skills — compatible with Copilot CLI's skills system. Ready-to-use skills for common tasks.</div>
+                <span class="link-card-url">github.com/anthropics/skills</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/features/copilot/extensions" target="_blank">
+            <span class="link-card-icon">🔌</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Copilot Extensions Marketplace</div>
+                <div class="link-card-desc">Third-party Copilot Chat extensions — Docker, Sentry, Jira, Confluence, and more. Build and deploy with the tools you love in Copilot Chat.</div>
+                <span class="link-card-url">github.com/features/copilot/extensions</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/features/copilot" target="_blank">
+            <span class="link-card-icon">🏠</span>
+            <div class="link-card-body">
+                <div class="link-card-title">GitHub Copilot Product Page</div>
+                <div class="link-card-desc">The main GitHub Copilot product page — features overview, demos, and getting started resources.</div>
+                <span class="link-card-url">github.com/features/copilot</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.com/openai/agents.md" target="_blank">
+            <span class="link-card-icon">📄</span>
+            <div class="link-card-body">
+                <div class="link-card-title">openai/agents.md</div>
+                <div class="link-card-desc">The AGENTS.md specification by OpenAI — defines the agent instructions format supported by Copilot CLI, Claude, and other AI coding assistants.</div>
+                <span class="link-card-url">github.com/openai/agents.md</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- BLOG                                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="blog">
+    <div class="cat-header">
+        <div class="cat-icon" style="background: rgba(163,113,247,0.15);">📝</div>
+        <h2 class="cat-title">Blog Posts &amp; Announcements</h2>
+        <span class="cat-count">5 links</span>
+    </div>
+    <div class="link-grid">
+        <a class="link-card" href="https://github.blog/ai-and-ml/github-copilot/github-copilot-coding-agent-101-getting-started-with-agentic-workflows-on-github/" target="_blank">
+            <span class="link-card-icon">📝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Coding Agent 101: Getting Started</div>
+                <div class="link-card-desc">Comprehensive introduction to Copilot coding agent — what it is, how it works, assigning issues, customizing environments, and integration strategies.</div>
+                <span class="link-card-url">github.blog/ai-and-ml/github-copilot/github-copilot-coding-agent-101-...</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.blog/ai-and-ml/github-copilot/5-ways-to-integrate-github-copilot-coding-agent-into-your-workflow/" target="_blank">
+            <span class="link-card-icon">📝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">5 Ways to Integrate Coding Agent</div>
+                <div class="link-card-desc">Advanced strategies — offload tech debt, validate UI changes, experiment with branches, multi-agent workflows, and CI integration.</div>
+                <span class="link-card-url">github.blog/ai-and-ml/github-copilot/5-ways-to-integrate-...</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available" target="_blank">
+            <span class="link-card-icon">📢</span>
+            <div class="link-card-body">
+                <div class="link-card-title">Agent Mode GA for JetBrains, Eclipse, Xcode</div>
+                <div class="link-card-desc">Changelog announcement — agent mode is now generally available for JetBrains IDEs, Eclipse, and Xcode, bringing autonomous coding to more developers.</div>
+                <span class="link-card-url">github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-...</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://devblogs.microsoft.com/java/new-agentic-capabilities-for-github-copilot-in-jetbrains-and-eclipse" target="_blank">
+            <span class="link-card-icon">📝</span>
+            <div class="link-card-body">
+                <div class="link-card-title">New Agentic Capabilities in JetBrains &amp; Eclipse</div>
+                <div class="link-card-desc">Microsoft DevBlog — custom agents, subagents, plan mode, and new agentic capabilities for GitHub Copilot in JetBrains and Eclipse IDEs.</div>
+                <span class="link-card-url">devblogs.microsoft.com/java/new-agentic-capabilities-for-github-copilot-...</span>
+            </div>
+        </a>
+        <a class="link-card" href="https://github.blog/ai-and-ml/github-copilot/" target="_blank">
+            <span class="link-card-icon">🏠</span>
+            <div class="link-card-body">
+                <div class="link-card-title">GitHub Copilot Blog (All Posts)</div>
+                <div class="link-card-desc">The complete GitHub Copilot blog — all announcements, tutorials, deep dives, and changelog entries in one place.</div>
+                <span class="link-card-url">github.blog/ai-and-ml/github-copilot/</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>All links point to <strong>github.com</strong>, <strong>docs.github.com</strong>, <strong>github.blog</strong>, or <strong>devblogs.microsoft.com</strong></p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · Last updated: March 2026</p>
+</footer>
+
+<!-- Active nav highlighting -->
+<script>
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -80% 0px' });
+    sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>

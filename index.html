@@ -599,6 +599,7 @@
             <li><a href="#ecosystem">Ecosystem</a></li>
             <li><a href="#configuration">Configuration</a></li>
             <li><a href="#quickstart">Quick Start</a></li>
+            <li><a href="references.html" style="color: var(--accent-green); border: 1px solid rgba(63,185,80,0.3);">📚 References &amp; Links</a></li>
         </ul>
     </div>
 </nav>
@@ -632,7 +633,7 @@
                     <span class="eco-card-type" style="background: rgba(88,166,255,0.15); color: var(--accent-blue);">Terminal</span>
                 </div>
             </div>
-            <div class="eco-card-desc">Full agentic coding agent in your terminal. Plan, build, debug, refactor, and ship — all from the command line. Powered by the same harness as Copilot coding agent.</div>
+            <div class="eco-card-desc">Full agentic coding agent in your terminal. Plan, build, debug, refactor, and ship — all from the command line. Powered by the same harness as Copilot coding agent. <a href="https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli" target="_blank" style="color: var(--accent-blue); font-size: 12px;">Docs ↗</a></div>
             <div class="eco-features">
                 <span class="eco-tag">Agent Mode</span>
                 <span class="eco-tag">Plan Mode</span>
@@ -660,7 +661,7 @@
                     <span class="eco-card-type" style="background: rgba(63,185,80,0.15); color: var(--accent-green);">Cloud</span>
                 </div>
             </div>
-            <div class="eco-card-desc">Async AI teammate on GitHub. Assign issues to Copilot, it spins up a dev environment in GitHub Actions, writes code, creates PRs, and requests your review.</div>
+            <div class="eco-card-desc">Async AI teammate on GitHub. Assign issues to Copilot, it spins up a dev environment in GitHub Actions, writes code, creates PRs, and requests your review. <a href="https://docs.github.com/en/copilot/concepts/agents/about-copilot-coding-agent" target="_blank" style="color: var(--accent-blue); font-size: 12px;">Docs ↗</a></div>
             <div class="eco-features">
                 <span class="eco-tag">Issue Assignment</span>
                 <span class="eco-tag">Auto PR Creation</span>
@@ -683,7 +684,7 @@
                     <span class="eco-card-type" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">IDE</span>
                 </div>
             </div>
-            <div class="eco-card-desc">The flagship Copilot experience. Agent mode for autonomous multi-file edits, inline completions, chat panel, next edit suggestions, and vision capabilities.</div>
+            <div class="eco-card-desc">The flagship Copilot experience. Agent mode for autonomous multi-file edits, inline completions, chat panel, next edit suggestions, and vision capabilities. <a href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=vscode" target="_blank" style="color: var(--accent-blue); font-size: 12px;">Docs ↗</a></div>
             <div class="eco-features">
                 <span class="eco-tag">Agent Mode</span>
                 <span class="eco-tag">Chat Panel</span>
@@ -707,7 +708,7 @@
                     <span class="eco-card-type" style="background: rgba(210,153,34,0.15); color: var(--accent-orange);">IDE</span>
                 </div>
             </div>
-            <div class="eco-card-desc">IntelliJ, PyCharm, WebStorm, Rider, etc. Agent mode GA with custom agents, subagents, plan mode, and full agentic capabilities.</div>
+            <div class="eco-card-desc">IntelliJ, PyCharm, WebStorm, Rider, etc. Agent mode GA with custom agents, subagents, plan mode, and full agentic capabilities. <a href="https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=jetbrains" target="_blank" style="color: var(--accent-blue); font-size: 12px;">Docs ↗</a></div>
             <div class="eco-features">
                 <span class="eco-tag">Agent Mode (GA)</span>
                 <span class="eco-tag">Chat</span>
@@ -883,7 +884,7 @@
                     <div class="config-scope">Scope: Entire repo · Always loaded</div>
                 </div>
             </div>
-            <div class="config-desc">Persistent, repo-wide guidance loaded at session start. Coding standards, conventions, build commands, preferred patterns. Applied to every prompt automatically.</div>
+            <div class="config-desc">Persistent, repo-wide guidance loaded at session start. Coding standards, conventions, build commands, preferred patterns. Applied to every prompt automatically. <a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/add-custom-instructions" target="_blank" style="color: var(--accent-blue); font-size: 11px;">Docs ↗</a></div>
             <code class="config-path">.github/copilot-instructions.md</code>
         </div>
 
@@ -935,7 +936,7 @@
                     <div class="config-scope">Scope: On-demand · Task-specific</div>
                 </div>
             </div>
-            <div class="config-desc">Folders of instructions, scripts, and resources loaded when relevant. <code>SKILL.md</code> with YAML frontmatter (name + description). Invoke with <code>/skill-name</code> or auto-detected. Open standard (<a href="https://github.com/agentskills/agentskills" style="color: var(--accent-blue);">agentskills spec</a>).</div>
+            <div class="config-desc">Folders of instructions, scripts, and resources loaded when relevant. <code>SKILL.md</code> with YAML frontmatter (name + description). Invoke with <code>/skill-name</code> or auto-detected. Open standard (<a href="https://github.com/agentskills/agentskills" style="color: var(--accent-blue);">agentskills spec</a>). <a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-skills" target="_blank" style="color: var(--accent-blue); font-size: 11px;">Docs ↗</a></div>
             <code class="config-path">.github/skills/&lt;name&gt;/SKILL.md · ~/.copilot/skills/</code>
         </div>
 
@@ -948,7 +949,7 @@
                     <div class="config-scope">Scope: Session · Extensibility</div>
                 </div>
             </div>
-            <div class="config-desc">Model Context Protocol servers provide external tools and data sources. GitHub MCP server is built-in. Add custom servers for DBs, APIs, calendars, ticketing systems. Manage with <code>/mcp add</code>.</div>
+            <div class="config-desc">Model Context Protocol servers provide external tools and data sources. GitHub MCP server is built-in. Add custom servers for DBs, APIs, calendars, ticketing systems. Manage with <code>/mcp add</code>. <a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers" target="_blank" style="color: var(--accent-blue); font-size: 11px;">Docs ↗</a></div>
             <code class="config-path">~/.copilot/mcp-config.json · /mcp add</code>
         </div>
 
@@ -961,7 +962,7 @@
                     <div class="config-scope">Scope: Repository · Lifecycle events</div>
                 </div>
             </div>
-            <div class="config-desc">Execute custom shell commands at key points: <code>sessionStart</code>, <code>sessionEnd</code>, <code>preToolUse</code>, <code>postToolUse</code>, <code>userPromptSubmitted</code>, <code>agentStop</code>, <code>subagentStop</code>, <code>errorOccurred</code>. Approve/deny tools programmatically, add logging, security scanning.</div>
+            <div class="config-desc">Execute custom shell commands at key points: <code>sessionStart</code>, <code>sessionEnd</code>, <code>preToolUse</code>, <code>postToolUse</code>, <code>userPromptSubmitted</code>, <code>agentStop</code>, <code>subagentStop</code>, <code>errorOccurred</code>. Approve/deny tools programmatically, add logging, security scanning. <a href="https://docs.github.com/en/copilot/reference/hooks-configuration" target="_blank" style="color: var(--accent-blue); font-size: 11px;">Docs ↗</a></div>
             <code class="config-path">.github/hooks/*.json</code>
         </div>
 
@@ -1000,7 +1001,7 @@
                     <div class="config-scope">Scope: Installable bundles · New!</div>
                 </div>
             </div>
-            <div class="config-desc">Packages that deliver agents + skills + hooks + MCP configs in one install. <code>plugin.json</code> manifest. Install from repos or marketplaces. Update, list, uninstall via <code>/plugin</code>.</div>
+            <div class="config-desc">Packages that deliver agents + skills + hooks + MCP configs in one install. <code>plugin.json</code> manifest. Install from repos or marketplaces. Update, list, uninstall via <code>/plugin</code>. <a href="https://docs.github.com/en/copilot/reference/cli-plugin-reference" target="_blank" style="color: var(--accent-blue); font-size: 11px;">Docs ↗</a></div>
             <code class="config-path">plugin.json · copilot plugin install ./my-plugin</code>
         </div>
 
@@ -1316,7 +1317,7 @@ my-project/
 
 <!-- ===== FOOTER ===== -->
 <footer>
-    <p>Built for demo purposes · <a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Official Docs</a> · <a href="https://github.com/github/copilot-cli">GitHub Repo</a></p>
+    <p>Built for demo purposes · <a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Official Docs</a> · <a href="https://github.com/github/copilot-cli">GitHub Repo</a> · <a href="references.html">📚 Complete References &amp; Links</a></p>
     <p style="margin-top: 8px;">Last updated: March 2026</p>
 </footer>
 
