@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Copilot CLI — Complete Reference</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-card-hover: #1c2129;
+            --bg-inset: #0d1117;
+            --border: #30363d;
+            --border-light: #21262d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-subtle: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-pink: #f778ba;
+            --accent-cyan: #39d2c0;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            --radius: 6px;
+            --radius-lg: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== STICKY NAV ===== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            height: 56px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-logo svg { flex-shrink: 0; }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+        .nav-links a.active { color: var(--text); background: rgba(255,255,255,0.08); }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 64px 24px;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); }
+        .badge-purple { background: rgba(163,113,247,0.15); color: var(--accent-purple); }
+        .badge-green { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 24px 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .hero-version {
+            font-size: 13px;
+            color: var(--text-subtle);
+            font-family: var(--mono);
+        }
+
+        /* ===== ECOSYSTEM GRID ===== */
+        .eco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .eco-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: border-color 0.2s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eco-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .eco-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .eco-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .eco-card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .eco-card-type {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+
+        .eco-card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .eco-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .eco-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+            white-space: nowrap;
+        }
+
+        /* ===== CONFIG SECTION ===== */
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 16px;
+        }
+
+        .config-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .config-card:hover { border-color: var(--accent-purple); }
+
+        .config-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .config-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .config-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .config-scope {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-subtle);
+            margin-top: 2px;
+        }
+
+        .config-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .config-path {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent-green);
+            background: rgba(63,185,80,0.08);
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* ===== DECISION TABLE ===== */
+        .decision-table-wrapper {
+            overflow-x: auto;
+            margin-top: 40px;
+        }
+
+        .decision-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .decision-table th {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .decision-table td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            color: var(--text-muted);
+        }
+
+        .decision-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* ===== QUICK START ===== */
+        .qs-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .qs-full { grid-column: 1 / -1; }
+
+        .qs-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .qs-block-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qs-block-title .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* CODE BLOCKS */
+        code, .code {
+            font-family: var(--mono);
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: var(--bg-inset);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            overflow-x: auto;
+            margin: 8px 0;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .code-block .cmd { color: var(--accent-green); }
+        .code-block .flag { color: var(--accent-orange); }
+        .code-block .comment { color: var(--text-subtle); }
+        .code-block .string { color: var(--accent-blue); }
+
+        /* MINI TABLE */
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .mini-table th {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mini-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+
+        .mini-table tr:last-child td { border-bottom: none; }
+        .mini-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .mini-table code {
+            color: var(--accent-blue);
+            background: rgba(88,166,255,0.08);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .mini-table .desc { color: var(--text-muted); font-size: 13px; }
+
+        /* FLOW DIAGRAM */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 16px 0;
+        }
+
+        .flow-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 16px;
+            text-align: center;
+            font-size: 13px;
+            min-width: 120px;
+        }
+
+        .flow-step-num {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin-bottom: 4px;
+        }
+
+        .flow-step-label {
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .flow-step code {
+            font-size: 11px;
+            color: var(--accent-green);
+        }
+
+        .flow-arrow {
+            color: var(--text-subtle);
+            font-size: 18px;
+            padding: 0 4px;
+        }
+
+        /* INSTALL GRID */
+        .install-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .install-card {
+            background: var(--bg-inset);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+        }
+
+        .install-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .install-cmd {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--accent-green);
+            word-break: break-all;
+        }
+
+        /* MODES */
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .mode-card {
+            text-align: center;
+            padding: 20px 16px;
+            background: var(--bg-inset);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .mode-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .mode-shortcut {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent-orange);
+            margin-bottom: 8px;
+        }
+
+        .mode-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-subtle);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        footer a { color: var(--accent-blue); text-decoration: none; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 32px; }
+            .section-title { font-size: 28px; }
+            .qs-columns { grid-template-columns: 1fr; }
+            .config-grid { grid-template-columns: 1fr; }
+            .modes-grid { grid-template-columns: 1fr; }
+            .eco-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+
+        @media (max-width: 600px) {
+            .flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+    <div class="nav-inner">
+        <a href="#top" class="nav-logo">
+            <svg height="24" width="24" viewBox="0 0 16 16" fill="white"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+            Copilot CLI Reference
+        </a>
+        <ul class="nav-links">
+            <li><a href="#ecosystem">Ecosystem</a></li>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#quickstart">Quick Start</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<div class="hero" id="top">
+    <h1 class="hero-title">GitHub Copilot CLI</h1>
+    <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
+    <p class="hero-version">v0.0.421 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; March 2026</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: ECOSYSTEM                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="ecosystem">
+    <div class="section-header">
+        <span class="section-badge badge-blue">Section 1</span>
+        <h2 class="section-title">The GitHub Copilot Ecosystem</h2>
+        <p class="section-subtitle">Every surface where GitHub Copilot shows up — from your terminal to the cloud.</p>
+    </div>
+
+    <div class="eco-grid">
+        <!-- Copilot CLI -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-blue);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(88,166,255,0.15);">⌨️</div>
+                <div>
+                    <div class="eco-card-title">Copilot CLI</div>
+                    <span class="eco-card-type" style="background: rgba(88,166,255,0.15); color: var(--accent-blue);">Terminal</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Full agentic coding agent in your terminal. Plan, build, debug, refactor, and ship — all from the command line. Powered by the same harness as Copilot coding agent.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Agent Mode</span>
+                <span class="eco-tag">Plan Mode</span>
+                <span class="eco-tag">Autopilot</span>
+                <span class="eco-tag">Subagents</span>
+                <span class="eco-tag">MCP</span>
+                <span class="eco-tag">Skills</span>
+                <span class="eco-tag">Plugins</span>
+                <span class="eco-tag">Custom Agents</span>
+                <span class="eco-tag">Hooks</span>
+                <span class="eco-tag">LSP</span>
+                <span class="eco-tag">Fleet Mode</span>
+                <span class="eco-tag">Deep Research</span>
+                <span class="eco-tag">/delegate</span>
+                <span class="eco-tag">ACP Server</span>
+            </div>
+        </div>
+
+        <!-- Coding Agent -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-green);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(63,185,80,0.15);">🤖</div>
+                <div>
+                    <div class="eco-card-title">Copilot Coding Agent</div>
+                    <span class="eco-card-type" style="background: rgba(63,185,80,0.15); color: var(--accent-green);">Cloud</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Async AI teammate on GitHub. Assign issues to Copilot, it spins up a dev environment in GitHub Actions, writes code, creates PRs, and requests your review.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Issue Assignment</span>
+                <span class="eco-tag">Auto PR Creation</span>
+                <span class="eco-tag">GitHub Actions Runtime</span>
+                <span class="eco-tag">Custom Agents</span>
+                <span class="eco-tag">MCP</span>
+                <span class="eco-tag">Skills</span>
+                <span class="eco-tag">Hooks</span>
+                <span class="eco-tag">Copilot Memory</span>
+                <span class="eco-tag">Agents Panel</span>
+            </div>
+        </div>
+
+        <!-- VS Code -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-purple);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(163,113,247,0.15);">💻</div>
+                <div>
+                    <div class="eco-card-title">VS Code</div>
+                    <span class="eco-card-type" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">IDE</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">The flagship Copilot experience. Agent mode for autonomous multi-file edits, inline completions, chat panel, next edit suggestions, and vision capabilities.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Agent Mode</span>
+                <span class="eco-tag">Chat Panel</span>
+                <span class="eco-tag">Inline Completions</span>
+                <span class="eco-tag">Next Edit Suggestions</span>
+                <span class="eco-tag">Multi-file Edits</span>
+                <span class="eco-tag">MCP Servers</span>
+                <span class="eco-tag">Custom Agents</span>
+                <span class="eco-tag">Subagents</span>
+                <span class="eco-tag">Vision</span>
+                <span class="eco-tag">Custom Instructions</span>
+            </div>
+        </div>
+
+        <!-- JetBrains -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-orange);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(210,153,34,0.15);">🔧</div>
+                <div>
+                    <div class="eco-card-title">JetBrains IDEs</div>
+                    <span class="eco-card-type" style="background: rgba(210,153,34,0.15); color: var(--accent-orange);">IDE</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">IntelliJ, PyCharm, WebStorm, Rider, etc. Agent mode GA with custom agents, subagents, plan mode, and full agentic capabilities.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Agent Mode (GA)</span>
+                <span class="eco-tag">Chat</span>
+                <span class="eco-tag">Completions</span>
+                <span class="eco-tag">Custom Agents</span>
+                <span class="eco-tag">Subagents</span>
+                <span class="eco-tag">Plan Mode</span>
+                <span class="eco-tag">MCP</span>
+            </div>
+        </div>
+
+        <!-- Visual Studio -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-cyan);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(57,210,192,0.15);">🏢</div>
+                <div>
+                    <div class="eco-card-title">Visual Studio</div>
+                    <span class="eco-card-type" style="background: rgba(57,210,192,0.15); color: var(--accent-cyan);">IDE</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Enterprise .NET powerhouse. Agent mode, chat, code completions, and code review integration for C#, .NET, C++, and more.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Agent Mode</span>
+                <span class="eco-tag">Chat</span>
+                <span class="eco-tag">Completions</span>
+                <span class="eco-tag">Code Review</span>
+                <span class="eco-tag">Custom Instructions</span>
+            </div>
+        </div>
+
+        <!-- Eclipse -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-pink);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(247,120,186,0.15);">☕</div>
+                <div>
+                    <div class="eco-card-title">Eclipse</div>
+                    <span class="eco-card-type" style="background: rgba(247,120,186,0.15); color: var(--accent-pink);">IDE</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Java ecosystem support with agent mode now generally available. Autonomous multi-step task execution and chat.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Agent Mode (GA)</span>
+                <span class="eco-tag">Chat</span>
+                <span class="eco-tag">Completions</span>
+            </div>
+        </div>
+
+        <!-- Xcode -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-red);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(248,81,73,0.15);">🍎</div>
+                <div>
+                    <div class="eco-card-title">Xcode</div>
+                    <span class="eco-card-type" style="background: rgba(248,81,73,0.15); color: var(--accent-red);">IDE</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Apple development with Copilot. Agent mode GA for Swift and Objective-C with autonomous code changes.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Agent Mode (GA)</span>
+                <span class="eco-tag">Completions</span>
+            </div>
+        </div>
+
+        <!-- Neovim / Vim -->
+        <div class="eco-card" style="border-left: 3px solid var(--text-subtle);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(110,118,129,0.15);">📟</div>
+                <div>
+                    <div class="eco-card-title">Neovim / Vim</div>
+                    <span class="eco-card-type" style="background: rgba(110,118,129,0.15); color: var(--text-muted);">Editor</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Lightweight terminal editor integration. Inline completions and chat via the official Copilot.vim plugin.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Completions</span>
+                <span class="eco-tag">Chat</span>
+            </div>
+        </div>
+
+        <!-- GitHub.com -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-blue);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(88,166,255,0.15);">🌐</div>
+                <div>
+                    <div class="eco-card-title">GitHub.com</div>
+                    <span class="eco-card-type" style="background: rgba(88,166,255,0.15); color: var(--accent-blue);">Web</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Copilot embedded across GitHub.com — Chat, PR summaries, code review with AI suggestions, code search, issue triage, and knowledge bases.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Copilot Chat</span>
+                <span class="eco-tag">PR Summaries</span>
+                <span class="eco-tag">Code Review</span>
+                <span class="eco-tag">Code Completion</span>
+                <span class="eco-tag">Issue Triage</span>
+                <span class="eco-tag">Knowledge Bases</span>
+                <span class="eco-tag">Agents Panel</span>
+            </div>
+        </div>
+
+        <!-- GitHub Mobile -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-green);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(63,185,80,0.15);">📱</div>
+                <div>
+                    <div class="eco-card-title">GitHub Mobile</div>
+                    <span class="eco-card-type" style="background: rgba(63,185,80,0.15); color: var(--accent-green);">Mobile</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Copilot Chat on iOS and Android. Ask questions about repos, assign issues to coding agent on the go.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Copilot Chat</span>
+                <span class="eco-tag">Assign to Agent</span>
+            </div>
+        </div>
+
+        <!-- Copilot Extensions -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-purple);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(163,113,247,0.15);">🔌</div>
+                <div>
+                    <div class="eco-card-title">Copilot Extensions</div>
+                    <span class="eco-card-type" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">Platform</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Third-party integrations in Copilot Chat. Docker, Sentry, Jira, Confluence, and more — interact with your dev tools via natural language.</div>
+            <div class="eco-features">
+                <span class="eco-tag">3rd Party Tools</span>
+                <span class="eco-tag">Chat Integration</span>
+                <span class="eco-tag">API-based</span>
+                <span class="eco-tag">Marketplace</span>
+            </div>
+        </div>
+
+        <!-- ACP -->
+        <div class="eco-card" style="border-left: 3px solid var(--accent-orange);">
+            <div class="eco-card-header">
+                <div class="eco-icon" style="background: rgba(210,153,34,0.15);">🔗</div>
+                <div>
+                    <div class="eco-card-title">ACP (Agent Client Protocol)</div>
+                    <span class="eco-card-type" style="background: rgba(210,153,34,0.15); color: var(--accent-orange);">Protocol</span>
+                </div>
+            </div>
+            <div class="eco-card-desc">Open standard for interacting with AI agents. Use Copilot CLI as an agent in any third-party tool, IDE, or automation system that supports ACP.</div>
+            <div class="eco-features">
+                <span class="eco-tag">Open Standard</span>
+                <span class="eco-tag">External Integrations</span>
+                <span class="eco-tag">copilot --acp</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: CONFIGURATION                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="configuration">
+    <div class="section-header">
+        <span class="section-badge badge-purple">Section 2</span>
+        <h2 class="section-title">Configuring &amp; Customizing Copilot CLI</h2>
+        <p class="section-subtitle">Every lever you can pull — instructions, skills, hooks, agents, plugins, and more.</p>
+    </div>
+
+    <div class="config-grid">
+        <!-- Repository Instructions -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(88,166,255,0.15);">📋</div>
+                <div>
+                    <div class="config-title">Repository Instructions</div>
+                    <div class="config-scope">Scope: Entire repo · Always loaded</div>
+                </div>
+            </div>
+            <div class="config-desc">Persistent, repo-wide guidance loaded at session start. Coding standards, conventions, build commands, preferred patterns. Applied to every prompt automatically.</div>
+            <code class="config-path">.github/copilot-instructions.md</code>
+        </div>
+
+        <!-- Path-based Instructions -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(163,113,247,0.15);">🎯</div>
+                <div>
+                    <div class="config-title">Path-based Instructions</div>
+                    <div class="config-scope">Scope: Matching files · Contextual</div>
+                </div>
+            </div>
+            <div class="config-desc">File-pattern specific instructions with <code>applyTo</code> glob in YAML frontmatter. Target TypeScript files, test directories, API routes, etc. Combines with repo-wide instructions.</div>
+            <code class="config-path">.github/instructions/**/*.instructions.md</code>
+        </div>
+
+        <!-- Agent Instructions -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(63,185,80,0.15);">🤖</div>
+                <div>
+                    <div class="config-title">Agent Instructions</div>
+                    <div class="config-scope">Scope: Repo root / CWD · Primary</div>
+                </div>
+            </div>
+            <div class="config-desc">Multi-agent instruction files at repo root. Supports <code>AGENTS.md</code>, <code>CLAUDE.md</code>, and <code>GEMINI.md</code>. Root-level files are treated as primary instructions.</div>
+            <code class="config-path">AGENTS.md · CLAUDE.md · GEMINI.md</code>
+        </div>
+
+        <!-- Local Instructions -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(210,153,34,0.15);">🏠</div>
+                <div>
+                    <div class="config-title">Local / Personal Instructions</div>
+                    <div class="config-scope">Scope: All projects · User-level</div>
+                </div>
+            </div>
+            <div class="config-desc">Personal preferences applied across all repos. Coding style, communication preferences, tool choices. Also supports <code>COPILOT_CUSTOM_INSTRUCTIONS_DIRS</code> env var.</div>
+            <code class="config-path">~/.copilot/copilot-instructions.md</code>
+        </div>
+
+        <!-- Skills -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(88,166,255,0.15);">⚡</div>
+                <div>
+                    <div class="config-title">Skills</div>
+                    <div class="config-scope">Scope: On-demand · Task-specific</div>
+                </div>
+            </div>
+            <div class="config-desc">Folders of instructions, scripts, and resources loaded when relevant. <code>SKILL.md</code> with YAML frontmatter (name + description). Invoke with <code>/skill-name</code> or auto-detected. Open standard (<a href="https://github.com/agentskills/agentskills" style="color: var(--accent-blue);">agentskills spec</a>).</div>
+            <code class="config-path">.github/skills/&lt;name&gt;/SKILL.md · ~/.copilot/skills/</code>
+        </div>
+
+        <!-- MCP Servers -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(163,113,247,0.15);">🔌</div>
+                <div>
+                    <div class="config-title">MCP Servers</div>
+                    <div class="config-scope">Scope: Session · Extensibility</div>
+                </div>
+            </div>
+            <div class="config-desc">Model Context Protocol servers provide external tools and data sources. GitHub MCP server is built-in. Add custom servers for DBs, APIs, calendars, ticketing systems. Manage with <code>/mcp add</code>.</div>
+            <code class="config-path">~/.copilot/mcp-config.json · /mcp add</code>
+        </div>
+
+        <!-- Agent Hooks -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(248,81,73,0.15);">🪝</div>
+                <div>
+                    <div class="config-title">Agent Hooks</div>
+                    <div class="config-scope">Scope: Repository · Lifecycle events</div>
+                </div>
+            </div>
+            <div class="config-desc">Execute custom shell commands at key points: <code>sessionStart</code>, <code>sessionEnd</code>, <code>preToolUse</code>, <code>postToolUse</code>, <code>userPromptSubmitted</code>, <code>agentStop</code>, <code>subagentStop</code>, <code>errorOccurred</code>. Approve/deny tools programmatically, add logging, security scanning.</div>
+            <code class="config-path">.github/hooks/*.json</code>
+        </div>
+
+        <!-- Custom Agents -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(57,210,192,0.15);">🧑‍💼</div>
+                <div>
+                    <div class="config-title">Custom Agents</div>
+                    <div class="config-scope">Scope: Repo / User / Org · Specialist personas</div>
+                </div>
+            </div>
+            <div class="config-desc">Define specialized personas in Markdown with YAML frontmatter: role, allowed tools, MCP connections, <code>infer: true</code> for auto-delegation. React reviewer, docs writer, security auditor, etc.</div>
+            <code class="config-path">.github/agents/ · ~/.copilot/agents/ · .github-private/agents/</code>
+        </div>
+
+        <!-- Built-in Subagents -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(247,120,186,0.15);">👥</div>
+                <div>
+                    <div class="config-title">Built-in Subagents</div>
+                    <div class="config-scope">Scope: System · Always available</div>
+                </div>
+            </div>
+            <div class="config-desc">Pre-built specialized agents the CLI auto-delegates to: <strong>explore</strong> (codebase analysis), <strong>task</strong> (commands/builds), <strong>general-purpose</strong> (complex tasks), <strong>code-review</strong> (change analysis), <strong>research</strong> (deep investigation).</div>
+            <code class="config-path">Automatic · /fleet for parallel execution</code>
+        </div>
+
+        <!-- Plugins -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(63,185,80,0.15);">📦</div>
+                <div>
+                    <div class="config-title">Plugins</div>
+                    <div class="config-scope">Scope: Installable bundles · New!</div>
+                </div>
+            </div>
+            <div class="config-desc">Packages that deliver agents + skills + hooks + MCP configs in one install. <code>plugin.json</code> manifest. Install from repos or marketplaces. Update, list, uninstall via <code>/plugin</code>.</div>
+            <code class="config-path">plugin.json · copilot plugin install ./my-plugin</code>
+        </div>
+
+        <!-- Plugin Marketplace -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(210,153,34,0.15);">🏪</div>
+                <div>
+                    <div class="config-title">Plugin Marketplace</div>
+                    <div class="config-scope">Scope: Distribution · Registry</div>
+                </div>
+            </div>
+            <div class="config-desc">Registry of plugins in a Git repo. <code>marketplace.json</code> in <code>.github/plugin/</code>. Users add with <code>/plugin marketplace add org/repo</code>. Official marketplaces: <a href="https://github.com/github/copilot-plugins" style="color:var(--accent-blue)">github/copilot-plugins</a>, <a href="https://github.com/github/awesome-copilot" style="color:var(--accent-blue)">github/awesome-copilot</a>.</div>
+            <code class="config-path">.github/plugin/marketplace.json</code>
+        </div>
+
+        <!-- LSP Servers -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(110,118,129,0.15);">🔍</div>
+                <div>
+                    <div class="config-title">LSP Servers</div>
+                    <div class="config-scope">Scope: Code intelligence · Per-language</div>
+                </div>
+            </div>
+            <div class="config-desc">Language Server Protocol for go-to-definition, hover info, diagnostics. Configure per language with command, args, and file extension mappings. Manage with <code>/lsp</code>.</div>
+            <code class="config-path">~/.copilot/lsp-config.json · .github/lsp.json</code>
+        </div>
+
+        <!-- Copilot Memory -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(88,166,255,0.15);">🧠</div>
+                <div>
+                    <div class="config-title">Copilot Memory</div>
+                    <div class="config-scope">Scope: Persistent · Automatic learning</div>
+                </div>
+            </div>
+            <div class="config-desc">Copilot builds persistent understanding of your repository by storing "memories" — coding conventions, patterns, and preferences deduced while working. Reduces repetitive context in prompts.</div>
+            <code class="config-path">Automatic · Persistent across sessions</code>
+        </div>
+    </div>
+
+    <!-- Decision Table -->
+    <div class="decision-table-wrapper">
+        <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 16px; text-align: center;">🧭 When to Use What?</h3>
+        <table class="decision-table">
+            <thead>
+                <tr>
+                    <th>Requirement</th>
+                    <th>Best Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Copilot should always follow our repo conventions</td><td><strong>Custom Instructions</strong></td></tr>
+                <tr><td>I want a repeatable workflow I can invoke on demand</td><td><strong>Skills</strong></td></tr>
+                <tr><td>I want guardrails, policy, or automation around tool use</td><td><strong>Hooks</strong></td></tr>
+                <tr><td>I need Copilot to use tools from an external service</td><td><strong>MCP Servers</strong></td></tr>
+                <tr><td>I want Copilot to operate as a specialist for certain tasks</td><td><strong>Custom Agent</strong></td></tr>
+                <tr><td>I want to add a package of functionality without manual config</td><td><strong>Plugin</strong></td></tr>
+                <tr><td>I want to share plugins with my team or publicly</td><td><strong>Plugin Marketplace</strong></td></tr>
+                <tr><td>I want rich code intelligence (go-to-def, diagnostics)</td><td><strong>LSP Servers</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: QUICK START                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="quickstart">
+    <div class="section-header">
+        <span class="section-badge badge-green">Section 3</span>
+        <h2 class="section-title">Quick Start &amp; Usage Guide</h2>
+        <p class="section-subtitle">Install, launch, and master — every command, shortcut, and workflow pattern.</p>
+    </div>
+
+    <div class="qs-columns">
+
+        <!-- Installation -->
+        <div class="qs-block qs-full">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-green);"></span> Installation</div>
+            <div class="install-grid">
+                <div class="install-card">
+                    <div class="install-label">macOS / Linux (script)</div>
+                    <div class="install-cmd">curl -fsSL https://gh.io/copilot-install | bash</div>
+                </div>
+                <div class="install-card">
+                    <div class="install-label">Homebrew</div>
+                    <div class="install-cmd">brew install copilot-cli</div>
+                </div>
+                <div class="install-card">
+                    <div class="install-label">Windows (WinGet)</div>
+                    <div class="install-cmd">winget install GitHub.Copilot</div>
+                </div>
+                <div class="install-card">
+                    <div class="install-label">npm (cross-platform)</div>
+                    <div class="install-cmd">npm install -g @github/copilot</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modes -->
+        <div class="qs-block qs-full">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-purple);"></span> Modes (Shift+Tab to cycle)</div>
+            <div class="modes-grid">
+                <div class="mode-card">
+                    <div class="mode-name" style="color: var(--accent-blue);">Interactive</div>
+                    <div class="mode-shortcut">Default</div>
+                    <div class="mode-desc">Conversational — Copilot asks before each action. You review and approve tool use step by step.</div>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-name" style="color: var(--accent-purple);">Plan</div>
+                    <div class="mode-shortcut">Shift+Tab</div>
+                    <div class="mode-desc">Structured planning — Copilot analyzes your request, asks clarifying questions, builds a plan before writing code.</div>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-name" style="color: var(--accent-green);">Autopilot</div>
+                    <div class="mode-shortcut">Shift+Tab ×2</div>
+                    <div class="mode-desc">Autonomous — Copilot continues working until the task is complete. Experimental feature.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typical Flow -->
+        <div class="qs-block qs-full">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-orange);"></span> Typical Demo Flow</div>
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="flow-step-num">1</div>
+                    <div class="flow-step-label">Launch</div>
+                    <code>copilot</code>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-step-num">2</div>
+                    <div class="flow-step-label">Trust & Auth</div>
+                    <code>/login</code>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-step-num">3</div>
+                    <div class="flow-step-label">Init Repo</div>
+                    <code>/init</code>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-step-num">4</div>
+                    <div class="flow-step-label">Give Task</div>
+                    <code>Prompt</code>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-step-num">5</div>
+                    <div class="flow-step-label">Agent Works</div>
+                    <code>Read → Edit → Run</code>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-step-num">6</div>
+                    <div class="flow-step-label">Review</div>
+                    <code>/diff</code>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">
+                    <div class="flow-step-num">7</div>
+                    <div class="flow-step-label">Ship It</div>
+                    <code>/delegate · git push</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Essential Shortcuts -->
+        <div class="qs-block">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-blue);"></span> Essential Shortcuts</div>
+            <table class="mini-table">
+                <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td><code>@file</code></td><td class="desc">Include file contents in context</td></tr>
+                    <tr><td><code>!cmd</code></td><td class="desc">Run shell command directly</td></tr>
+                    <tr><td><code>&amp;prompt</code></td><td class="desc">Delegate to coding agent</td></tr>
+                    <tr><td><code>Shift+Tab</code></td><td class="desc">Cycle modes (interactive → plan → autopilot)</td></tr>
+                    <tr><td><code>Ctrl+S</code></td><td class="desc">Run command while preserving input</td></tr>
+                    <tr><td><code>Ctrl+T</code></td><td class="desc">Toggle reasoning display</td></tr>
+                    <tr><td><code>Ctrl+O</code></td><td class="desc">Expand recent timeline</td></tr>
+                    <tr><td><code>Ctrl+E</code></td><td class="desc">Expand all timeline items</td></tr>
+                    <tr><td><code>Ctrl+G</code></td><td class="desc">Edit prompt in external editor</td></tr>
+                    <tr><td><code>Ctrl+L</code></td><td class="desc">Clear screen</td></tr>
+                    <tr><td><code>Esc</code></td><td class="desc">Cancel current operation</td></tr>
+                    <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Slash Commands -->
+        <div class="qs-block">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-purple);"></span> Key Slash Commands</div>
+            <table class="mini-table">
+                <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td><code>/init</code></td><td class="desc">Initialize copilot instructions for the repo</td></tr>
+                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 4.5, Sonnet 4, GPT-5, etc.)</td></tr>
+                    <tr><td><code>/plan</code></td><td class="desc">Create implementation plan before coding</td></tr>
+                    <tr><td><code>/review</code></td><td class="desc">Run code review agent on changes</td></tr>
+                    <tr><td><code>/delegate</code></td><td class="desc">Push work to Copilot coding agent (cloud)</td></tr>
+                    <tr><td><code>/fleet</code></td><td class="desc">Parallel subagent execution</td></tr>
+                    <tr><td><code>/research</code></td><td class="desc">Deep research with web + GitHub sources</td></tr>
+                    <tr><td><code>/diff</code></td><td class="desc">Review all changes in current directory</td></tr>
+                    <tr><td><code>/compact</code></td><td class="desc">Compress context to free token space</td></tr>
+                    <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
+                    <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
+                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable MCP servers</td></tr>
+                    <tr><td><code>/plugin</code></td><td class="desc">Install, update, list, uninstall plugins</td></tr>
+                    <tr><td><code>/resume</code></td><td class="desc">Resume a previous session</td></tr>
+                    <tr><td><code>/share</code></td><td class="desc">Export session to file or GitHub gist</td></tr>
+                    <tr><td><code>/context</code></td><td class="desc">Show token usage visualization</td></tr>
+                    <tr><td><code>/usage</code></td><td class="desc">Session metrics and statistics</td></tr>
+                    <tr><td><code>/ide</code></td><td class="desc">Connect to an IDE workspace</td></tr>
+                    <tr><td><code>/lsp</code></td><td class="desc">Manage language server configuration</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Common CLI Flags -->
+        <div class="qs-block">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-orange);"></span> CLI Flags (Command Line)</div>
+            <table class="mini-table">
+                <thead><tr><th>Flag</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td><code>-p "prompt"</code></td><td class="desc">Programmatic mode — execute and exit</td></tr>
+                    <tr><td><code>--autopilot</code></td><td class="desc">Enable autonomous continuation</td></tr>
+                    <tr><td><code>--yolo</code></td><td class="desc">Allow all permissions (alias: --allow-all)</td></tr>
+                    <tr><td><code>--model MODEL</code></td><td class="desc">Select AI model</td></tr>
+                    <tr><td><code>--agent AGENT</code></td><td class="desc">Use a specific custom agent</td></tr>
+                    <tr><td><code>--continue</code></td><td class="desc">Resume most recent session</td></tr>
+                    <tr><td><code>--resume [ID]</code></td><td class="desc">Resume a specific session</td></tr>
+                    <tr><td><code>--allow-tool 'X'</code></td><td class="desc">Pre-approve specific tools</td></tr>
+                    <tr><td><code>--deny-tool 'X'</code></td><td class="desc">Block specific tools</td></tr>
+                    <tr><td><code>--experimental</code></td><td class="desc">Enable experimental features</td></tr>
+                    <tr><td><code>--acp</code></td><td class="desc">Start Agent Client Protocol server</td></tr>
+                    <tr><td><code>-s / --silent</code></td><td class="desc">Output only agent response (scripting)</td></tr>
+                    <tr><td><code>--max-autopilot-continues N</code></td><td class="desc">Cap autopilot continuations</td></tr>
+                    <tr><td><code>--no-custom-instructions</code></td><td class="desc">Skip loading instruction files</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Programmatic Examples -->
+        <div class="qs-block">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-green);"></span> Programmatic Examples</div>
+            <div class="code-block">
+<span class="comment"># Quick one-shot task</span>
+<span class="cmd">copilot</span> <span class="flag">-p</span> <span class="string">"Add error handling to src/api.ts"</span> <span class="flag">--yolo</span>
+
+<span class="comment"># Autonomous with limits</span>
+<span class="cmd">copilot</span> <span class="flag">--autopilot --yolo --max-autopilot-continues 10</span> \
+  <span class="flag">-p</span> <span class="string">"Fix all failing tests"</span>
+
+<span class="comment"># Specific permissions</span>
+<span class="cmd">copilot</span> <span class="flag">--allow-all-tools --deny-tool</span> <span class="string">'shell(rm)'</span> \
+  <span class="flag">--deny-tool</span> <span class="string">'shell(git push)'</span>
+
+<span class="comment"># Use a custom agent</span>
+<span class="cmd">copilot</span> <span class="flag">--agent</span>=security-auditor <span class="flag">-p</span> <span class="string">"Audit this codebase"</span>
+
+<span class="comment"># Resume last session</span>
+<span class="cmd">copilot</span> <span class="flag">--continue</span>
+
+<span class="comment"># Pipe options from a script</span>
+./my-options.sh | <span class="cmd">copilot</span>
+            </div>
+        </div>
+
+        <!-- File Structure Quick Ref -->
+        <div class="qs-block qs-full">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-cyan);"></span> Repository Configuration Structure</div>
+            <div class="code-block" style="line-height: 1.7;">
+<span class="comment"># Your repository</span>
+my-project/
+├── <span class="string">.github/</span>
+│   ├── <span class="cmd">copilot-instructions.md</span>         <span class="comment"># Repo-wide instructions</span>
+│   ├── <span class="string">instructions/</span>
+│   │   ├── <span class="cmd">typescript.instructions.md</span>  <span class="comment"># Path-based (applyTo: "**/*.ts")</span>
+│   │   └── <span class="cmd">tests.instructions.md</span>       <span class="comment"># Path-based (applyTo: "**/*.test.*")</span>
+│   ├── <span class="string">skills/</span>
+│   │   └── <span class="string">deploy/</span>
+│   │       └── <span class="cmd">SKILL.md</span>                <span class="comment"># Skill definition</span>
+│   ├── <span class="string">agents/</span>
+│   │   └── <span class="cmd">reviewer.agent.md</span>           <span class="comment"># Custom agent</span>
+│   ├── <span class="string">hooks/</span>
+│   │   └── <span class="cmd">security.json</span>               <span class="comment"># Hook configuration</span>
+│   ├── <span class="string">plugin/</span>
+│   │   └── <span class="cmd">marketplace.json</span>            <span class="comment"># Plugin marketplace</span>
+│   └── <span class="cmd">lsp.json</span>                        <span class="comment"># LSP server config</span>
+├── <span class="cmd">AGENTS.md</span>                           <span class="comment"># Agent instructions</span>
+└── ...
+
+<span class="comment"># Your home directory</span>
+~/.copilot/
+├── <span class="cmd">copilot-instructions.md</span>             <span class="comment"># Personal instructions</span>
+├── <span class="cmd">mcp-config.json</span>                     <span class="comment"># MCP server config</span>
+├── <span class="cmd">lsp-config.json</span>                     <span class="comment"># LSP config (user-level)</span>
+├── <span class="cmd">config.json</span>                         <span class="comment"># CLI settings</span>
+├── <span class="string">skills/</span>                             <span class="comment"># Personal skills</span>
+└── <span class="string">agents/</span>                             <span class="comment"># Personal agents</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <p>Built for demo purposes · <a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Official Docs</a> · <a href="https://github.com/github/copilot-cli">GitHub Repo</a></p>
+    <p style="margin-top: 8px;">Last updated: March 2026</p>
+</footer>
+
+<!-- Minimal JS for active nav highlighting -->
+<script>
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -80% 0px' });
+
+    sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
