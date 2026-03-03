@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How This Was Made — GitHub Copilot CLI in Action</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-inset: #0d1117;
+            --border: #30363d;
+            --border-light: #21262d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-subtle: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-pink: #f778ba;
+            --accent-cyan: #39d2c0;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            --radius: 6px;
+            --radius-lg: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 56px;
+        }
+
+        .nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .nav-back:hover { color: var(--text); border-color: var(--text-subtle); text-decoration: none; }
+
+        .nav-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        /* CONTENT */
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 72px 0 48px;
+        }
+
+        .hero-eyebrow {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-orange);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 32px;
+        }
+
+        /* STATS ROW */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-subtle);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* TLDR */
+        .tldr {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-orange);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            margin-bottom: 48px;
+        }
+
+        .tldr-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent-orange);
+        }
+
+        .tldr p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* DIVIDER */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 48px 0;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding-left: 48px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .step {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .step-dot {
+            position: absolute;
+            left: -48px;
+            top: 4px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            z-index: 1;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .step-time {
+            font-size: 12px;
+            color: var(--text-subtle);
+            font-family: var(--mono);
+        }
+
+        .step-body {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .step-body p {
+            margin-bottom: 10px;
+        }
+
+        /* PROMPT BLOCK */
+        .prompt {
+            background: var(--bg-inset);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            margin: 12px 0;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .prompt-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            padding: 0 6px;
+            background: var(--bg-inset);
+        }
+
+        .prompt-user { border-left: 3px solid var(--accent-blue); }
+        .prompt-user .prompt-label { color: var(--accent-blue); }
+
+        .prompt-agent { border-left: 3px solid var(--accent-green); }
+        .prompt-agent .prompt-label { color: var(--accent-green); }
+
+        /* OUTPUT BLOCK */
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .output-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+        }
+
+        .output-item-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .output-item-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* TOOLS USED */
+        .tools-used {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0;
+        }
+
+        .tool-tag {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .tool-search { background: rgba(88,166,255,0.12); color: var(--accent-blue); }
+        .tool-fetch { background: rgba(163,113,247,0.12); color: var(--accent-purple); }
+        .tool-create { background: rgba(63,185,80,0.12); color: var(--accent-green); }
+        .tool-shell { background: rgba(210,153,34,0.12); color: var(--accent-orange); }
+        .tool-edit { background: rgba(248,81,73,0.12); color: var(--accent-red); }
+        .tool-github { background: rgba(57,210,192,0.12); color: var(--accent-cyan); }
+
+        /* SECTION HEADERS */
+        .section-head {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* CALLOUT */
+        .callout {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .callout-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .callout ul {
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .callout li {
+            margin-bottom: 6px;
+        }
+
+        .callout code {
+            font-family: var(--mono);
+            font-size: 12px;
+            background: rgba(88,166,255,0.08);
+            color: var(--accent-blue);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* KEY INSIGHT */
+        .insight {
+            background: linear-gradient(135deg, rgba(88,166,255,0.06), rgba(163,113,247,0.06));
+            border: 1px solid rgba(88,166,255,0.2);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            margin: 32px 0;
+        }
+
+        .insight-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .insight-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--accent-blue);
+        }
+
+        .insight p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* FINAL TALLY */
+        .tally {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .tally-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .tally-num {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .tally-label {
+            font-size: 12px;
+            color: var(--text-subtle);
+            margin-top: 2px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-subtle);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 700px) {
+            .hero-title { font-size: 28px; }
+            .stats-row { gap: 20px; }
+            .stat-num { font-size: 24px; }
+            .timeline { padding-left: 36px; }
+            .step-dot { left: -36px; width: 30px; height: 30px; font-size: 13px; }
+            .timeline::before { left: 13px; }
+            .output-grid { grid-template-columns: 1fr; }
+            .tally { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-back">← Home</a>
+        <span class="nav-title">How This Was Made</span>
+    </div>
+</nav>
+
+<div class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-eyebrow">Behind the Scenes</div>
+        <h1 class="hero-title">Built Entirely with Copilot CLI</h1>
+        <p class="hero-sub">This entire site — every line of HTML, CSS, every researched link, the GitHub repo, GitHub Pages — was created in a single Copilot CLI session without ever opening an editor or browser.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-num" style="color: var(--accent-blue);">1</div>
+            <div class="stat-label">CLI Session</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num" style="color: var(--accent-green);">3</div>
+            <div class="stat-label">HTML Pages</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num" style="color: var(--accent-purple);">2,600+</div>
+            <div class="stat-label">Lines of Code</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num" style="color: var(--accent-orange);">100+</div>
+            <div class="stat-label">Curated Links</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num" style="color: var(--accent-pink);">10+</div>
+            <div class="stat-label">Docs Researched</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num" style="color: var(--accent-cyan);">4</div>
+            <div class="stat-label">Git Commits</div>
+        </div>
+    </div>
+
+    <!-- TL;DR -->
+    <div class="tldr">
+        <div class="tldr-title">⚡ TL;DR</div>
+        <p>One natural language conversation in the terminal produced a fully deployed, 3-page reference site with deep research, premium styling, 100+ curated documentation links, GitHub Pages hosting, and this very page you're reading. The human typed prompts; Copilot CLI did everything else.</p>
+    </div>
+
+    <hr>
+
+    <!-- THE STORY -->
+    <h2 class="section-head">📖 The Story, Step by Step</h2>
+
+    <div class="timeline">
+
+        <!-- STEP 1: The Ask -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(88,166,255,0.15); color: var(--accent-blue);">1</div>
+            <div class="step-header">
+                <h3 class="step-title">The Ask</h3>
+                <span class="step-time">Turn 0 · Plan Mode</span>
+            </div>
+            <div class="step-body">
+                <p>The session started with a single natural language request in <strong>plan mode</strong> (<code>Shift+Tab</code>):</p>
+                <div class="prompt prompt-user">
+                    <span class="prompt-label">Human</span>
+                    I'm prepping for a demo I will be giving for GitHub Copilot CLI. I want a one pane of glass HTML file in Primer styling... one page showing all areas where GitHub Copilot comes up like Copilot CLI, coding agent, VS Code, other IDEs (make it dense). Then scroll down for configuration elements... Then a quick starter guide... Let's do a lot of research, plan it well.
+                </div>
+                <p>No mockups. No wireframes. No spec doc. Just a plain English description of the vision.</p>
+            </div>
+        </div>
+
+        <!-- STEP 2: Deep Research -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">2</div>
+            <div class="step-header">
+                <h3 class="step-title">Deep Research Phase</h3>
+                <span class="step-time">Automatic · Parallel tool calls</span>
+            </div>
+            <div class="step-body">
+                <p>Before writing a single line of code, Copilot CLI dove into research — fetching and analyzing <strong>10+ official documentation pages</strong> in parallel:</p>
+                <div class="tools-used">
+                    <span class="tool-tag tool-fetch">web_fetch × 10</span>
+                    <span class="tool-tag tool-search">exa_web_search × 2</span>
+                    <span class="tool-tag tool-fetch">fetch_copilot_docs</span>
+                </div>
+                <div class="callout">
+                    <div class="callout-title">📚 Documentation Sources Analyzed</div>
+                    <ul>
+                        <li>About Copilot CLI — modes, use cases, security</li>
+                        <li>Using Copilot CLI — all features walkthrough</li>
+                        <li>CLI Command Reference — every command and flag</li>
+                        <li>About Agent Skills — open standard spec</li>
+                        <li>Creating Skills — SKILL.md format</li>
+                        <li>About Hooks — all hook types and JSON schemas</li>
+                        <li>Hooks Configuration Reference — complete examples</li>
+                        <li>Custom Instructions — all file types and locations</li>
+                        <li>Comparing CLI Features — decision table</li>
+                        <li>Plugin Reference — plugin.json and marketplace.json</li>
+                        <li>Creating Plugins — directory structure</li>
+                        <li>Plugin Marketplace — how to create and distribute</li>
+                        <li>Autopilot Mode — autonomous operation</li>
+                        <li>Best Practices — expert tips and workflows</li>
+                        <li>Customization Cheat Sheet — IDE support matrix</li>
+                    </ul>
+                </div>
+                <p>This research happened via <strong>parallel tool calls</strong> — the CLI fetched multiple docs simultaneously, then synthesized all findings into the plan.</p>
+            </div>
+        </div>
+
+        <!-- STEP 3: The Plan -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(63,185,80,0.15); color: var(--accent-green);">3</div>
+            <div class="step-header">
+                <h3 class="step-title">Structured Plan Created</h3>
+                <span class="step-time">plan.md + SQL todos</span>
+            </div>
+            <div class="step-body">
+                <p>Copilot created a detailed <code>plan.md</code> with three sections mapped out, plus SQL-tracked todos:</p>
+                <div class="output-grid">
+                    <div class="output-item">
+                        <div class="output-item-label">Section 1</div>
+                        <div class="output-item-value">12 Ecosystem Cards</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-item-label">Section 2</div>
+                        <div class="output-item-value">14 Config Features</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-item-label">Section 3</div>
+                        <div class="output-item-value">Commands + Flow</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-item-label">Design System</div>
+                        <div class="output-item-value">Primer Dark Theme</div>
+                    </div>
+                </div>
+                <div class="prompt prompt-agent">
+                    <span class="prompt-label">Copilot</span>
+                    Created plan with 3 todos tracked in SQL: create-repo → build-html → push-to-github, with dependencies enforced.
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: Build -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(210,153,34,0.15); color: var(--accent-orange);">4</div>
+            <div class="step-header">
+                <h3 class="step-title">One-Shot HTML Generation</h3>
+                <span class="step-time">1,340 lines · Single create call</span>
+            </div>
+            <div class="step-body">
+                <p>The entire <code>index.html</code> — <strong>1,340 lines of hand-crafted HTML and CSS</strong> — was generated in a single tool call. No templates, no frameworks, no copy-paste. Pure generation from the researched context.</p>
+                <div class="tools-used">
+                    <span class="tool-tag tool-create">create index.html (61KB)</span>
+                    <span class="tool-tag tool-create">create README.md</span>
+                    <span class="tool-tag tool-shell">git init</span>
+                    <span class="tool-tag tool-shell">git commit</span>
+                </div>
+                <div class="callout">
+                    <div class="callout-title">🎨 What Was Generated</div>
+                    <ul>
+                        <li>Complete CSS design system (20+ CSS custom properties, dark theme)</li>
+                        <li>12 ecosystem cards with unique icons, colors, and feature tags</li>
+                        <li>14 configuration cards with file paths, descriptions, and scope indicators</li>
+                        <li>"When to use what?" decision table</li>
+                        <li>4 installation methods with copy-ready commands</li>
+                        <li>3 mode cards (Interactive, Plan, Autopilot)</li>
+                        <li>7-step flow diagram</li>
+                        <li>12 keyboard shortcuts, 19 slash commands, 14 CLI flags</li>
+                        <li>Programmatic usage examples with syntax highlighting</li>
+                        <li>Full repository config file structure (tree view)</li>
+                        <li>Sticky nav, smooth scroll, responsive layout, IntersectionObserver</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5: Deploy -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(57,210,192,0.15); color: var(--accent-cyan);">5</div>
+            <div class="step-header">
+                <h3 class="step-title">GitHub Repo + Pages</h3>
+                <span class="step-time">2 commands</span>
+            </div>
+            <div class="step-body">
+                <p>Copilot created the GitHub repo, pushed to it, enabled GitHub Pages, and created the deploy workflow — all from the CLI:</p>
+                <div class="tools-used">
+                    <span class="tool-tag tool-github">gh repo create htekdev/copilot-cli-reference</span>
+                    <span class="tool-tag tool-shell">git push</span>
+                    <span class="tool-tag tool-github">gh api (enable Pages)</span>
+                    <span class="tool-tag tool-create">create pages.yml workflow</span>
+                </div>
+                <div class="prompt prompt-agent">
+                    <span class="prompt-label">Copilot</span>
+                    ✓ Created repository htekdev/copilot-cli-reference on github.com<br>
+                    ✓ Pushed commits to https://github.com/htekdev/copilot-cli-reference.git<br>
+                    ✓ Site live at https://htekdev.github.io/copilot-cli-reference/
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6: Visual Bug Fix -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(248,81,73,0.15); color: var(--accent-red);">6</div>
+            <div class="step-header">
+                <h3 class="step-title">Screenshot → Fix</h3>
+                <span class="step-time">1 screenshot · 1-line fix</span>
+            </div>
+            <div class="step-body">
+                <p>The human sent a <strong>screenshot</strong> showing the repo structure tree rendering as a single horizontal line. Copilot analyzed the image, identified the missing <code>white-space: pre</code> CSS rule, and fixed it:</p>
+                <div class="prompt prompt-user">
+                    <span class="prompt-label">Human</span>
+                    📷 [screenshot] I don't like how this is formatted
+                </div>
+                <div class="prompt prompt-agent">
+                    <span class="prompt-label">Copilot</span>
+                    Added `white-space: pre` to `.code-block` CSS to fix the Repository Configuration Structure tree rendering as a single horizontal line.
+                </div>
+                <p>One screenshot. One CSS property. Fixed, committed, pushed, deployed.</p>
+            </div>
+        </div>
+
+        <!-- STEP 7: References Page -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">7</div>
+            <div class="step-header">
+                <h3 class="step-title">100+ Link References Page</h3>
+                <span class="step-time">1,229 lines · 72KB</span>
+            </div>
+            <div class="step-body">
+                <p>Next ask: "Create sub-pages for references... extremely verbose... links only from github.com or microsoft.com." Copilot researched additional docs, then generated a comprehensive reference page:</p>
+                <div class="output-grid">
+                    <div class="output-item">
+                        <div class="output-item-label">Categories</div>
+                        <div class="output-item-value" style="color: var(--accent-purple);">11</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-item-label">Links</div>
+                        <div class="output-item-value" style="color: var(--accent-blue);">100+</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-item-label">Sources</div>
+                        <div class="output-item-value" style="color: var(--accent-green);">github.com only</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-item-label">File Size</div>
+                        <div class="output-item-value" style="color: var(--accent-orange);">72 KB</div>
+                    </div>
+                </div>
+                <p>Each link card includes: title, detailed description, URL, and tags (Essential, New, Reference, Tutorial). Also sprinkled doc links throughout the home page.</p>
+            </div>
+        </div>
+
+        <!-- STEP 8: This Page -->
+        <div class="step">
+            <div class="step-dot" style="background: rgba(247,120,186,0.15); color: var(--accent-pink);">8</div>
+            <div class="step-header">
+                <h3 class="step-title">This Page (Meta!)</h3>
+                <span class="step-time">You are here</span>
+            </div>
+            <div class="step-body">
+                <p>The final ask: "Get a full summary of this session and make a page for how this was made." Copilot queried its own session history from the session store database, reconstructed the timeline, and generated this very page.</p>
+                <div class="tools-used">
+                    <span class="tool-tag tool-search">SQL: session_store queries</span>
+                    <span class="tool-tag tool-shell">git log</span>
+                    <span class="tool-tag tool-create">create how-it-was-made.html</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- KEY INSIGHTS -->
+    <h2 class="section-head">💡 Key Copilot CLI Features Demonstrated</h2>
+
+    <div class="insight">
+        <div class="insight-icon">🔬</div>
+        <div class="insight-title">Deep Research Before Code</div>
+        <p>Copilot fetched and analyzed 15+ official documentation pages before writing any code. It used <strong>parallel tool calls</strong> to fetch multiple docs simultaneously, then synthesized all findings into a structured plan. This ensured accuracy and completeness — the generated content reflects the actual state of the product.</p>
+    </div>
+
+    <div class="insight">
+        <div class="insight-icon">📋</div>
+        <div class="insight-title">Plan Mode for Complex Tasks</div>
+        <p>The session started in <strong>plan mode</strong> (<code>Shift+Tab</code>). Copilot created a structured plan with SQL-tracked todos and dependencies. The plan was reviewed before implementation began. This "plan before you code" pattern is a Copilot CLI best practice for complex, multi-step tasks.</p>
+    </div>
+
+    <div class="insight">
+        <div class="insight-icon">🖼️</div>
+        <div class="insight-title">Visual Feedback via Screenshots</div>
+        <p>When the human spotted a formatting issue, they simply <strong>sent a screenshot</strong>. Copilot analyzed the image, identified the CSS bug (<code>white-space: pre</code> missing), and fixed it in one edit. No need to describe the bug in words — the image was the prompt.</p>
+    </div>
+
+    <div class="insight">
+        <div class="insight-icon">🚀</div>
+        <div class="insight-title">End-to-End Delivery from Terminal</div>
+        <p>From repo creation to GitHub Pages deployment — everything happened in the terminal. <code>git init</code>, <code>gh repo create</code>, <code>git push</code>, GitHub Pages API, GitHub Actions workflow — all orchestrated by Copilot CLI without the human needing to open a browser or switch windows.</p>
+    </div>
+
+    <div class="insight">
+        <div class="insight-icon">🧠</div>
+        <div class="insight-title">Session Continuity</div>
+        <p>This entire site was built across multiple turns in a <strong>single CLI session</strong>. Each follow-up request ("make it a GitHub Page", "create sub pages", "make a how-it-was-made page") built on the prior context. Copilot's <strong>infinite sessions</strong> with automatic context management made this seamless.</p>
+    </div>
+
+    <hr>
+
+    <!-- FINAL TALLY -->
+    <h2 class="section-head">📊 Final Tally</h2>
+
+    <div class="tally">
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-blue);">3</div>
+            <div class="tally-label">HTML Pages Created</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-green);">~145 KB</div>
+            <div class="tally-label">Total Code Generated</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-purple);">100+</div>
+            <div class="tally-label">Curated Doc Links</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-orange);">15+</div>
+            <div class="tally-label">Docs Researched</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-red);">1</div>
+            <div class="tally-label">Bug Fixed (Screenshot)</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-cyan);">1</div>
+            <div class="tally-label">GitHub Repo Created</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--accent-pink);">1</div>
+            <div class="tally-label">GitHub Pages Deployed</div>
+        </div>
+        <div class="tally-item">
+            <div class="tally-num" style="color: var(--text);">0</div>
+            <div class="tally-label">Editors Opened</div>
+        </div>
+    </div>
+
+    <div class="insight" style="text-align: center; border-color: rgba(63,185,80,0.3); background: linear-gradient(135deg, rgba(63,185,80,0.06), rgba(57,210,192,0.06));">
+        <div class="insight-icon">🎯</div>
+        <div class="insight-title" style="color: var(--accent-green);">The Point</div>
+        <p>GitHub Copilot CLI isn't just for code edits and bug fixes. It's a <strong>full-stack development partner</strong> that can research, plan, design, build, deploy, and iterate — all from your terminal, in a single conversation.</p>
+    </div>
+
+</div>
+
+<footer>
+    <p><a href="index.html">Home</a> · <a href="references.html">References</a> · <a href="https://github.com/htekdev/copilot-cli-reference">GitHub Repo</a></p>
+    <p style="margin-top: 8px;">Built with GitHub Copilot CLI · March 2026</p>
+</footer>
+
+</body>
+</html>
