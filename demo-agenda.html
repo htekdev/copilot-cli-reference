@@ -18,43 +18,38 @@
             --accent-green: #3fb950;
             --accent-purple: #a371f7;
             --accent-orange: #d29922;
-            --accent-red: #f85149;
             --accent-pink: #f778ba;
             --accent-cyan: #39d2c0;
+            --accent-red: #f85149;
             --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
             --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
             --radius: 6px;
             --radius-lg: 12px;
         }
 
-        html { scroll-behavior: smooth; }
-
         body {
             font-family: var(--font);
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
-            font-size: 15px;
             -webkit-font-smoothing: antialiased;
         }
 
         a { color: var(--accent-blue); text-decoration: none; }
         a:hover { text-decoration: underline; }
 
-        /* NAV */
         nav {
             position: sticky;
             top: 0;
             z-index: 100;
             background: rgba(13, 17, 23, 0.85);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: 0 24px;
         }
 
         .nav-inner {
-            max-width: 800px;
+            max-width: 720px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -64,33 +59,19 @@
 
         .nav-back {
             color: var(--text-muted);
-            text-decoration: none;
             font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
             padding: 6px 10px;
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            white-space: nowrap;
+            text-decoration: none;
         }
 
         .nav-back:hover { color: var(--text); border-color: var(--text-subtle); text-decoration: none; }
-
         .nav-title { font-weight: 700; font-size: 15px; }
 
-        /* CONTENT */
-        .content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        .content { max-width: 720px; margin: 0 auto; padding: 0 24px; }
 
-        /* HERO */
-        .hero {
-            text-align: center;
-            padding: 72px 0 20px;
-        }
+        .hero { text-align: center; padding: 72px 0 24px; }
 
         .hero-eyebrow {
             font-size: 13px;
@@ -98,14 +79,14 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--accent-cyan);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .hero-title {
-            font-size: 44px;
+            font-size: 42px;
             font-weight: 800;
             letter-spacing: -1px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -113,204 +94,105 @@
         }
 
         .hero-sub {
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text-muted);
-            max-width: 550px;
-            margin: 0 auto 28px;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .hero-meta {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            flex-wrap: wrap;
-            font-size: 14px;
-            color: var(--text-subtle);
-        }
+        /* TIMELINE BAR */
+        .bar-wrap { margin: 40px 0 8px; }
 
-        /* PROGRESS BAR */
-        .progress-bar {
+        .bar {
             display: flex;
-            height: 8px;
-            border-radius: 4px;
+            height: 10px;
+            border-radius: 5px;
             overflow: hidden;
-            margin: 40px 0 8px;
             background: var(--border);
         }
 
-        .progress-seg { height: 100%; }
+        .bar-seg { height: 100%; }
 
-        .progress-legend {
+        .bar-labels {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 48px;
-            font-size: 12px;
+            margin-top: 6px;
+            font-size: 11px;
             color: var(--text-subtle);
+            font-family: var(--mono);
         }
 
-        .progress-legend span {
+        .bar-labels span { text-align: center; }
+
+        /* BLOCKS */
+        .blocks { margin-top: 48px; display: flex; flex-direction: column; gap: 24px; }
+
+        .block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            border-top: 3px solid;
+        }
+
+        .block-top {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 12px;
+            margin-bottom: 6px;
         }
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 40px 0;
-        }
-
-        /* PHASE */
-        .phase {
-            margin-bottom: 48px;
-        }
-
-        .phase-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .phase-badge {
+        .block-time {
             font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 12px;
-            white-space: nowrap;
-        }
-
-        .phase-title {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .phase-time {
-            font-size: 13px;
             font-family: var(--mono);
             color: var(--text-subtle);
             margin-left: auto;
         }
 
-        .phase-desc {
+        .block-icon { font-size: 22px; }
+        .block-title { font-size: 20px; font-weight: 700; }
+
+        .block-desc {
             font-size: 14px;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-top: 4px;
         }
 
-        /* ITEMS */
-        .items {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .item-icon {
-            font-size: 20px;
-            flex-shrink: 0;
-            width: 32px;
-            text-align: center;
-        }
-
-        .item-text {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .item-text small {
-            font-weight: 400;
-            color: var(--text-muted);
-            display: block;
-            margin-top: 2px;
-            font-size: 12px;
-        }
-
-        /* SCENARIO PILLS */
-        .scenarios {
+        .chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 14px;
         }
 
-        .scenario {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 10px 16px;
-            font-size: 13px;
+        .chip {
+            font-size: 12px;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-left: 3px solid;
+            padding: 4px 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--bg);
         }
 
-        .scenario small {
-            font-weight: 400;
-            color: var(--text-subtle);
-            font-size: 11px;
-        }
-
-        /* KEYNOTE */
-        .keynote {
-            background: linear-gradient(135deg, rgba(88,166,255,0.06), rgba(57,210,192,0.06));
-            border: 1px solid rgba(88,166,255,0.2);
-            border-radius: var(--radius-lg);
-            padding: 28px;
-            margin: 40px 0 0;
-            text-align: center;
-        }
-
-        .keynote-icon { font-size: 28px; margin-bottom: 8px; }
-
-        .keynote p {
-            font-size: 15px;
-            color: var(--text-muted);
-            max-width: 550px;
-            margin: 0 auto;
+        .audience-note {
+            margin-top: 14px;
+            font-size: 13px;
+            color: var(--accent-cyan);
             font-style: italic;
         }
 
-        /* FOOTER */
         footer {
             text-align: center;
             padding: 32px 24px;
             color: var(--text-subtle);
             font-size: 13px;
             border-top: 1px solid var(--border);
-            margin-top: 48px;
+            margin-top: 56px;
         }
 
         @media (max-width: 600px) {
             .hero-title { font-size: 28px; }
-            .phase-time { margin-left: 0; }
-            .scenarios { flex-direction: column; }
+            .block { padding: 20px; }
         }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -325,170 +207,73 @@
 <div class="content">
 
     <div class="hero">
-        <div class="hero-eyebrow">Live Demo</div>
-        <h1 class="hero-title">Copilot CLI — The Full Picture</h1>
-        <p class="hero-sub">A 60-minute live demo spanning 7 disciplines, parallel sessions, and real-time deployment — all from the terminal.</p>
-        <div class="hero-meta">
-            <span>⏱️ 60 min</span>
-            <span>🎯 4 phases</span>
-            <span>📂 7 scenarios</span>
-            <span>🔴 100% live</span>
+        <div class="hero-eyebrow">Live Demo · 60 Minutes</div>
+        <h1 class="hero-title">GitHub Copilot CLI</h1>
+        <p class="hero-sub">We're just going to start building things. All live, all from the terminal.</p>
+    </div>
+
+    <div class="bar-wrap">
+        <div class="bar">
+            <div class="bar-seg" style="width: 8.3%; background: var(--accent-blue);"></div>
+            <div class="bar-seg" style="width: 41.7%; background: var(--accent-purple);"></div>
+            <div class="bar-seg" style="width: 41.7%; background: var(--accent-green);"></div>
+            <div class="bar-seg" style="width: 8.3%; background: var(--accent-orange);"></div>
+        </div>
+        <div class="bar-labels">
+            <span style="width: 8.3%;">5m</span>
+            <span style="width: 41.7%;">25m</span>
+            <span style="width: 41.7%;">25m</span>
+            <span style="width: 8.3%;">5m</span>
         </div>
     </div>
 
-    <!-- PROGRESS BAR -->
-    <div class="progress-bar">
-        <div class="progress-seg" style="width: 8.3%; background: var(--accent-blue);"></div>
-        <div class="progress-seg" style="width: 41.7%; background: var(--accent-purple);"></div>
-        <div class="progress-seg" style="width: 25%; background: var(--accent-green);"></div>
-        <div class="progress-seg" style="width: 25%; background: var(--accent-orange);"></div>
-    </div>
-    <div class="progress-legend">
-        <span><span class="dot" style="background: var(--accent-blue);"></span> Intro — 5 min</span>
-        <span><span class="dot" style="background: var(--accent-purple);"></span> Plan — 25 min</span>
-        <span><span class="dot" style="background: var(--accent-green);"></span> Execute — 15 min</span>
-        <span><span class="dot" style="background: var(--accent-orange);"></span> Finale — 15 min</span>
-    </div>
+    <div class="blocks">
 
-    <!-- PHASE 1 -->
-    <div class="phase">
-        <div class="phase-header">
-            <span class="phase-badge" style="background: rgba(88,166,255,0.15); color: var(--accent-blue);">Phase 1</span>
-            <h2 class="phase-title">Introduction</h2>
-            <span class="phase-time">0:00 → 5:00</span>
+        <div class="block" style="border-top-color: var(--accent-blue);">
+            <div class="block-top">
+                <span class="block-icon">📘</span>
+                <h2 class="block-title">Intro to Copilot CLI</h2>
+                <span class="block-time">0:00 – 5:00</span>
+            </div>
+            <p class="block-desc">What it is, where it fits, how to install it, and the three modes — Interactive, Plan, and Autopilot.</p>
         </div>
-        <p class="phase-desc">Quick overview of what GitHub Copilot is, where it lives, and how to get started.</p>
-        <div class="items">
-            <div class="item">
-                <span class="item-icon">🌐</span>
-                <span class="item-text">What is GitHub Copilot — the big picture</span>
+
+        <div class="block" style="border-top-color: var(--accent-purple);">
+            <div class="block-top">
+                <span class="block-icon">🚀</span>
+                <h2 class="block-title">Build, Build, Build</h2>
+                <span class="block-time">5:00 – 30:00</span>
             </div>
-            <div class="item">
-                <span class="item-icon">🧩</span>
-                <span class="item-text">The Copilot ecosystem — every surface it appears in</span>
+            <p class="block-desc">Start firing off sessions across different disciplines — planning, executing, and letting them run. As many as we can in 25 minutes.</p>
+            <div class="chips">
+                <span class="chip">🩺 Full-Stack Web App</span>
+                <span class="chip">📋 Requirements + ADO Work Items</span>
+                <span class="chip">📧 WorkIQ MCP — Email Research</span>
+                <span class="chip">🏗️ Terraform IaC + Azure Deploy</span>
+                <span class="chip">📄 GitHub Pages + Agentic Workflows</span>
+                <span class="chip">🧠 Copilot SDK / Agentic Workflows</span>
             </div>
-            <div class="item">
-                <span class="item-icon">⚙️</span>
-                <span class="item-text">Install & first run</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">💡</span>
-                <span class="item-text">Modes: Interactive, Plan, and Autopilot</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">📚</span>
-                <span class="item-text">Share this reference site with attendees</span>
-            </div>
+            <p class="audience-note">💬 Bring your own ideas — drop them in chat and we'll build those too.</p>
         </div>
-    </div>
 
-    <hr>
-
-    <!-- PHASE 2 -->
-    <div class="phase">
-        <div class="phase-header">
-            <span class="phase-badge" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">Phase 2</span>
-            <h2 class="phase-title">Plan Mode — 7 Scenarios</h2>
-            <span class="phase-time">5:00 → 30:00</span>
+        <div class="block" style="border-top-color: var(--accent-green);">
+            <div class="block-top">
+                <span class="block-icon">🔬</span>
+                <h2 class="block-title">Review & Deep Dive</h2>
+                <span class="block-time">30:00 – 55:00</span>
+            </div>
+            <p class="block-desc">Walk through what Copilot built — test the outputs, explore sessions, switch between them, and dig into key commands and workflows.</p>
         </div>
-        <p class="phase-desc">Use Plan Mode to create implementation plans for 7 wildly different scenarios. No code yet — just research, reason, and plan.</p>
 
-        <div class="scenarios">
-            <div class="scenario" style="border-left-color: var(--accent-blue);">
-                🎨 UI / UX <small>Responsive Dashboard</small>
+        <div class="block" style="border-top-color: var(--accent-orange);">
+            <div class="block-top">
+                <span class="block-icon">❓</span>
+                <h2 class="block-title">Q&A</h2>
+                <span class="block-time">55:00 – 60:00</span>
             </div>
-            <div class="scenario" style="border-left-color: var(--accent-green);">
-                📊 Data Engineering <small>ETL Pipeline</small>
-            </div>
-            <div class="scenario" style="border-left-color: var(--accent-purple);">
-                📋 Project Management <small>Issue Triage Automation</small>
-            </div>
-            <div class="scenario" style="border-left-color: var(--accent-orange);">
-                🏗️ Infrastructure <small>IaC Deployment</small>
-            </div>
-            <div class="scenario" style="border-left-color: var(--accent-cyan);">
-                🚀 Greenfield <small>Full-Stack App from Scratch</small>
-            </div>
-            <div class="scenario" style="border-left-color: var(--accent-red);">
-                🔍 Brownfield <small>Legacy Modernization Analysis</small>
-            </div>
-            <div class="scenario" style="border-left-color: var(--accent-pink);">
-                🔌 Extensibility <small>Plugin + Agent + Skill + Hooks</small>
-            </div>
+            <p class="block-desc">Open floor — questions, discussion, next steps.</p>
         </div>
-    </div>
 
-    <hr>
-
-    <!-- PHASE 3 -->
-    <div class="phase">
-        <div class="phase-header">
-            <span class="phase-badge" style="background: rgba(63,185,80,0.15); color: var(--accent-green);">Phase 3</span>
-            <h2 class="phase-title">Execute — Parallel Sessions</h2>
-            <span class="phase-time">30:00 → 45:00</span>
-        </div>
-        <p class="phase-desc">Start all 7 plans running simultaneously. While they build autonomously, walk through key features live.</p>
-        <div class="items">
-            <div class="item">
-                <span class="item-icon">🚦</span>
-                <span class="item-text">Launch all sessions in autopilot</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">⌨️</span>
-                <span class="item-text">Commands, shortcuts, and key workflows</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">🔀</span>
-                <span class="item-text">Session switching — jump between active sessions</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">⚡</span>
-                <span class="item-text">Fleet mode vs standard sessions</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">🔎</span>
-                <span class="item-text">Check progress across sessions</span>
-            </div>
-        </div>
-    </div>
-
-    <hr>
-
-    <!-- PHASE 4 -->
-    <div class="phase">
-        <div class="phase-header">
-            <span class="phase-badge" style="background: rgba(210,153,34,0.15); color: var(--accent-orange);">Phase 4</span>
-            <h2 class="phase-title">Grand Finale</h2>
-            <span class="phase-time">45:00 → 60:00</span>
-        </div>
-        <p class="phase-desc">The showstopper — Copilot evaluates its own work, publishes results live, and attendees see the page appear in real-time.</p>
-        <div class="items">
-            <div class="item">
-                <span class="item-icon">🧠</span>
-                <span class="item-text">Run a session that evaluates all 7 completed sessions</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">📄</span>
-                <span class="item-text">Auto-generate a results page on this live site</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">🧪</span>
-                <span class="item-text">Test 1–2 generated projects live</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">🔴</span>
-                <span class="item-text">Attendees refresh and see the update go live</span>
-            </div>
-            <div class="item">
-                <span class="item-icon">❓</span>
-                <span class="item-text">Q&A</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="keynote">
-        <div class="keynote-icon">🎤</div>
-        <p>"Everything you just saw — 7 projects across 7 disciplines, planned, built, and deployed — was done by one person, in one terminal, having a conversation."</p>
     </div>
 
 </div>
