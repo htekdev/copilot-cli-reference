@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Agenda — GitHub Copilot CLI Live Demo</title>
+    <title>Demo Agenda — GitHub Copilot CLI</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
             --bg: #0d1117;
             --bg-card: #161b22;
-            --bg-inset: #0d1117;
             --border: #30363d;
-            --border-light: #21262d;
             --text: #e6edf3;
             --text-muted: #8b949e;
             --text-subtle: #6e7681;
@@ -56,7 +54,7 @@
         }
 
         .nav-inner {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -79,34 +77,11 @@
 
         .nav-back:hover { color: var(--text); border-color: var(--text-subtle); text-decoration: none; }
 
-        .nav-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: var(--text);
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 4px;
-            margin-left: auto;
-        }
-
-        .nav-links a {
-            font-size: 12px;
-            padding: 5px 10px;
-            border-radius: var(--radius);
-            color: var(--text-muted);
-            text-decoration: none;
-            white-space: nowrap;
-            transition: all 0.15s;
-        }
-
-        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); text-decoration: none; }
+        .nav-title { font-weight: 700; font-size: 15px; }
 
         /* CONTENT */
         .content {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -114,7 +89,7 @@
         /* HERO */
         .hero {
             text-align: center;
-            padding: 64px 0 40px;
+            padding: 72px 0 20px;
         }
 
         .hero-eyebrow {
@@ -138,10 +113,10 @@
         }
 
         .hero-sub {
-            font-size: 18px;
+            font-size: 17px;
             color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 24px;
+            max-width: 550px;
+            margin: 0 auto 28px;
         }
 
         .hero-meta {
@@ -151,12 +126,6 @@
             flex-wrap: wrap;
             font-size: 14px;
             color: var(--text-subtle);
-        }
-
-        .hero-meta span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         /* PROGRESS BAR */
@@ -169,10 +138,7 @@
             background: var(--border);
         }
 
-        .progress-seg {
-            height: 100%;
-            transition: width 0.3s;
-        }
+        .progress-seg { height: 100%; }
 
         .progress-legend {
             display: flex;
@@ -190,7 +156,7 @@
             gap: 6px;
         }
 
-        .progress-legend .dot {
+        .dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
@@ -200,19 +166,19 @@
         hr {
             border: none;
             border-top: 1px solid var(--border);
-            margin: 48px 0;
+            margin: 40px 0;
         }
 
-        /* PHASE BLOCK */
+        /* PHASE */
         .phase {
-            margin-bottom: 56px;
+            margin-bottom: 48px;
         }
 
         .phase-header {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
         }
 
@@ -225,7 +191,7 @@
         }
 
         .phase-title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
         }
 
@@ -239,258 +205,92 @@
         .phase-desc {
             font-size: 14px;
             color: var(--text-muted);
-            margin-bottom: 20px;
-            max-width: 750px;
+            margin-bottom: 16px;
         }
 
-        /* AGENDA ITEMS */
-        .agenda-items {
+        /* ITEMS */
+        .items {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
-        .agenda-item {
+        .item {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 18px 22px;
-            display: grid;
-            grid-template-columns: 40px 1fr auto;
-            align-items: start;
-            gap: 16px;
-        }
-
-        .agenda-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            border-radius: var(--radius);
+            padding: 14px 18px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 14px;
+        }
+
+        .item-icon {
             font-size: 20px;
             flex-shrink: 0;
+            width: 32px;
+            text-align: center;
         }
 
-        .agenda-content h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .agenda-content p {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .agenda-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .tag {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
+        .item-text {
+            font-size: 14px;
             font-weight: 500;
-            white-space: nowrap;
         }
 
-        .tag-mode { background: rgba(88,166,255,0.12); color: var(--accent-blue); }
-        .tag-feature { background: rgba(63,185,80,0.12); color: var(--accent-green); }
-        .tag-live { background: rgba(248,81,73,0.12); color: var(--accent-red); }
-        .tag-talk { background: rgba(163,113,247,0.12); color: var(--accent-purple); }
-        .tag-wow { background: rgba(247,120,186,0.12); color: var(--accent-pink); }
-
-        .agenda-dur {
-            font-size: 12px;
-            font-family: var(--mono);
-            color: var(--text-subtle);
-            white-space: nowrap;
-            padding-top: 2px;
-        }
-
-        /* SCENARIO GRID */
-        .scenario-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .scenario-card {
-            background: var(--bg-inset);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px 18px;
-            border-left: 3px solid;
-        }
-
-        .scenario-card h5 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .scenario-card p {
-            font-size: 12px;
+        .item-text small {
+            font-weight: 400;
             color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .scenario-discipline {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        /* CALLOUT */
-        .callout {
-            border-radius: var(--radius-lg);
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-
-        .callout-title {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .callout p, .callout li {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .callout ul {
-            padding-left: 18px;
-            margin-top: 6px;
-        }
-
-        .callout li { margin-bottom: 4px; }
-
-        .callout code {
-            font-family: var(--mono);
+            display: block;
+            margin-top: 2px;
             font-size: 12px;
-            background: rgba(88,166,255,0.08);
-            color: var(--accent-blue);
-            padding: 1px 6px;
-            border-radius: 4px;
         }
 
-        /* FLOW VISUAL */
-        .flow-visual {
+        /* SCENARIO PILLS */
+        .scenarios {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
             flex-wrap: wrap;
-            margin: 24px 0;
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        .flow-node {
+        .scenario {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 10px 16px;
-            text-align: center;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 3px solid;
         }
 
-        .flow-arrow {
-            font-size: 18px;
+        .scenario small {
+            font-weight: 400;
             color: var(--text-subtle);
-            padding: 0 6px;
+            font-size: 11px;
         }
 
-        /* KEYNOTE MOMENT */
+        /* KEYNOTE */
         .keynote {
             background: linear-gradient(135deg, rgba(88,166,255,0.06), rgba(57,210,192,0.06));
             border: 1px solid rgba(88,166,255,0.2);
             border-radius: var(--radius-lg);
-            padding: 24px 28px;
-            margin: 24px 0;
+            padding: 28px;
+            margin: 40px 0 0;
             text-align: center;
         }
 
         .keynote-icon { font-size: 28px; margin-bottom: 8px; }
 
-        .keynote-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
         .keynote p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-muted);
-            max-width: 600px;
+            max-width: 550px;
             margin: 0 auto;
+            font-style: italic;
         }
-
-        /* PRESENTER NOTES */
-        .presenter-notes {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 20px 24px;
-            margin: 24px 0;
-        }
-
-        .presenter-notes summary {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .presenter-notes summary:hover { color: var(--text); }
-
-        .presenter-notes .notes-body {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-        }
-
-        .presenter-notes ul {
-            padding-left: 18px;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .presenter-notes li { margin-bottom: 4px; }
-
-        .presenter-notes code {
-            font-family: var(--mono);
-            font-size: 12px;
-            background: rgba(88,166,255,0.08);
-            color: var(--accent-blue);
-            padding: 1px 6px;
-            border-radius: 4px;
-        }
-
-        /* COMMAND BLOCK */
-        .cmd-block {
-            background: var(--bg-inset);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px 16px;
-            font-family: var(--mono);
-            font-size: 13px;
-            margin: 10px 0;
-            white-space: pre;
-            overflow-x: auto;
-            color: var(--text-muted);
-        }
-
-        .cmd-block .cmd-prompt { color: var(--accent-green); }
-        .cmd-block .cmd-flag { color: var(--accent-orange); }
-        .cmd-block .cmd-comment { color: var(--text-subtle); font-style: italic; }
 
         /* FOOTER */
         footer {
@@ -502,18 +302,10 @@
             margin-top: 48px;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 700px) {
+        @media (max-width: 600px) {
             .hero-title { font-size: 28px; }
-            .hero-meta { gap: 16px; font-size: 12px; }
-            .phase-title { font-size: 20px; }
             .phase-time { margin-left: 0; }
-            .agenda-item { grid-template-columns: 36px 1fr; }
-            .agenda-dur { display: none; }
-            .scenario-grid { grid-template-columns: 1fr; }
-            .flow-visual { flex-direction: column; }
-            .flow-arrow { transform: rotate(90deg); }
-            .nav-links { display: none; }
+            .scenarios { flex-direction: column; }
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -527,24 +319,17 @@
     <div class="nav-inner">
         <a href="index.html" class="nav-back">← Home</a>
         <span class="nav-title">Demo Agenda</span>
-        <ul class="nav-links">
-            <li><a href="#phase-1">Intro</a></li>
-            <li><a href="#phase-2">Plan</a></li>
-            <li><a href="#phase-3">Execute</a></li>
-            <li><a href="#phase-4">Finale</a></li>
-        </ul>
     </div>
 </nav>
 
 <div class="content">
 
-    <!-- HERO -->
     <div class="hero">
-        <div class="hero-eyebrow">Live Demo Playbook</div>
+        <div class="hero-eyebrow">Live Demo</div>
         <h1 class="hero-title">Copilot CLI — The Full Picture</h1>
-        <p class="hero-sub">A 60-minute live demonstration spanning 7+ disciplines, multiple parallel sessions, and real-time site updates — all from the terminal.</p>
+        <p class="hero-sub">A 60-minute live demo spanning 7 disciplines, parallel sessions, and real-time deployment — all from the terminal.</p>
         <div class="hero-meta">
-            <span>⏱️ 60 minutes</span>
+            <span>⏱️ 60 min</span>
             <span>🎯 4 phases</span>
             <span>📂 7 scenarios</span>
             <span>🔴 100% live</span>
@@ -553,10 +338,10 @@
 
     <!-- PROGRESS BAR -->
     <div class="progress-bar">
-        <div class="progress-seg" style="width: 8.3%; background: var(--accent-blue);" title="Intro (5 min)"></div>
-        <div class="progress-seg" style="width: 41.7%; background: var(--accent-purple);" title="Plan (25 min)"></div>
-        <div class="progress-seg" style="width: 25%; background: var(--accent-green);" title="Execute (15 min)"></div>
-        <div class="progress-seg" style="width: 25%; background: var(--accent-orange);" title="Finale (15 min)"></div>
+        <div class="progress-seg" style="width: 8.3%; background: var(--accent-blue);"></div>
+        <div class="progress-seg" style="width: 41.7%; background: var(--accent-purple);"></div>
+        <div class="progress-seg" style="width: 25%; background: var(--accent-green);"></div>
+        <div class="progress-seg" style="width: 25%; background: var(--accent-orange);"></div>
     </div>
     <div class="progress-legend">
         <span><span class="dot" style="background: var(--accent-blue);"></span> Intro — 5 min</span>
@@ -565,486 +350,145 @@
         <span><span class="dot" style="background: var(--accent-orange);"></span> Finale — 15 min</span>
     </div>
 
-    <!-- ═══════════ PHASE 1: INTRO ═══════════ -->
-    <div class="phase" id="phase-1">
+    <!-- PHASE 1 -->
+    <div class="phase">
         <div class="phase-header">
             <span class="phase-badge" style="background: rgba(88,166,255,0.15); color: var(--accent-blue);">Phase 1</span>
-            <h2 class="phase-title">Introduction & Setup</h2>
+            <h2 class="phase-title">Introduction</h2>
             <span class="phase-time">0:00 → 5:00</span>
         </div>
-        <p class="phase-desc">Set the stage — what is GitHub Copilot, where does it live, and how to get started. Share this reference site so attendees can follow along.</p>
-
-        <div class="agenda-items">
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(88,166,255,0.12);">🌐</div>
-                <div class="agenda-content">
-                    <h4>What is GitHub Copilot?</h4>
-                    <p>High-level overview: AI pair programmer that lives across your entire dev workflow — IDE, CLI, GitHub.com, mobile. Not just autocomplete anymore.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-talk">Talk</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~1 min</span>
+        <p class="phase-desc">Quick overview of what GitHub Copilot is, where it lives, and how to get started.</p>
+        <div class="items">
+            <div class="item">
+                <span class="item-icon">🌐</span>
+                <span class="item-text">What is GitHub Copilot — the big picture</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(163,113,247,0.12);">🧩</div>
-                <div class="agenda-content">
-                    <h4>The Copilot Ecosystem</h4>
-                    <p>Quick walk through the <a href="index.html#ecosystem">Ecosystem section</a> of the reference site. Show the 12 surfaces where Copilot appears — CLI, Coding Agent, VS Code, JetBrains, Visual Studio, Eclipse, Xcode, Neovim, GitHub.com, Mobile, Extensions, ACP.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-talk">Talk</span>
-                        <span class="tag tag-feature">Reference Site</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~1 min</span>
+            <div class="item">
+                <span class="item-icon">🧩</span>
+                <span class="item-text">The Copilot ecosystem — every surface it appears in</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(63,185,80,0.12);">⚙️</div>
-                <div class="agenda-content">
-                    <h4>Install & First Run</h4>
-                    <p>Show how to install the CLI extension and run it for the first time. Highlight that it works in any terminal — PowerShell, Bash, Zsh, CMD.</p>
-                    <div class="cmd-block"><span class="cmd-prompt">$</span> gh extension install github/copilot-cli
-<span class="cmd-prompt">$</span> gh copilot <span class="cmd-flag">--version</span>
-<span class="cmd-prompt">$</span> ghcs <span class="cmd-comment"># start interactive session</span></div>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-feature">Quick Start</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~1 min</span>
+            <div class="item">
+                <span class="item-icon">⚙️</span>
+                <span class="item-text">Install & first run</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(57,210,192,0.12);">📚</div>
-                <div class="agenda-content">
-                    <h4>Share the Reference Site</h4>
-                    <p>Drop the link to <a href="https://htekdev.github.io/copilot-cli-reference/">htekdev.github.io/copilot-cli-reference</a> in chat. Let attendees explore the <a href="index.html#configuration">configuration</a> and <a href="references.html">references</a> pages at their own pace during the demo.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-talk">Share Link</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~1 min</span>
+            <div class="item">
+                <span class="item-icon">💡</span>
+                <span class="item-text">Modes: Interactive, Plan, and Autopilot</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(210,153,34,0.12);">💡</div>
-                <div class="agenda-content">
-                    <h4>Modes & Controls Primer</h4>
-                    <p>Quick primer on the three modes — <strong>Interactive</strong> (ask → approve), <strong>Plan</strong> (Shift+Tab, research first), <strong>Autopilot</strong> (<code>/autopilot</code>, fully autonomous). Explain we'll start in Plan mode.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-mode">Interactive</span>
-                        <span class="tag tag-mode">Plan</span>
-                        <span class="tag tag-mode">Autopilot</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~1 min</span>
+            <div class="item">
+                <span class="item-icon">📚</span>
+                <span class="item-text">Share this reference site with attendees</span>
             </div>
         </div>
-
-        <details class="presenter-notes">
-            <summary>📝 Presenter Notes</summary>
-            <div class="notes-body">
-                <ul>
-                    <li>Keep this section tight — the audience is here for the live demo, not a slide deck</li>
-                    <li>Make sure the reference site is loaded in a browser tab before starting</li>
-                    <li>Pre-authenticate: run <code>gh auth status</code> to confirm you're logged in</li>
-                    <li>Have terminal font size increased for screen sharing (16pt+)</li>
-                    <li>Mention that this very reference site was built entirely by Copilot CLI — link to the <a href="how-it-was-made.html">How It Was Made</a> page</li>
-                </ul>
-            </div>
-        </details>
     </div>
 
     <hr>
 
-    <!-- ═══════════ PHASE 2: PLAN ═══════════ -->
-    <div class="phase" id="phase-2">
+    <!-- PHASE 2 -->
+    <div class="phase">
         <div class="phase-header">
             <span class="phase-badge" style="background: rgba(163,113,247,0.15); color: var(--accent-purple);">Phase 2</span>
             <h2 class="phase-title">Plan Mode — 7 Scenarios</h2>
             <span class="phase-time">5:00 → 30:00</span>
         </div>
-        <p class="phase-desc">Use <strong>Plan Mode</strong> (<code>Shift+Tab</code>) to create detailed implementation plans for 7 wildly different scenarios. Each one demonstrates Copilot CLI's ability to research, reason, and plan across any discipline. We don't execute yet — just plan.</p>
+        <p class="phase-desc">Use Plan Mode to create implementation plans for 7 wildly different scenarios. No code yet — just research, reason, and plan.</p>
 
-        <div class="callout" style="background: rgba(163,113,247,0.06); border: 1px solid rgba(163,113,247,0.2);">
-            <div class="callout-title" style="color: var(--accent-purple);">🎯 Why Plan First?</div>
-            <p>This mirrors real-world best practice: understand the problem before writing code. Plan mode forces Copilot to research, ask questions, and create a structured plan with trackable todos — before a single file is touched. This is <strong>the</strong> workflow for complex tasks.</p>
+        <div class="scenarios">
+            <div class="scenario" style="border-left-color: var(--accent-blue);">
+                🎨 UI / UX <small>Responsive Dashboard</small>
+            </div>
+            <div class="scenario" style="border-left-color: var(--accent-green);">
+                📊 Data Engineering <small>ETL Pipeline</small>
+            </div>
+            <div class="scenario" style="border-left-color: var(--accent-purple);">
+                📋 Project Management <small>Issue Triage Automation</small>
+            </div>
+            <div class="scenario" style="border-left-color: var(--accent-orange);">
+                🏗️ Infrastructure <small>IaC Deployment</small>
+            </div>
+            <div class="scenario" style="border-left-color: var(--accent-cyan);">
+                🚀 Greenfield <small>Full-Stack App from Scratch</small>
+            </div>
+            <div class="scenario" style="border-left-color: var(--accent-red);">
+                🔍 Brownfield <small>Legacy Modernization Analysis</small>
+            </div>
+            <div class="scenario" style="border-left-color: var(--accent-pink);">
+                🔌 Extensibility <small>Plugin + Agent + Skill + Hooks</small>
+            </div>
         </div>
-
-        <div class="scenario-grid">
-
-            <div class="scenario-card" style="border-left-color: var(--accent-blue);">
-                <div class="scenario-discipline" style="color: var(--accent-blue);">UI / UX</div>
-                <h5>🎨 Responsive Dashboard</h5>
-                <p>Create a responsive analytics dashboard with dark/light mode, data visualization components, mobile-first layout, and accessibility compliance (WCAG AA).</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">React / HTML</span>
-                </div>
-            </div>
-
-            <div class="scenario-card" style="border-left-color: var(--accent-green);">
-                <div class="scenario-discipline" style="color: var(--accent-green);">Data Engineering</div>
-                <h5>📊 ETL Pipeline</h5>
-                <p>Design a data pipeline that ingests CSV/JSON data, transforms it with validation rules, and outputs clean datasets. Include schema validation, error handling, and summary reporting.</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">Python / SQL</span>
-                </div>
-            </div>
-
-            <div class="scenario-card" style="border-left-color: var(--accent-purple);">
-                <div class="scenario-discipline" style="color: var(--accent-purple);">Project Management</div>
-                <h5>📋 Issue Triage Bot</h5>
-                <p>Build a GitHub Actions workflow that auto-labels, prioritizes, and assigns incoming issues based on content analysis. Include templates, SLA tracking, and weekly digest generation.</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">Actions / YAML</span>
-                </div>
-            </div>
-
-            <div class="scenario-card" style="border-left-color: var(--accent-orange);">
-                <div class="scenario-discipline" style="color: var(--accent-orange);">Infrastructure</div>
-                <h5>🏗️ IaC Deployment</h5>
-                <p>Create infrastructure-as-code templates for a multi-tier web app: networking, compute, storage, monitoring, and CI/CD pipeline. Target Azure or AWS with best practices baked in.</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">Bicep / Terraform</span>
-                </div>
-            </div>
-
-            <div class="scenario-card" style="border-left-color: var(--accent-cyan);">
-                <div class="scenario-discipline" style="color: var(--accent-cyan);">Greenfield</div>
-                <h5>🚀 Full-Stack App from Scratch</h5>
-                <p>Spin up a complete app — API, database, auth, frontend, tests, docs, CI/CD — from a one-line description. Zero to deployed in one session. Show the power of starting from nothing.</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">Full Stack</span>
-                    <span class="tag tag-wow">Wow Factor</span>
-                </div>
-            </div>
-
-            <div class="scenario-card" style="border-left-color: var(--accent-red);">
-                <div class="scenario-discipline" style="color: var(--accent-red);">Brownfield / Modernization</div>
-                <h5>🔍 Legacy Codebase Analysis</h5>
-                <p>Point Copilot at an existing repo and ask it to analyze architecture, identify tech debt, suggest modernization paths, and create a prioritized migration plan. Research-heavy — no code changes.</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">Analysis</span>
-                </div>
-            </div>
-
-            <div class="scenario-card" style="border-left-color: var(--accent-pink);">
-                <div class="scenario-discipline" style="color: var(--accent-pink);">Extensibility</div>
-                <h5>🔌 Plugin + Agent + Skill + Hooks</h5>
-                <p>Create a Copilot CLI plugin that includes a custom agent, a skill (SKILL.md), agent hooks for governance, and MCP server integration. The "full extensibility stack" in one project.</p>
-                <div class="agenda-tags">
-                    <span class="tag tag-mode">Plan</span>
-                    <span class="tag tag-feature">Plugin SDK</span>
-                    <span class="tag tag-wow">Wow Factor</span>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="flow-visual">
-            <div class="flow-node" style="border-color: var(--accent-purple);">Shift+Tab<br><small style="color:var(--text-subtle)">Enter Plan Mode</small></div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-node">Paste Prompt</div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-node">Copilot Researches</div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-node">Plan Created</div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-node" style="border-color: var(--accent-green);">Review & Refine</div>
-        </div>
-
-        <details class="presenter-notes">
-            <summary>📝 Presenter Notes</summary>
-            <div class="notes-body">
-                <ul>
-                    <li>Keep each plan creation to ~3 minutes. Read the plan aloud, point out the SQL todos and dependencies</li>
-                    <li>Highlight how Copilot asks clarifying questions via <code>ask_user</code> — show the interactive Q&A</li>
-                    <li>For the <strong>brownfield</strong> scenario, use a well-known open-source repo to make findings relatable</li>
-                    <li>For the <strong>plugin</strong> scenario, reference the <a href="index.html#configuration">Configuration section</a> to show what each piece is</li>
-                    <li>Show <code>/sessions</code> to list the growing session stack as you create each plan</li>
-                    <li>Emphasize: zero code has been written yet — Copilot is planning, not coding</li>
-                    <li>If short on time, prioritize: Greenfield, Brownfield, and Plugin scenarios</li>
-                </ul>
-            </div>
-        </details>
     </div>
 
     <hr>
 
-    <!-- ═══════════ PHASE 3: EXECUTE ═══════════ -->
-    <div class="phase" id="phase-3">
+    <!-- PHASE 3 -->
+    <div class="phase">
         <div class="phase-header">
             <span class="phase-badge" style="background: rgba(63,185,80,0.15); color: var(--accent-green);">Phase 3</span>
             <h2 class="phase-title">Execute — Parallel Sessions</h2>
             <span class="phase-time">30:00 → 45:00</span>
         </div>
-        <p class="phase-desc">Start all 7 plans executing simultaneously. While they run autonomously, use the time to demo key features, switch between sessions, and show the real-time power of the CLI.</p>
-
-        <div class="agenda-items">
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(63,185,80,0.12);">🚦</div>
-                <div class="agenda-content">
-                    <h4>Launch All Sessions</h4>
-                    <p>Switch to each session and tell Copilot to execute the plan. Use <code>/autopilot</code> for full autonomy or just say "start implementing" and let it run. Seven sessions, all building in parallel.</p>
-                    <div class="cmd-block"><span class="cmd-comment"># Switch to each session and kick off execution</span>
-<span class="cmd-prompt">$</span> ghcs <span class="cmd-flag">--resume</span> session-id-1    <span class="cmd-comment"># UI Dashboard</span>
-<span class="cmd-prompt">&gt;</span> start implementing
-<span class="cmd-prompt">$</span> ghcs <span class="cmd-flag">--resume</span> session-id-2    <span class="cmd-comment"># ETL Pipeline</span>
-<span class="cmd-prompt">&gt;</span> /autopilot start implementing</div>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-mode">Autopilot</span>
-                        <span class="tag tag-wow">Wow Factor</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~3 min</span>
+        <p class="phase-desc">Start all 7 plans running simultaneously. While they build autonomously, walk through key features live.</p>
+        <div class="items">
+            <div class="item">
+                <span class="item-icon">🚦</span>
+                <span class="item-text">Launch all sessions in autopilot</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(88,166,255,0.12);">⌨️</div>
-                <div class="agenda-content">
-                    <h4>Commands & Shortcuts Deep Dive</h4>
-                    <p>While sessions run in the background, demo key commands the audience should know:</p>
-                    <div class="cmd-block"><span class="cmd-prompt">$</span> ghcs <span class="cmd-flag">--help</span>                 <span class="cmd-comment"># All commands</span>
-<span class="cmd-prompt">&gt;</span> /sessions                     <span class="cmd-comment"># List all active sessions</span>
-<span class="cmd-prompt">&gt;</span> /compact                      <span class="cmd-comment"># Compress context window</span>
-<span class="cmd-prompt">&gt;</span> /clear                        <span class="cmd-comment"># Start fresh in session</span>
-<span class="cmd-prompt">&gt;</span> Shift+Tab                     <span class="cmd-comment"># Toggle plan mode</span>
-<span class="cmd-prompt">&gt;</span> Ctrl+C                        <span class="cmd-comment"># Stop current action</span>
-<span class="cmd-prompt">&gt;</span> /model                        <span class="cmd-comment"># Switch models mid-session</span></div>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-feature">Commands</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~3 min</span>
+            <div class="item">
+                <span class="item-icon">⌨️</span>
+                <span class="item-text">Commands, shortcuts, and key workflows</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(163,113,247,0.12);">🔀</div>
-                <div class="agenda-content">
-                    <h4>Session Switching</h4>
-                    <p>Show how to jump between active sessions to check on progress. Each session maintains its own context, plan, and file state. Use <code>/sessions</code> to list and <code>--resume</code> to switch.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-feature">Sessions</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~3 min</span>
+            <div class="item">
+                <span class="item-icon">🔀</span>
+                <span class="item-text">Session switching — jump between active sessions</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(210,153,34,0.12);">⚡</div>
-                <div class="agenda-content">
-                    <h4>Fleet Mode vs Non-Fleet</h4>
-                    <p>Explain and show the difference between regular sessions and <strong>fleet mode</strong> — fleet workers run fully headless, don't require an open terminal, and can be orchestrated programmatically. Compare output speed, resource usage, and use cases.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-feature">Fleet</span>
-                        <span class="tag tag-feature">Architecture</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~3 min</span>
+            <div class="item">
+                <span class="item-icon">⚡</span>
+                <span class="item-text">Fleet mode vs standard sessions</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(57,210,192,0.12);">🔎</div>
-                <div class="agenda-content">
-                    <h4>Check Progress & Context</h4>
-                    <p>Pop into 2-3 sessions and see what they've built so far. Read plan.md checkboxes, look at generated files, show commit history. Point out how each session is independently researching and building without human intervention.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-feature">Autonomous</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~3 min</span>
+            <div class="item">
+                <span class="item-icon">🔎</span>
+                <span class="item-text">Check progress across sessions</span>
             </div>
         </div>
-
-        <div class="callout" style="background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.2);">
-            <div class="callout-title" style="color: var(--accent-green);">💡 Demo Tip</div>
-            <p>The most powerful visual here is <code>/sessions</code> showing 7 active sessions all working simultaneously. This is the "aha moment" — one developer, seven parallel workstreams, zero context switching overhead.</p>
-        </div>
-
-        <details class="presenter-notes">
-            <summary>📝 Presenter Notes</summary>
-            <div class="notes-body">
-                <ul>
-                    <li>Have a second terminal open to monitor file system changes in real time: <code>watch -n 2 'find . -name "*.ts" -newer /tmp/mark | head -20'</code></li>
-                    <li>If a session finishes early, great — show the completed output and commit history</li>
-                    <li>If a session gets stuck, that's also a teachable moment — show how to intervene, adjust, and retry</li>
-                    <li>For fleet mode, if you don't have fleet access, explain the concept and show the config flags</li>
-                    <li>Watch the clock — don't linger on any one session too long</li>
-                    <li>Build energy here: "While we were talking, Copilot has been coding across 7 projects simultaneously"</li>
-                </ul>
-            </div>
-        </details>
     </div>
 
     <hr>
 
-    <!-- ═══════════ PHASE 4: FINALE ═══════════ -->
-    <div class="phase" id="phase-4">
+    <!-- PHASE 4 -->
+    <div class="phase">
         <div class="phase-header">
             <span class="phase-badge" style="background: rgba(210,153,34,0.15); color: var(--accent-orange);">Phase 4</span>
-            <h2 class="phase-title">Grand Finale — Live Update</h2>
+            <h2 class="phase-title">Grand Finale</h2>
             <span class="phase-time">45:00 → 60:00</span>
         </div>
-        <p class="phase-desc">The showstopper. Create a new Copilot CLI session that <strong>evaluates all 7 completed sessions</strong>, generates a results page on this very reference site, pushes it live, and the audience watches the page appear in real-time.</p>
-
-        <div class="agenda-items">
-            <div class="agenda-item" style="border-color: var(--accent-orange);">
-                <div class="agenda-icon" style="background: rgba(210,153,34,0.12);">🧠</div>
-                <div class="agenda-content">
-                    <h4>Session Evaluation Agent</h4>
-                    <p>Start a new session. Ask Copilot to query its session store, analyze all 7 session outputs, and create a "Demo Results" page on the reference site. This is <strong>Copilot evaluating its own work</strong>.</p>
-                    <div class="cmd-block"><span class="cmd-prompt">$</span> ghcs
-<span class="cmd-prompt">&gt;</span> Query all sessions from today's demo. Summarize what each one
-  accomplished — files created, lines of code, tests passed, etc.
-  Create a new page on the copilot-cli-reference site called
-  demo-results.html that shows all results. Push it live.</div>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-wow">Wow Factor</span>
-                        <span class="tag tag-feature">Session Store</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~5 min</span>
+        <p class="phase-desc">The showstopper — Copilot evaluates its own work, publishes results live, and attendees see the page appear in real-time.</p>
+        <div class="items">
+            <div class="item">
+                <span class="item-icon">🧠</span>
+                <span class="item-text">Run a session that evaluates all 7 completed sessions</span>
             </div>
-
-            <div class="agenda-item" style="border-color: var(--accent-orange);">
-                <div class="agenda-icon" style="background: rgba(248,81,73,0.12);">🧪</div>
-                <div class="agenda-content">
-                    <h4>Test 1-2 Outputs Live</h4>
-                    <p>Pick the most impressive completed sessions (likely Greenfield or Dashboard) and run/test the output. Build it, start it, open in browser — prove the generated code actually works.</p>
-                    <div class="cmd-block"><span class="cmd-comment"># Example: test the greenfield app</span>
-<span class="cmd-prompt">$</span> cd greenfield-app
-<span class="cmd-prompt">$</span> npm install && npm run dev
-<span class="cmd-comment"># Open in browser and show running app</span></div>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-feature">Validation</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~5 min</span>
+            <div class="item">
+                <span class="item-icon">📄</span>
+                <span class="item-text">Auto-generate a results page on this live site</span>
             </div>
-
-            <div class="agenda-item" style="border-color: var(--accent-orange);">
-                <div class="agenda-icon" style="background: rgba(247,120,186,0.12);">🔴</div>
-                <div class="agenda-content">
-                    <h4>Live Site Update</h4>
-                    <p>The demo-results page gets pushed to GitHub, GitHub Pages deploys, and attendees <strong>refresh the live site to see the new page appear</strong>. Ask people on the call to click the link and verify it works.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-live">Live</span>
-                        <span class="tag tag-wow">Grand Finale</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~3 min</span>
+            <div class="item">
+                <span class="item-icon">🧪</span>
+                <span class="item-text">Test 1–2 generated projects live</span>
             </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(88,166,255,0.12);">❓</div>
-                <div class="agenda-content">
-                    <h4>Q&A</h4>
-                    <p>Open the floor. Common questions: pricing, security, supported languages, context limits, enterprise controls, private vs public repos, audit logs.</p>
-                    <div class="agenda-tags">
-                        <span class="tag tag-talk">Discussion</span>
-                    </div>
-                </div>
-                <span class="agenda-dur">~2 min</span>
+            <div class="item">
+                <span class="item-icon">🔴</span>
+                <span class="item-text">Attendees refresh and see the update go live</span>
+            </div>
+            <div class="item">
+                <span class="item-icon">❓</span>
+                <span class="item-text">Q&A</span>
             </div>
         </div>
-
-        <div class="keynote">
-            <div class="keynote-icon">🎤</div>
-            <div class="keynote-title" style="color: var(--accent-orange);">The Closing Line</div>
-            <p>"Everything you just saw — the reference site, the 7 projects, the evaluation, this results page — was built by one person, in one terminal, having a conversation. That's what GitHub Copilot CLI unlocks."</p>
-        </div>
-
-        <details class="presenter-notes">
-            <summary>📝 Presenter Notes</summary>
-            <div class="notes-body">
-                <ul>
-                    <li>The live site update is the emotional climax — practice the timing</li>
-                    <li>Have attendees pre-load the reference site so they can see the new page appear with a refresh</li>
-                    <li>If GitHub Pages deploy takes too long (>2 min), show the commit on GitHub.com as proof while waiting</li>
-                    <li>For Q&A, reference the <a href="references.html">References page</a> — "here are 100+ links for every question you might have"</li>
-                    <li>End by pointing to: <a href="how-it-was-made.html">How It Was Made</a> — the meta proof that this workflow works at scale</li>
-                    <li>Leave the audience with the site link and this agenda as a take-home guide</li>
-                </ul>
-            </div>
-        </details>
     </div>
 
-    <hr>
-
-    <!-- PRE-FLIGHT CHECKLIST -->
-    <div class="phase" id="preflight">
-        <div class="phase-header">
-            <span class="phase-badge" style="background: rgba(248,81,73,0.15); color: var(--accent-red);">Pre-Flight</span>
-            <h2 class="phase-title">Checklist</h2>
-        </div>
-        <p class="phase-desc">Run through this before going live.</p>
-
-        <div class="agenda-items">
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(63,185,80,0.12);">✅</div>
-                <div class="agenda-content">
-                    <h4>Environment Ready</h4>
-                    <div class="cmd-block"><span class="cmd-prompt">$</span> gh auth status                      <span class="cmd-comment"># Logged in?</span>
-<span class="cmd-prompt">$</span> gh copilot <span class="cmd-flag">--version</span>                  <span class="cmd-comment"># Latest version?</span>
-<span class="cmd-prompt">$</span> node <span class="cmd-flag">--version</span> && python <span class="cmd-flag">--version</span>   <span class="cmd-comment"># Runtimes available?</span>
-<span class="cmd-prompt">$</span> git <span class="cmd-flag">--version</span>                        <span class="cmd-comment"># Git works?</span></div>
-                </div>
-            </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(88,166,255,0.12);">🖥️</div>
-                <div class="agenda-content">
-                    <h4>Display Settings</h4>
-                    <ul style="font-size: 13px; color: var(--text-muted); padding-left: 18px; margin-top: 4px;">
-                        <li>Terminal font size: 16pt+ for screen share</li>
-                        <li>Browser tab: <a href="https://htekdev.github.io/copilot-cli-reference/">Reference site</a> loaded</li>
-                        <li>Browser tab: <a href="https://github.com/htekdev/copilot-cli-reference">GitHub repo</a> loaded</li>
-                        <li>Notifications silenced</li>
-                        <li>Clean desktop — terminal + browser only</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(163,113,247,0.12);">📁</div>
-                <div class="agenda-content">
-                    <h4>Working Directory</h4>
-                    <ul style="font-size: 13px; color: var(--text-muted); padding-left: 18px; margin-top: 4px;">
-                        <li>Create a clean demo directory: <code>mkdir ~/copilot-demo && cd ~/copilot-demo</code></li>
-                        <li>Pre-clone reference repo if needed: <code>gh repo clone htekdev/copilot-cli-reference</code></li>
-                        <li>Ensure plenty of disk space for 7 concurrent projects</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="agenda-item">
-                <div class="agenda-icon" style="background: rgba(210,153,34,0.12);">🔄</div>
-                <div class="agenda-content">
-                    <h4>Backup Plan</h4>
-                    <ul style="font-size: 13px; color: var(--text-muted); padding-left: 18px; margin-top: 4px;">
-                        <li>If a session hangs: <code>Ctrl+C</code> → retry or skip to next</li>
-                        <li>If auth fails: have a PAT ready as backup</li>
-                        <li>If time runs short: skip to Phase 4 — the finale is the most impactful moment</li>
-                        <li>If everything fails: the <a href="how-it-was-made.html">How It Was Made</a> page is pre-built proof it works</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="keynote">
+        <div class="keynote-icon">🎤</div>
+        <p>"Everything you just saw — 7 projects across 7 disciplines, planned, built, and deployed — was done by one person, in one terminal, having a conversation."</p>
     </div>
 
 </div>
