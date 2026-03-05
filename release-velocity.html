@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Releases — GitHub Copilot CLI vs The Field</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-card-hover: #1c2129;
+            --bg-inset: #0d1117;
+            --border: #30363d;
+            --border-light: #21262d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-subtle: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-pink: #f778ba;
+            --accent-cyan: #39d2c0;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            --radius: 6px;
+            --radius-lg: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 56px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-logo:hover { text-decoration: none; }
+        .nav-logo svg { flex-shrink: 0; }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.15s, background 0.15s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); text-decoration: none; }
+        .nav-links a.active { color: var(--text); background: rgba(255,255,255,0.08); }
+
+        .nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .nav-back:hover { color: var(--text); border-color: var(--text-subtle); text-decoration: none; }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 60px 24px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-cyan);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 16px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat { text-align: center; }
+
+        .hero-stat-num {
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: var(--text-subtle);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        /* CHART CONTAINERS */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .chart-card .chart-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            max-height: 420px;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-card .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .stat-card .stat-detail {
+            font-size: 11px;
+            color: var(--text-subtle);
+            margin-top: 4px;
+            font-family: var(--mono);
+        }
+
+        /* RELEASE TABLE */
+        .release-table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .release-table-controls {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .release-table-controls input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-family: var(--font);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .release-table-controls input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .release-table-controls .filter-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .release-table-controls .filter-btn:hover,
+        .release-table-controls .filter-btn.active {
+            color: var(--text);
+            border-color: var(--accent-blue);
+            background: rgba(88,166,255,0.1);
+        }
+
+        .release-table-scroll {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .release-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .release-table th {
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-subtle);
+            border-bottom: 1px solid var(--border);
+            z-index: 1;
+        }
+
+        .release-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
+        }
+
+        .release-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+
+        .release-table .version {
+            font-family: var(--mono);
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .release-table .date {
+            color: var(--text-muted);
+            font-family: var(--mono);
+            font-size: 13px;
+        }
+
+        .release-table .highlight-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 500px;
+        }
+
+        .release-table .highlight-text em {
+            color: var(--accent-orange);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-ga { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+        .badge-major { background: rgba(163,113,247,0.15); color: var(--accent-purple); }
+        .badge-model { background: rgba(210,153,34,0.15); color: var(--accent-orange); }
+        .badge-feature { background: rgba(88,166,255,0.15); color: var(--accent-blue); }
+
+        /* MILESTONE TIMELINE */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            background: var(--bg);
+        }
+
+        .timeline-item.milestone::before {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: var(--text-subtle);
+            font-family: var(--mono);
+            margin-bottom: 2px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .timeline-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-subtle);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 28px; }
+            .nav-links { display: none; }
+            .chart-card { padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <svg height="24" width="24" viewBox="0 0 16 16" fill="white"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+            Copilot CLI Reference
+        </a>
+        <a href="index.html" class="nav-back">← Home</a>
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#milestones">Milestones</a></li>
+            <li><a href="#releases">All Releases</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-eyebrow">Every Build, Every Feature</div>
+    <h1 class="hero-title">Copilot CLI Releases</h1>
+    <p class="hero-sub">Tracking every release of GitHub Copilot CLI — from first public build to GA and beyond — compared to leading agent harnesses.</p>
+
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">90</div>
+            <div class="hero-stat-label">Total Releases</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-num" style="color: var(--accent-green);">161</div>
+            <div class="hero-stat-label">Days Since First Release</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-num" style="color: var(--accent-purple);">1.8</div>
+            <div class="hero-stat-label">Days Between Releases</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-num" style="color: var(--accent-orange);">GA</div>
+            <div class="hero-stat-label">Feb 25, 2026</div>
+        </div>
+    </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- OVERVIEW CHARTS -->
+<section class="section" id="overview">
+    <h2 class="section-title">📈 Release Overview</h2>
+    <p class="section-sub">Cumulative releases over time and monthly cadence for GitHub Copilot CLI.</p>
+
+    <div class="chart-card">
+        <h3>Cumulative Releases Over Time</h3>
+        <p class="chart-desc">Every release of GitHub Copilot CLI since the first public build (Sep 26, 2025). The steeper the line, the faster the shipping cadence.</p>
+        <div class="chart-wrapper">
+            <canvas id="cumulativeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>Monthly Release Count</h3>
+        <p class="chart-desc">Number of releases published per calendar month. March 2026 is partial (through Mar 5).</p>
+        <div class="chart-wrapper">
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- MILESTONES -->
+<section class="section" id="milestones">
+    <h2 class="section-title">🏁 Key Milestones</h2>
+    <p class="section-sub">Major moments in Copilot CLI's journey from first build to general availability.</p>
+
+    <div class="timeline">
+        <div class="timeline-item milestone">
+            <div class="timeline-date">Sep 26, 2025</div>
+            <div class="timeline-title">v0.0.328 — First Public Release</div>
+            <div class="timeline-desc">Copilot CLI ships its first public build. Basic agent loop with shell tools, MCP support, and Sonnet 4 model.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Sep 29, 2025</div>
+            <div class="timeline-title">v0.0.329 — Sonnet 4.5 Support</div>
+            <div class="timeline-desc">Added Claude Sonnet 4.5 model support and the /model slash command.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Oct 2, 2025</div>
+            <div class="timeline-title">v0.0.333 — Image Support & Shell Commands</div>
+            <div class="timeline-desc">Added image input via @-mentions, ! shell command prefix, and /usage stats.</div>
+        </div>
+        <div class="timeline-item milestone">
+            <div class="timeline-date">Oct 15, 2025</div>
+            <div class="timeline-title">v0.0.342 — Session System Overhaul</div>
+            <div class="timeline-desc">New session logging format, Kitty protocol, multi-line input support.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Oct 21, 2025</div>
+            <div class="timeline-title">v0.0.348 — Streaming Output</div>
+            <div class="timeline-desc">Token-by-token streaming output arrives.</div>
+        </div>
+        <div class="timeline-item milestone">
+            <div class="timeline-date">Oct 24–28, 2025</div>
+            <div class="timeline-title">v0.0.351–353 — GitHub Universe Launch</div>
+            <div class="timeline-desc">Custom agents, /delegate command, parallel tool calling. Major showcase at GitHub Universe.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Nov 12, 2025</div>
+            <div class="timeline-title">v0.0.355 — Bundled ripgrep & grep/glob tools</div>
+            <div class="timeline-desc">CLI gains its own search tools and self-documentation with /help.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Nov 13, 2025</div>
+            <div class="timeline-title">v0.0.356 — GPT-5.1 Models</div>
+            <div class="timeline-desc">GPT-5.1, GPT-5.1-Codex, and GPT-5.1-Codex-Mini become available.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Nov 24, 2025</div>
+            <div class="timeline-title">v0.0.363 — Opus 4.5 & GPT-4.1</div>
+            <div class="timeline-desc">Multiple new models added in a single release.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Dec 11, 2025</div>
+            <div class="timeline-title">v0.0.369 — GPT-5.2 Support</div>
+            <div class="timeline-desc">Added support for the GPT-5.2 model.</div>
+        </div>
+        <div class="timeline-item milestone">
+            <div class="timeline-date">Jan 2, 2026</div>
+            <div class="timeline-title">v0.0.374 — Auto-compaction & Subagents</div>
+            <div class="timeline-desc">Auto-compaction at 95% token limit, built-in subagents for explore/task, web_fetch tool.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Jan 14, 2026</div>
+            <div class="timeline-title">v0.0.382 — GPT-5.2-Codex Model</div>
+            <div class="timeline-desc">GPT-5.2-Codex model support added.</div>
+        </div>
+        <div class="timeline-item milestone">
+            <div class="timeline-date">Jan 22, 2026</div>
+            <div class="timeline-title">v0.0.389 — MSI Installer, Plugins, OAuth MCP</div>
+            <div class="timeline-desc">Windows MSI installer, plugin marketplace, MCP OAuth 2.0, MIT License. Skills invocable via slash commands.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Jan 30, 2026</div>
+            <div class="timeline-title">v0.0.400 — Autopilot Mode & Theme Picker</div>
+            <div class="timeline-desc">Autopilot mode for autonomous task completion (experimental), /theme command, /diff and /review commands.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 5, 2026</div>
+            <div class="timeline-title">v0.0.404 — Opus 4.6 & Background Agents</div>
+            <div class="timeline-desc">Claude Opus 4.6 model support. Background agents enabled for all users.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 11, 2026</div>
+            <div class="timeline-title">v0.0.407 — Alt-Screen Mode</div>
+            <div class="timeline-desc">Experimental alternate screen buffer mode with mouse text selection, /instructions command.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 17, 2026</div>
+            <div class="timeline-title">v0.0.411 — Sonnet 4.6, Autopilot & Fleet for All</div>
+            <div class="timeline-desc">Claude Sonnet 4.6, autopilot mode, and /fleet command available to all users.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 19, 2026</div>
+            <div class="timeline-title">v0.0.412 — Cross-Session Memory</div>
+            <div class="timeline-desc">Ask about past work, files, and PRs across sessions. /fleet orchestrator validates subagent work.</div>
+        </div>
+        <div class="timeline-item milestone">
+            <div class="timeline-date">Feb 25, 2026</div>
+            <div class="timeline-title">v0.0.418 — 🎉 General Availability 🎉</div>
+            <div class="timeline-desc">Copilot CLI is now generally available! /research command for deep research with exportable reports.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Mar 3, 2026</div>
+            <div class="timeline-title">v0.0.421 — Repo-level Config & Markdown Tables</div>
+            <div class="timeline-desc">AUTO theme reads terminal ANSI palette, repo-level config via .github/copilot/config.json, clickable PR references.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Mar 5, 2026</div>
+            <div class="timeline-title">v0.0.422-1 — Latest Release</div>
+            <div class="timeline-desc">Personal hooks, copy_on_select, Ctrl+R history search, startup prompt hooks, background notifications.</div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ALL RELEASES TABLE -->
+<section class="section" id="releases">
+    <h2 class="section-title">📦 All Releases</h2>
+    <p class="section-sub">Every public release of GitHub Copilot CLI, sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a>.</p>
+
+    <div class="release-table-wrapper">
+        <div class="release-table-controls">
+            <input type="text" id="searchInput" placeholder="Search versions, dates, or features..." />
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="major">Major</button>
+            <button class="filter-btn" data-filter="model">Models</button>
+        </div>
+        <div class="release-table-scroll">
+            <table class="release-table" id="releaseTable">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Date</th>
+                        <th>Highlights</th>
+                        <th>Tag</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · Last updated: March 2026</p>
+</footer>
+
+<script>
+// ============================================================
+// RELEASE DATA — sourced from github/copilot-cli changelog.md
+// ============================================================
+const releases = [
+    { v: "0.0.422-1", d: "2026-03-05", h: "Personal hooks, copy_on_select, Ctrl+R history search, background notifications", t: "feature" },
+    { v: "0.0.421", d: "2026-03-03", h: "AUTO theme reads terminal palette, repo-level config, clickable PR references", t: "" },
+    { v: "0.0.420", d: "2026-02-27", h: "Auto-update also updates binary executable", t: "" },
+    { v: "0.0.419", d: "2026-02-27", h: "/chronicle command, page scrolling shortcuts, mouse config", t: "feature" },
+    { v: "0.0.418", d: "2026-02-25", h: "🎉 General Availability! /research command for deep research", t: "major" },
+    { v: "0.0.417", d: "2026-02-25", h: "/research command, plugin agents/skills improvements", t: "feature" },
+    { v: "0.0.416", d: "2026-02-24", h: "Expanded --help, MCP policy enforcement, undo confirmation", t: "" },
+    { v: "0.0.415", d: "2026-02-23", h: "Plan approval menu, env loading indicator, show_file tool", t: "feature" },
+    { v: "0.0.414", d: "2026-02-21", h: "Explore agent uses GitHub MCP tools, permission elevation dialog", t: "" },
+    { v: "0.0.413", d: "2026-02-20", h: "Copilot API URL fix, reasoning headings for GPT, LSP timeout increase", t: "" },
+    { v: "0.0.412", d: "2026-02-19", h: "Cross-session memory, /fleet validates subagent work, terminal editor on Windows", t: "major" },
+    { v: "0.0.411", d: "2026-02-17", h: "Claude Sonnet 4.6, autopilot & /fleet for all users, SDK APIs", t: "model" },
+    { v: "0.0.410", d: "2026-02-14", h: "Memory fixes, Ctrl+Z suspend/resume, Page Up/Down scrolling", t: "" },
+    { v: "0.0.409", d: "2026-02-12", h: "IDE integration with VS Code, /diff full screen, quick help overlay", t: "feature" },
+    { v: "0.0.408", d: "2026-02-12", h: "/streamer-mode, mouse text selection, substring command matching", t: "" },
+    { v: "0.0.407", d: "2026-02-11", h: "Alt-screen mode (experimental), /instructions command, /tasks", t: "feature" },
+    { v: "0.0.406", d: "2026-02-07", h: "Claude Opus 4.6 Fast preview, /changelog command, plugin marketplace URLs", t: "model" },
+    { v: "0.0.405", d: "2026-02-05", h: "/experimental help screen, SQL tool fixes, plugin LSP servers", t: "" },
+    { v: "0.0.404", d: "2026-02-05", h: "Claude Opus 4.6 model, background agents for all, /tasks command", t: "model" },
+    { v: "0.0.403", d: "2026-02-04", h: "Security check for modules, reasoning summaries by default", t: "" },
+    { v: "0.0.402", d: "2026-02-03", h: "ACP agent/plan modes, plugin hooks for session lifecycle", t: "" },
+    { v: "0.0.401", d: "2026-02-03", h: ".agents/skills directory, Claude-style .mcp.json support, copilot login", t: "feature" },
+    { v: "0.0.400", d: "2026-01-30", h: "Autopilot mode, theme picker, /review, fuzzy model search", t: "major" },
+    { v: "0.0.399", d: "2026-01-29", h: "/diff, /allow-all, /yolo, agent creation wizard, LSP tool", t: "feature" },
+    { v: "0.0.398", d: "2026-01-28", h: "Fix invalid session id regression", t: "" },
+    { v: "0.0.397", d: "2026-01-28", h: "/mcp show details, --acp flag, content paste to workspace files", t: "" },
+    { v: "0.0.396", d: "2026-01-27", h: "Custom agent wizard, /init, /plugin install, preToolUse hooks", t: "feature" },
+    { v: "0.0.395", d: "2026-01-26", h: "Plugin skills usable by agent, /diff commenting", t: "" },
+    { v: "0.0.394", d: "2026-01-24", h: "GHE Cloud support, /delegate, auto-update improvements", t: "" },
+    { v: "0.0.393", d: "2026-01-23", h: "Compaction timeline, GHE Cloud agents, Esc-Esc undo", t: "" },
+    { v: "0.0.392", d: "2026-01-22", h: "/plugin command, edit tool diffs in timeline", t: "feature" },
+    { v: "0.0.390", d: "2026-01-22", h: "Preserve extended thinking, plan mode steering", t: "" },
+    { v: "0.0.389", d: "2026-01-22", h: "MSI installer, MCP OAuth 2.0, plugin MCP servers, MIT License", t: "major" },
+    { v: "0.0.388", d: "2026-01-20", h: "/review command, redesigned header with mascot", t: "feature" },
+    { v: "0.0.387", d: "2026-01-20", h: "ask_user tool, plan mode with dedicated panel", t: "feature" },
+    { v: "0.0.386", d: "2026-01-19", h: "/resume command, background compaction fix", t: "" },
+    { v: "0.0.385", d: "2026-01-19", h: "Infinite sessions with auto-compaction checkpoints", t: "major" },
+    { v: "0.0.384", d: "2026-01-16", h: "& prefix for /delegate, reasoning effort config, memory injection", t: "feature" },
+    { v: "0.0.382", d: "2026-01-14", h: "GPT-5.2-Codex model support", t: "model" },
+    { v: "0.0.381", d: "2026-01-13", h: "--allow-all and --yolo flags, shell history prefix filtering", t: "" },
+    { v: "0.0.380", d: "2026-01-13", h: "Inline permission feedback, auto-compaction in background", t: "" },
+    { v: "0.0.377", d: "2026-01-08", h: "Improved large file handling with view_range", t: "" },
+    { v: "0.0.376", d: "2026-01-08", h: "Remote sessions, task tool image processing", t: "" },
+    { v: "0.0.375", d: "2026-01-07", h: "Ctrl+T reasoning toggle, --share flags, parallel tool fixes", t: "" },
+    { v: "0.0.374", d: "2026-01-02", h: "Auto-compaction, built-in subagents (explore/task), web_fetch tool", t: "major" },
+    { v: "0.0.373", d: "2025-12-30", h: "Tab completion for paths, Copilot Spaces tools", t: "" },
+    { v: "0.0.372", d: "2025-12-19", h: "Enable disabled models in CLI, /context command, --resume flag", t: "feature" },
+    { v: "0.0.371", d: "2025-12-18", h: "Terminal color fixes, skills help text update", t: "" },
+    { v: "0.0.370", d: "2025-12-18", h: "Git pager integration, platform executables, SHA256 checksums", t: "" },
+    { v: "0.0.369", d: "2025-12-11", h: "GPT-5.2 model support", t: "model" },
+    { v: "0.0.368", d: "2025-12-10", h: "PRU rates fix, grep tool for Codex models", t: "" },
+    { v: "0.0.367", d: "2025-12-04", h: "GPT-5.1-Codex-Max model", t: "model" },
+    { v: "0.0.366", d: "2025-12-03", h: "CLI executables in releases, apply_patch for Codex models", t: "" },
+    { v: "0.0.365", d: "2025-11-25", h: "--silent option for scripting", t: "" },
+    { v: "0.0.364", d: "2025-11-25", h: "Syntax highlighting for diffs, light theme fixes", t: "" },
+    { v: "0.0.363", d: "2025-11-24", h: "Opus 4.5, GPT-4.1, GPT-5-Mini models, image paste, MCP in prompt mode", t: "model" },
+    { v: "0.0.362", d: "2025-11-20", h: "Image drag/drop on Windows, clipboard paste, prompt improvements", t: "" },
+    { v: "0.0.360", d: "2025-11-18", h: "Fix file operations timeout during permission wait", t: "" },
+    { v: "0.0.359", d: "2025-11-17", h: "Image drag & drop, /share command, Ctrl+C improvements", t: "feature" },
+    { v: "0.0.358", d: "2025-11-14", h: "Recovery: GPT-5.1 model availability fix", t: "" },
+    { v: "0.0.357", d: "2025-11-13", h: "Recovery: image resizing fix", t: "" },
+    { v: "0.0.356", d: "2025-11-13", h: "GPT-5.1, GPT-5.1-Codex, GPT-5.1-Codex-Mini models", t: "model" },
+    { v: "0.0.355", d: "2025-11-12", h: "Bundled ripgrep, grep/glob tools, self-documentation with /help", t: "major" },
+    { v: "0.0.354", d: "2025-11-03", h: "MCP notifications, COPILOT_GITHUB_TOKEN, /delegate improvements", t: "" },
+    { v: "0.0.353", d: "2025-10-28", h: "Custom agents from ~/.copilot/agents, /delegate to coding agent", t: "major" },
+    { v: "0.0.352", d: "2025-10-27", h: "MCP slash handling, improved /model errors", t: "" },
+    { v: "0.0.351", d: "2025-10-24", h: "Path detection overhaul, Sonnet 4.5 prompting improvements", t: "" },
+    { v: "0.0.350", d: "2025-10-23", h: "GitHub MCP tool curation, bundled sharp, token tracking fix", t: "" },
+    { v: "0.0.349", d: "2025-10-22", h: "Parallel tool calling, /quit alias, streaming fix", t: "feature" },
+    { v: "0.0.348", d: "2025-10-21", h: "Token-by-token streaming output", t: "major" },
+    { v: "0.0.347", d: "2025-10-20", h: "PRU stats fix, paste backspace fix, diff wrapping", t: "" },
+    { v: "0.0.346", d: "2025-10-19", h: "PRU consumption accuracy fix", t: "" },
+    { v: "0.0.345", d: "2025-10-18", h: "Premium request overcount fix", t: "" },
+    { v: "0.0.344", d: "2025-10-17", h: "GitHub MCP in prompt mode, detached processes, model list in help", t: "" },
+    { v: "0.0.343", d: "2025-10-16", h: "Haiku 4.5 model, --additional-mcp-config flag, visual improvements", t: "model" },
+    { v: "0.0.342", d: "2025-10-15", h: "Session logging overhaul, Kitty protocol, multi-line input", t: "major" },
+    { v: "0.0.341", d: "2025-10-14", h: "/terminal-setup command, MCP tool call fix, PRU multipliers", t: "" },
+    { v: "0.0.340", d: "2025-10-13", h: "Windows support promoted, debugging improvements, path approval", t: "" },
+    { v: "0.0.339", d: "2025-10-10", h: "Improved MCP server input, Kitty protocol fixes", t: "" },
+    { v: "0.0.338", d: "2025-10-09", h: "Kitty protocol behind env var due to regressions", t: "" },
+    { v: "0.0.337", d: "2025-10-08", h: "MCP name validation, Ctrl+B/F cursor, Kitty multi-line input", t: "" },
+    { v: "0.0.336", d: "2025-10-07", h: "Proxy support, token reduction, file write performance", t: "" },
+    { v: "0.0.335", d: "2025-10-06", h: "File diffs in timeline by default, slash argument hints", t: "" },
+    { v: "0.0.334", d: "2025-10-03", h: "Large paste compaction, context truncation warning", t: "" },
+    { v: "0.0.333", d: "2025-10-02", h: "Image support, ! shell commands, /usage stats, --continue flag", t: "major" },
+    { v: "0.0.332", d: "2025-10-01", h: "Per-subscription API endpoints, /user improvements, Markdown legibility", t: "" },
+    { v: "0.0.331", d: "2025-10-01", h: "Model list filtering, scrollbar improvements, multi-line input", t: "" },
+    { v: "0.0.330", d: "2025-09-29", h: "Default model reverted to Sonnet 4", t: "" },
+    { v: "0.0.329", d: "2025-09-29", h: "Claude Sonnet 4.5 support, /model slash command", t: "model" },
+    { v: "0.0.328", d: "2025-09-26", h: "First public release — improved errors, PowerShell parsing", t: "major" },
+];
+
+// ============================================================
+// CHARTS
+// ============================================================
+
+const chartTextColor = '#8b949e';
+const chartGridColor = 'rgba(48, 54, 61, 0.6)';
+const chartDefaults = {
+    color: chartTextColor,
+    font: { family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
+};
+Chart.defaults.color = chartTextColor;
+Chart.defaults.font.family = chartDefaults.font.family;
+
+// --- Cumulative Copilot CLI releases ---
+(function() {
+    const sorted = [...releases].sort((a,b) => a.d.localeCompare(b.d));
+    const labels = sorted.map(r => r.d);
+    const data = sorted.map((_, i) => i + 1);
+
+    new Chart(document.getElementById('cumulativeChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Copilot CLI Releases',
+                data,
+                borderColor: '#58a6ff',
+                backgroundColor: 'rgba(88,166,255,0.1)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 2,
+                pointHoverRadius: 6,
+                borderWidth: 2.5,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => {
+                            const idx = items[0].dataIndex;
+                            return `${sorted[idx].v} — ${sorted[idx].d}`;
+                        },
+                        label: (item) => `Release #${item.raw}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: chartGridColor },
+                    ticks: { maxTicksLimit: 12, maxRotation: 45 }
+                },
+                y: {
+                    grid: { color: chartGridColor },
+                    title: { display: true, text: 'Cumulative Releases' }
+                }
+            }
+        }
+    });
+})();
+
+// --- Monthly releases bar chart ---
+(function() {
+    const months = {};
+    releases.forEach(r => {
+        const m = r.d.substring(0, 7);
+        months[m] = (months[m] || 0) + 1;
+    });
+    const labels = Object.keys(months).sort();
+    const data = labels.map(m => months[m]);
+    const monthNames = labels.map(m => {
+        const [y, mo] = m.split('-');
+        return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(mo)-1] + ' ' + y;
+    });
+
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+            labels: monthNames,
+            datasets: [{
+                label: 'Releases',
+                data,
+                backgroundColor: data.map((_, i) => {
+                    const colors = ['#58a6ff','#3fb950','#a371f7','#d29922','#f85149','#f778ba','#39d2c0'];
+                    return colors[i % colors.length];
+                }),
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (item) => `${item.raw} releases`
+                    }
+                }
+            },
+            scales: {
+                x: { grid: { display: false } },
+                y: {
+                    grid: { color: chartGridColor },
+                    title: { display: true, text: 'Number of Releases' },
+                    beginAtZero: true,
+                }
+            }
+        }
+    });
+})();
+
+// ============================================================
+// RELEASE TABLE
+// ============================================================
+(function() {
+    const tbody = document.querySelector('#releaseTable tbody');
+
+    function renderTable(filter, search) {
+        tbody.innerHTML = '';
+        const filtered = releases.filter(r => {
+            if (filter === 'major' && r.t !== 'major') return false;
+            if (filter === 'model' && r.t !== 'model') return false;
+            if (search) {
+                const s = search.toLowerCase();
+                return r.v.toLowerCase().includes(s) || r.d.includes(s) || r.h.toLowerCase().includes(s);
+            }
+            return true;
+        });
+
+        filtered.forEach(r => {
+            const tr = document.createElement('tr');
+            let badge = '';
+            if (r.t === 'major') badge = '<span class="badge badge-major">Major</span>';
+            else if (r.t === 'model') badge = '<span class="badge badge-model">Model</span>';
+            else if (r.t === 'feature') badge = '<span class="badge badge-feature">Feature</span>';
+            if (r.v === '0.0.418') badge = '<span class="badge badge-ga">GA</span>';
+
+            tr.innerHTML = `
+                <td class="version">${r.v}</td>
+                <td class="date">${r.d}</td>
+                <td class="highlight-text">${r.h}</td>
+                <td>${badge}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    renderTable('all', '');
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+        renderTable(activeFilter, e.target.value);
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderTable(btn.dataset.filter, document.getElementById('searchInput').value);
+        });
+    });
+})();
+
+// ============================================================
+// NAV HIGHLIGHTING
+// ============================================================
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+            });
+        }
+    });
+}, { rootMargin: '-30% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
