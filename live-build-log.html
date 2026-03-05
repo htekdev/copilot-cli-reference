@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Build Log — GitHub Copilot CLI</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-card-hover: #1c2129;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-subtle: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-pink: #f778ba;
+            --accent-cyan: #39d2c0;
+            --accent-red: #f85149;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            --radius: 6px;
+            --radius-lg: 12px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 56px;
+        }
+
+        .nav-back {
+            color: var(--text-muted);
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-decoration: none;
+        }
+
+        .nav-back:hover { color: var(--text); border-color: var(--text-subtle); text-decoration: none; }
+        .nav-title { font-weight: 700; font-size: 15px; }
+
+        .content { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+        .hero { text-align: center; padding: 72px 0 24px; }
+
+        .hero-eyebrow {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-orange);
+            margin-bottom: 14px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin: 40px 0 16px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            font-family: var(--mono);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-subtle);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* TIMELINE */
+        .timeline { margin-top: 48px; display: flex; flex-direction: column; gap: 0; }
+
+        .timeline-entry {
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+
+        .timeline-rail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid;
+            background: var(--bg);
+            z-index: 1;
+            flex-shrink: 0;
+            margin-top: 22px;
+        }
+
+        .timeline-line {
+            width: 2px;
+            flex: 1;
+            background: var(--border);
+        }
+
+        .timeline-entry:last-child .timeline-line { display: none; }
+
+        .timeline-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            flex: 1;
+            margin: 8px 0;
+            border-left: 3px solid;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .timeline-card:hover {
+            transform: translateX(4px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .card-icon { font-size: 24px; }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .card-time {
+            font-size: 12px;
+            font-family: var(--mono);
+            color: var(--text-subtle);
+            white-space: nowrap;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .card-details {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .card-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-details li {
+            padding: 3px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .card-details li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--text-subtle);
+        }
+
+        .tech-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tech-chip {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            font-family: var(--mono);
+        }
+
+        .prompt-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-purple);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .prompt-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--accent-purple);
+            font-style: normal;
+            margin-bottom: 4px;
+        }
+
+        .card-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .repo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .repo-link:hover {
+            color: var(--text);
+            border-color: var(--text-subtle);
+            text-decoration: none;
+        }
+
+        /* SECTION DIVIDERS */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 48px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-subtle);
+            margin-bottom: 32px;
+        }
+
+        /* SUMMARY GRID */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-card-icon { font-size: 28px; margin-bottom: 8px; }
+        .summary-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .summary-card-desc { font-size: 13px; color: var(--text-muted); }
+
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-subtle);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 56px;
+        }
+
+        footer a { color: var(--accent-blue); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .hero-title { font-size: 28px; }
+            .stats-bar { gap: 16px; }
+            .stat-value { font-size: 24px; }
+            .timeline-card { padding: 16px; }
+            .card-title { font-size: 16px; }
+            .timeline-rail { width: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-back">← Home</a>
+        <span class="nav-title">Live Build Log</span>
+    </div>
+</nav>
+
+<div class="content">
+
+    <div class="hero">
+        <div class="hero-eyebrow">Live Demo · March 5, 2026</div>
+        <h1 class="hero-title">Build Log</h1>
+        <p class="hero-sub">Everything built during a single hour with GitHub Copilot CLI — 9 projects, zero boilerplate, all from the terminal.</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat-value" style="color: var(--accent-orange);">9</div>
+            <div class="stat-label">Projects Built</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" style="color: var(--accent-purple);">~60</div>
+            <div class="stat-label">Minutes</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" style="color: var(--accent-green);">6</div>
+            <div class="stat-label">Languages</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" style="color: var(--accent-cyan);">5</div>
+            <div class="stat-label">GitHub Repos Created</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" style="color: var(--accent-pink);">100+</div>
+            <div class="stat-label">Files Generated</div>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ===== TECHNOLOGY SUMMARY ===== -->
+    <h2 class="section-title">Technologies Touched</h2>
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-icon">⚛️</div>
+            <div class="summary-card-title">Next.js + React</div>
+            <div class="summary-card-desc">Scaffolded full web app with TypeScript, Jest testing, and CI/CD</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">⚡</div>
+            <div class="summary-card-title">Azure Functions</div>
+            <div class="summary-card-desc">Webhook handler with Table Storage, retry logic, and 38 tests</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">💰</div>
+            <div class="summary-card-title">Express + Prisma</div>
+            <div class="summary-card-desc">Full-stack expense tracker with PostgreSQL, CRUD, and CSV export</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">🖥️</div>
+            <div class="summary-card-title">x86-64 Assembly</div>
+            <div class="summary-card-desc">NASM assembly with Windows API calls — rainbow ASCII art animation</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">🔧</div>
+            <div class="summary-card-title">MCP Server (TypeScript)</div>
+            <div class="summary-card-desc">DevOps Copilot skill with custom tools for pipeline orchestration</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">📊</div>
+            <div class="summary-card-title">GitHub Pages</div>
+            <div class="summary-card-desc">Learning paths, release velocity charts, and this build log — all HTML/CSS/JS</div>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ===== TIMELINE ===== -->
+    <h2 class="section-title">Build Timeline</h2>
+
+    <div class="timeline">
+
+        <!-- 1. Learning Paths Page -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-pink);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-pink);">
+                <div class="card-header">
+                    <span class="card-icon">🎓</span>
+                    <h3 class="card-title">Learning Paths Page</h3>
+                    <span class="card-time">18:37</span>
+                </div>
+                <p class="card-desc">Researched YouTube in parallel batches for trusted Copilot CLI content, curated 20 videos across 5 progressive learning paths, and built a full page with video cards, thumbnails, and difficulty badges.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "I want to add a page for a learning path with content from youtube. Research youtube for good content on the use of github copiloit cli and organize them on learning paths and put them in order on a new page. I recommend you research several batches in parrelel. Ensure channels are trusted channels either microsoft or github aligned..."
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>20 curated videos from 5 trusted channels (GitHub, Microsoft Developer, VS Code, Burke Holland, Gerald Versluis)</li>
+                        <li>5 progressive paths: Getting Started → Core Workflows → Advanced → MCP & Extensions → Real-World</li>
+                        <li>Updated navigation across 4 existing pages</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">HTML/CSS</span>
+                    <span class="tech-chip">YouTube API</span>
+                    <span class="tech-chip">Responsive Design</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Release Velocity -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-blue);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-blue);">
+                <div class="card-header">
+                    <span class="card-icon">🚀</span>
+                    <h3 class="card-title">Release Velocity Dashboard</h3>
+                    <span class="card-time">18:44</span>
+                </div>
+                <p class="card-desc">Built an interactive dashboard visualizing the shipping cadence of GitHub Copilot CLI — 90 releases in 161 days. Includes comparison charts against Claude Code, OpenAI Codex CLI, and Cursor.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "I want to show a page that shows the velocity at which github copilot cli is releasing... Can you create a page showing all the different releases then maybe a graph showing the speed of releases compared to other agent harnesses..."
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Hero stats: 90 releases, 1.8 days average between releases</li>
+                        <li>Cumulative and monthly release charts via Chart.js</li>
+                        <li>Side-by-side competitor comparison with sourced changelogs</li>
+                        <li>Searchable/filterable release table with 90 entries and tags</li>
+                        <li>20+ milestone timeline entries</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">HTML/CSS/JS</span>
+                    <span class="tech-chip">Chart.js</span>
+                    <span class="tech-chip">Web Research</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. RFP Validation -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-cyan);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-cyan);">
+                <div class="card-header">
+                    <span class="card-icon">📄</span>
+                    <h3 class="card-title">RFP Response Validation</h3>
+                    <span class="card-time">18:06</span>
+                </div>
+                <p class="card-desc">Reviewed a full RFP response document, fact-checked technical claims against official documentation and current product capabilities, and produced a structured review report.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Fleet deployed: I need to review the following Proskauer-GitHub-Copilot-RFP-Response.md Go through the questions and answers and validate some of the answers and come up with a review document. Dont add more questions, only review for validity not completness."
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Validated answers against official Microsoft/GitHub docs</li>
+                        <li>Generated structured review with accuracy ratings</li>
+                        <li>Cross-referenced product features with current release state</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">Document Review</span>
+                    <span class="tech-chip">Web Research</span>
+                    <span class="tech-chip">Fact Checking</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Hello World -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-green);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-green);">
+                <div class="card-header">
+                    <span class="card-icon">👋</span>
+                    <h3 class="card-title">Hello World</h3>
+                    <span class="card-time">19:10</span>
+                </div>
+                <p class="card-desc">The simplest possible task — created a hello world file in seconds. Showed that Copilot CLI handles the trivial just as naturally as the complex.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Create a new file with hello world"
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">Quick Task</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Assembly ASCII Art -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-red);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-red);">
+                <div class="card-header">
+                    <span class="card-icon">🖥️</span>
+                    <h3 class="card-title">Assembly ASCII Art Animation</h3>
+                    <span class="card-time">19:11</span>
+                </div>
+                <p class="card-desc">Built a complete x86-64 NASM assembly program that renders "HECTOR" in animated block letters with a rainbow color sweep — using only raw Windows API syscalls, no C runtime. Created the repo on GitHub with CI.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "I want to create a assemby app that shows somew asci art annimcation of my Name. &quot;Hector&quot;. Make it buildable for my machine whatever that means. Search intenet on how to do this if you need to... When your done, create the repo in github under htekdev."
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>~350 lines of x86-64 NASM assembly</li>
+                        <li>Rainbow color animation using Windows console API</li>
+                        <li>Build scripts for local compilation + GitHub Actions CI</li>
+                        <li>ARM64 compatible via Windows 11 emulation</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">x86-64 ASM</span>
+                    <span class="tech-chip">NASM</span>
+                    <span class="tech-chip">Windows API</span>
+                    <span class="tech-chip">GitHub Actions</span>
+                </div>
+                <a href="https://github.com/htekdev/hector-ascii-asm" class="repo-link" target="_blank">
+                    <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                    htekdev/hector-ascii-asm
+                </a>
+            </div>
+        </div>
+
+        <!-- 6. GitHub Actions Retry Bot -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-purple);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-purple);">
+                <div class="card-header">
+                    <span class="card-icon">⚡</span>
+                    <h3 class="card-title">GitHub Actions Retry Bot</h3>
+                    <span class="card-time">19:16</span>
+                </div>
+                <p class="card-desc">Created an Azure Function App that listens for GitHub webhook events on workflow completions and auto-retries failed runs up to 3 times. Includes webhook signature validation, retry tracking via Azure Table Storage, and full test coverage.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Lets create a function app that is able to trigger on github events for github action completions... What it should do rerun if it fails. Only rerun after 3 retries... Also create github page along side to explain how it works. When your done create the repo in github"
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Azure Functions with TypeScript — webhook endpoint for GitHub events</li>
+                        <li>Smart retry: validates signatures, tracks attempts in Table Storage, caps at 3</li>
+                        <li>38 tests across 4 files — 100% statement/function/line coverage, 87% branch</li>
+                        <li>Repo created on GitHub with CI workflow</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">Azure Functions</span>
+                    <span class="tech-chip">TypeScript</span>
+                    <span class="tech-chip">Vitest</span>
+                    <span class="tech-chip">Table Storage</span>
+                    <span class="tech-chip">GitHub Webhooks</span>
+                </div>
+                <a href="https://github.com/htekdev/gh-actions-retry-bot" class="repo-link" target="_blank">
+                    <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                    htekdev/gh-actions-retry-bot
+                </a>
+            </div>
+        </div>
+
+        <!-- 7. Requirements Synthesis -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-orange);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-orange);">
+                <div class="card-header">
+                    <span class="card-icon">📋</span>
+                    <h3 class="card-title">Requirements Synthesis</h3>
+                    <span class="card-time">19:21</span>
+                </div>
+                <p class="card-desc">Took raw, unstructured requirements and synthesized them into a structured, reviewable format — demonstrating Copilot CLI's ability to work with non-code artifacts and business documents.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Fleet deployed: Review the requirments doc and lets try to define true requirments from different angles. So basicly create a review for top level business rquirments, then synthasize and review the intergrates between requirements, then finally create a final true spec of the requirments. Leave nothing out and if you require multiple specs that is also ok. For each spec ensure you list claifications that need to be addressed."
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">Documentation</span>
+                    <span class="tech-chip">Analysis</span>
+                    <span class="tech-chip">Business Logic</span>
+                </div>
+                <div class="card-links">
+                    <a href="https://github.com/htekdev/raw-requirements" class="repo-link" target="_blank">
+                        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                        htekdev/raw-requirements
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Expense Tracker -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-green);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-green);">
+                <div class="card-header">
+                    <span class="card-icon">💰</span>
+                    <h3 class="card-title">Expense Tracker (Full-Stack)</h3>
+                    <span class="card-time">19:26</span>
+                </div>
+                <p class="card-desc">Built a complete full-stack expense tracking application from scratch — Express API backend with Prisma ORM, PostgreSQL database with seed data, and a Vite-powered React client. Features CRUD, filtering, budgets, recurring expenses, and CSV export.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Im currently in a demo on copilot cli. And we want to show case how cool you are. Create me a expense application that is able to track my expenses. Its your time to shine so make it awesome"
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Express.js API with 6 route modules: expenses, categories, budgets, recurring, export, dashboard</li>
+                        <li>Prisma ORM with PostgreSQL — schema, migrations, and seed data (150+ sample records)</li>
+                        <li>Dashboard endpoint: monthly totals, MoM change, daily average, top category, budget alerts at ≥80%</li>
+                        <li>React client with Vite, TypeScript, and full CRUD UI</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">Express.js</span>
+                    <span class="tech-chip">Prisma</span>
+                    <span class="tech-chip">PostgreSQL</span>
+                    <span class="tech-chip">React</span>
+                    <span class="tech-chip">Vite</span>
+                    <span class="tech-chip">TypeScript</span>
+                </div>
+                <div class="card-links">
+                    <a href="https://github.com/htekdev/expense-iq" class="repo-link" target="_blank">
+                        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                        htekdev/expense-iq
+                    </a>
+                </div>
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-cyan);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-cyan);">
+                <div class="card-header">
+                    <span class="card-icon">🔧</span>
+                    <h3 class="card-title">DevOps Copilot Skill + MCP Server</h3>
+                    <span class="card-time">19:30</span>
+                </div>
+                <p class="card-desc">Created a custom Copilot agent skill backed by an MCP server — designed to orchestrate DevOps workflows from the terminal. Includes plugin manifest, skill definitions, and a TypeScript MCP server with custom tools.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Can you look in my teams messages from the developer enablent series for cli for ieas to give copilit cli"
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Plugin manifest (plugin.json) + MCP config (.mcp.json)</li>
+                        <li>Skill definition with SKILL.md for DevOps orchestration</li>
+                        <li>TypeScript MCP server package with tool definitions</li>
+                        <li>Copilot instructions for agent grounding</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">MCP Protocol</span>
+                    <span class="tech-chip">TypeScript</span>
+                    <span class="tech-chip">Copilot Skills</span>
+                    <span class="tech-chip">Agent Platform</span>
+                </div>
+                <div class="card-links">
+                    <a href="https://github.com/htekdev/devops-copilot-skill" class="repo-link" target="_blank">
+                        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                        htekdev/devops-copilot-skill
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Northwind Web App -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-purple);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-purple);">
+                <div class="card-header">
+                    <span class="card-icon">⚛️</span>
+                    <h3 class="card-title">Northwind Web App (Best Practices)</h3>
+                    <span class="card-time">19:37</span>
+                </div>
+                <p class="card-desc">Scaffolded a Next.js web app following Northwind Traders organization standards — including CI/CD via central reusable workflows, security scanning with CodeQL, Jest testing with coverage enforcement, and proper .gitignore.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "I want to create a new repo for a web but I want to follow my organizations best practices."
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Next.js with TypeScript scaffolded via create-next-app</li>
+                        <li>Jest configured with 80/75/80/80 coverage thresholds</li>
+                        <li>CI workflow calling central ci-node.yml reusable workflow</li>
+                        <li>Security workflow calling central security-scan.yml (CodeQL + dependency review)</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">Next.js</span>
+                    <span class="tech-chip">TypeScript</span>
+                    <span class="tech-chip">Jest</span>
+                    <span class="tech-chip">GitHub Actions</span>
+                    <span class="tech-chip">CodeQL</span>
+                </div>
+                <div class="card-links">
+                    <a href="https://github.com/htekdev/northwind-web-app" class="repo-link" target="_blank">
+                        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                        htekdev/northwind-web-app
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Teams Research -->
+        <div class="timeline-entry">
+            <div class="timeline-rail">
+                <div class="timeline-dot" style="border-color: var(--accent-orange);"></div>
+                <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-card" style="border-left-color: var(--accent-orange);">
+                <div class="card-header">
+                    <span class="card-icon">💬</span>
+                    <h3 class="card-title">Teams Message Mining (WorkIQ)</h3>
+                    <span class="card-time">19:30</span>
+                </div>
+                <p class="card-desc">Used the WorkIQ MCP integration to search Microsoft Teams messages from the Developer Enablement Series, extracting ideas and demand signals around Copilot CLI adoption and use cases.</p>
+                <div class="prompt-block">
+                    <div class="prompt-label">Original Prompt</div>
+                    "Can you look in my teams messages from the developer enablent series for cli for ieas to give copilit cli"
+                </div>
+                <div class="card-details">
+                    <ul>
+                        <li>Surfaced key themes: multicloud management, migration workflows, custom agents, CLI + Copilot pairing</li>
+                        <li>Identified customer demand signals for terminal-first workflows</li>
+                        <li>Queried M365 data live from the terminal via MCP</li>
+                    </ul>
+                </div>
+                <div class="tech-chips">
+                    <span class="tech-chip">WorkIQ MCP</span>
+                    <span class="tech-chip">Microsoft 365</span>
+                    <span class="tech-chip">Teams</span>
+                    <span class="tech-chip">Research</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ===== KEY TAKEAWAYS ===== -->
+    <h2 class="section-title">Key Takeaways</h2>
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-icon">🌊</div>
+            <div class="summary-card-title">Breadth, Not Just Depth</div>
+            <div class="summary-card-desc">From x86 assembly to React apps to document review — one tool, one interface, any domain.</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">🔗</div>
+            <div class="summary-card-title">End-to-End Delivery</div>
+            <div class="summary-card-desc">Not just code — CI/CD, testing, coverage, GitHub repos, and deployment configs all generated together.</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">🧩</div>
+            <div class="summary-card-title">MCP Extensibility</div>
+            <div class="summary-card-desc">Live queries to M365, YouTube, and custom tools — the CLI reaches beyond code into your entire workflow.</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-icon">📏</div>
+            <div class="summary-card-title">Standards Compliance</div>
+            <div class="summary-card-desc">Organization policies, reusable workflows, and security scanning — baked in automatically via skills.</div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p><a href="index.html">Home</a> · <a href="references.html">References</a> · <a href="how-it-was-made.html">How This Was Made</a> · <a href="learning-paths.html">Learning Paths</a> · <a href="release-velocity.html">Releases</a> · <a href="demo-agenda.html">Demo Agenda</a> · <a href="https://github.com/htekdev/copilot-cli-reference">GitHub Repo</a></p>
+    <p style="margin-top: 8px;">Built with GitHub Copilot CLI · March 2026</p>
+</footer>
+
+</body>
+</html>
