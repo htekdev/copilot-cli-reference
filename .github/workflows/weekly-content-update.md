@@ -160,58 +160,76 @@ Add new videos to the appropriate learning path section based on content:
 
 Match the existing HTML card structure when adding new videos.
 
-## Phase 4: Validate Commands, Shortcuts & CLI Flags
+## Phase 4: Audit Commands, Shortcuts & CLI Flags Against Actual Releases
 
-This is a critical phase that ensures `index.html` remains the definitive reference for every Copilot CLI command, keyboard shortcut, and CLI flag. The site uses a badge system to indicate feature freshness:
+This is the **most critical phase**. The cheat sheet in `index.html` must reflect the actual current state of the CLI. You must go through **real release notes** to discover what was added, changed, or removed — not just search for generic lists.
 
-- `<span class="badge-new">New</span>` — Added in the last 3 months
-- `<span class="badge-deprecated">Deprecated</span>` — Removed or replaced; row also gets `class="deprecated"`
+### Step 1: Read the actual changelog
 
-### Step 1: Research current commands
+Use **web-fetch** and **GitHub tools** to read the primary sources of truth:
 
-Use **Exa**, **Perplexity**, and **MS Learn** to build a comprehensive list of current Copilot CLI commands:
+1. **Crawl the changelog**: Fetch `https://github.com/github/copilot-cli/blob/main/changelog.md` — this is the definitive source. Read every release entry from the current version shown on the cheat sheet through the latest release. Look for:
+   - Lines starting with "Add" or "New" → these are **new commands, flags, shortcuts, or features**
+   - Lines mentioning "Rename" → a command/flag name changed
+   - Lines mentioning "Remove", "Drop", or "Deprecate" → a feature was removed
+   - Lines mentioning keyboard shortcuts, keybindings, Ctrl+, Shift+, or hotkeys
+   - Lines mentioning new slash commands (e.g., `/something`)
+   - Lines mentioning new CLI flags (e.g., `--something`)
 
-- Search for "GitHub Copilot CLI slash commands complete list 2026"
-- Search for "GitHub Copilot CLI keyboard shortcuts Ctrl commands"
-- Search for "GitHub Copilot CLI flags --help output"
-- Crawl the official GitHub blog cheat sheet: `https://github.blog/ai-and-ml/github-copilot/a-cheat-sheet-to-slash-commands-in-github-copilot-cli/`
-- Crawl the changelog: `https://github.com/github/copilot-cli/blob/main/changelog.md`
-- Search MS Learn for: "GitHub Copilot CLI reference commands"
+2. **Check the releases page**: Fetch `https://github.com/github/copilot-cli/releases` — this has structured "Added", "Improved", "Fixed" sections for each release. Read through every release since the version currently on the cheat sheet.
 
-Build three authoritative lists:
-1. **Keyboard shortcuts** — All Ctrl+X, Shift+X, Esc, Alt+X, special keys
-2. **Slash commands** — All /command entries
-3. **CLI flags** — All --flag and -x options
+3. **Check the npm package**: Fetch `https://www.npmjs.com/package/@github/copilot` to confirm the latest published version number.
 
-### Step 2: Cross-reference with index.html
+4. **Check the GitHub blog changelog**: Use Exa to search `site:github.blog/changelog copilot CLI` for feature announcement posts that describe new commands/modes.
 
-Compare your researched lists against the three tables in `index.html` under `#quickstart`:
+5. **Check official docs**: Use MS Learn to search `GitHub Copilot CLI commands reference` and `GitHub Copilot CLI flags` for the latest documented command set.
+
+### Step 2: Build a diff of changes
+
+From the release notes, build three change lists:
+
+**New items to add to the cheat sheet:**
+- New slash commands (e.g., a release note says "Add `/newcmd` command for X")
+- New CLI flags (e.g., "Add `--new-flag` to enable Y")
+- New keyboard shortcuts (e.g., "Press Ctrl+R to search command history")
+- New input shortcuts (e.g., new `@`, `!`, `&` syntax)
+- New modes or configuration options
+
+**Items to update:**
+- Renamed commands/flags (e.g., "Rename `--old-flag` to `--new-flag`")
+- Changed descriptions (e.g., a command now does something different)
+- Changed default model (for the hero version line)
+
+**Items to deprecate/remove:**
+- Removed commands or flags
+- Deprecated features
+
+### Step 3: Cross-reference with index.html
+
+Read the current tables in `index.html` under `#quickstart`:
 
 1. **Essential Shortcuts** table (class `mini-table` inside "Essential Shortcuts" block)
 2. **Key Slash Commands** table (class `mini-table` inside "Key Slash Commands" block)
 3. **CLI Flags** table (class `mini-table` inside "CLI Flags (Command Line)" block)
 4. **Deprecated Commands** table (class `mini-table` inside "Deprecated Commands" block)
 
-For each command in your researched list:
-- If it exists on the site → verify the description is still accurate; update if needed
-- If it does NOT exist on the site → add it with `<span class="badge-new">New</span>` badge
-- If a site command no longer exists in official docs → move it to Deprecated section with `<span class="badge-deprecated">Deprecated</span>` badge
+For each item in your change lists:
+- If a new item doesn't exist on the cheat sheet → **add it** with `<span class="badge-new">New</span>`
+- If a renamed item exists under its old name → **update** the name and add a note
+- If a deprecated item still appears as active → **move it** to the Deprecated section
 
-### Step 3: Manage badge lifecycle
+Also check for items currently on the cheat sheet that may have been removed without you noticing — cross-reference each existing entry against the changelog.
 
-- **New badge rules**: Add `<span class="badge-new">New</span>` to commands added within the last 3 months. Remove the "New" badge from commands that were added more than 3 months ago (they are now established).
-- **Deprecated badge rules**: When a command is deprecated, add `class="deprecated"` to the `<tr>` element and add `<span class="badge-deprecated">Deprecated</span>` to the description. Move the entry to the "Deprecated Commands" table.
+### Step 4: Apply changes to index.html
 
-### Step 4: Verify row structure
-
-Every table row must follow this exact HTML structure:
+Follow these exact HTML patterns:
 
 **Normal command:**
 ```html
 <tr><td><code>/command</code></td><td class="desc">Description of what it does</td></tr>
 ```
 
-**New command (added within 3 months):**
+**New command (added in a recent release):**
 ```html
 <tr><td><code>/command</code></td><td class="desc">Description <span class="badge-new">New</span></td></tr>
 ```
@@ -221,14 +239,19 @@ Every table row must follow this exact HTML structure:
 <tr class="deprecated"><td><code>/command</code></td><td class="desc">Removed [date] — replacement info <span class="badge-deprecated">Deprecated</span></td></tr>
 ```
 
-### Step 5: Update hero version
+### Step 5: Manage badge lifecycle
 
-Check if the version in the hero section needs updating:
+- **New badge**: Add to commands from releases within the last 3 months. Remove from commands older than 3 months.
+- **Deprecated badge**: Permanent. Move deprecated entries to the "Deprecated Commands" table.
+
+### Step 6: Update hero version
+
+Update the hero version line if the latest release is newer:
 ```html
 <p class="hero-version">v0.0.XXX · [default model] · [Month Year]</p>
 ```
 
-Update the version number, default model name, and date if they've changed.
+Also update the version in the ecosystem section and configuration section if referenced.
 
 ## Phase 5: Validate and Update References
 
