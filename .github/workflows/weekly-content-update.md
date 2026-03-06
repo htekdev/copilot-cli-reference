@@ -75,7 +75,7 @@ This is a static HTML site (no build system, no framework) deployed via GitHub P
 | `release-velocity.html` | Release tracking with 90+ releases, Chart.js charts, searchable table, competitor comparison | **HIGH** — new releases happen frequently |
 | `learning-paths.html` | 17+ curated YouTube videos across 4 learning paths with thumbnails, durations, channel badges | **HIGH** — new videos published regularly |
 | `references.html` | 50+ curated links to official docs organized by category | **MEDIUM** — links can go stale or new docs added |
-| `index.html` | Main reference hub with version number in hero, feature overview | **MEDIUM** — version number and feature list |
+| `index.html` | Main reference hub with version number, keyboard shortcuts, slash commands, CLI flags, deprecated commands | **HIGH** — commands change with each release |
 
 ## Your Mission
 
@@ -87,6 +87,7 @@ Load your cache memory to see what was updated in previous runs. This tells you:
 - The last version number you recorded
 - Which releases were already added
 - Which YouTube videos were already included
+- Which commands/shortcuts are documented and their badge status
 - When the last successful update happened
 
 If this is your first run, the cache will be empty — proceed with all phases.
@@ -159,7 +160,77 @@ Add new videos to the appropriate learning path section based on content:
 
 Match the existing HTML card structure when adding new videos.
 
-## Phase 4: Validate and Update References
+## Phase 4: Validate Commands, Shortcuts & CLI Flags
+
+This is a critical phase that ensures `index.html` remains the definitive reference for every Copilot CLI command, keyboard shortcut, and CLI flag. The site uses a badge system to indicate feature freshness:
+
+- `<span class="badge-new">New</span>` — Added in the last 3 months
+- `<span class="badge-deprecated">Deprecated</span>` — Removed or replaced; row also gets `class="deprecated"`
+
+### Step 1: Research current commands
+
+Use **Exa**, **Perplexity**, and **MS Learn** to build a comprehensive list of current Copilot CLI commands:
+
+- Search for "GitHub Copilot CLI slash commands complete list 2026"
+- Search for "GitHub Copilot CLI keyboard shortcuts Ctrl commands"
+- Search for "GitHub Copilot CLI flags --help output"
+- Crawl the official GitHub blog cheat sheet: `https://github.blog/ai-and-ml/github-copilot/a-cheat-sheet-to-slash-commands-in-github-copilot-cli/`
+- Crawl the changelog: `https://github.com/github/copilot-cli/blob/main/changelog.md`
+- Search MS Learn for: "GitHub Copilot CLI reference commands"
+
+Build three authoritative lists:
+1. **Keyboard shortcuts** — All Ctrl+X, Shift+X, Esc, Alt+X, special keys
+2. **Slash commands** — All /command entries
+3. **CLI flags** — All --flag and -x options
+
+### Step 2: Cross-reference with index.html
+
+Compare your researched lists against the three tables in `index.html` under `#quickstart`:
+
+1. **Essential Shortcuts** table (class `mini-table` inside "Essential Shortcuts" block)
+2. **Key Slash Commands** table (class `mini-table` inside "Key Slash Commands" block)
+3. **CLI Flags** table (class `mini-table` inside "CLI Flags (Command Line)" block)
+4. **Deprecated Commands** table (class `mini-table` inside "Deprecated Commands" block)
+
+For each command in your researched list:
+- If it exists on the site → verify the description is still accurate; update if needed
+- If it does NOT exist on the site → add it with `<span class="badge-new">New</span>` badge
+- If a site command no longer exists in official docs → move it to Deprecated section with `<span class="badge-deprecated">Deprecated</span>` badge
+
+### Step 3: Manage badge lifecycle
+
+- **New badge rules**: Add `<span class="badge-new">New</span>` to commands added within the last 3 months. Remove the "New" badge from commands that were added more than 3 months ago (they are now established).
+- **Deprecated badge rules**: When a command is deprecated, add `class="deprecated"` to the `<tr>` element and add `<span class="badge-deprecated">Deprecated</span>` to the description. Move the entry to the "Deprecated Commands" table.
+
+### Step 4: Verify row structure
+
+Every table row must follow this exact HTML structure:
+
+**Normal command:**
+```html
+<tr><td><code>/command</code></td><td class="desc">Description of what it does</td></tr>
+```
+
+**New command (added within 3 months):**
+```html
+<tr><td><code>/command</code></td><td class="desc">Description <span class="badge-new">New</span></td></tr>
+```
+
+**Deprecated command:**
+```html
+<tr class="deprecated"><td><code>/command</code></td><td class="desc">Removed [date] — replacement info <span class="badge-deprecated">Deprecated</span></td></tr>
+```
+
+### Step 5: Update hero version
+
+Check if the version in the hero section needs updating:
+```html
+<p class="hero-version">v0.0.XXX · [default model] · [Month Year]</p>
+```
+
+Update the version number, default model name, and date if they've changed.
+
+## Phase 5: Validate and Update References
 
 Use **MS Learn MCP** and **web-fetch** to validate external links in `references.html`.
 
@@ -173,13 +244,13 @@ Use **MS Learn MCP** and **web-fetch** to validate external links in `references
 - Add new official documentation links in the appropriate category
 - Update link descriptions if page titles have changed
 
-## Phase 5: Update Timestamps
+## Phase 6: Update Timestamps
 
 After making any changes:
 - Update "Last updated" date references in page footers to the current month/year
 - Ensure consistency across all pages
 
-## Phase 6: Create Pull Request or Noop
+## Phase 7: Create Pull Request or Noop
 
 ### If changes were made:
 Use the `create-pull-request` safe output with:
@@ -188,6 +259,7 @@ Use the `create-pull-request` safe output with:
   - Summary of what was updated
   - New releases added (if any)
   - New videos added (if any)
+  - Commands/shortcuts added, updated, or deprecated (if any)
   - Links fixed/added (if any)
   - Data sources used
 
@@ -195,12 +267,14 @@ Use the `create-pull-request` safe output with:
 Use the `noop` safe output with a message like:
 - "All content is up to date as of [date]. No new releases, videos, or link changes found."
 
-## Phase 7: Update Cache Memory
+## Phase 8: Update Cache Memory
 
 Save to cache memory:
 - The latest version number recorded
 - List of release versions now in the data
 - List of YouTube video IDs now included
+- List of all commands/shortcuts currently documented (for diff comparison next run)
+- Which commands have "New" badges and when they were added (for 3-month lifecycle)
 - Timestamp of this run
 - Summary of changes made (or "no changes")
 
@@ -212,3 +286,6 @@ Save to cache memory:
 - **No placeholder data** — Every entry must have real, verified information
 - **Be conservative** — If uncertain about a data point, skip it rather than add incorrect information
 - **Respect rate limits** — Don't make excessive API calls; be efficient with MCP tool usage
+- **Badge lifecycle** — "New" badges expire after 3 months; "Deprecated" badges are permanent
+- **CLI-only content** — YouTube videos must be about the standalone Copilot CLI, not VS Code, Visual Studio, or the Coding Agent
+- **Trusted sources only** — Only cite official GitHub, Microsoft, or verified community sources for command documentation

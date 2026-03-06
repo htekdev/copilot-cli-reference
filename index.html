@@ -443,6 +443,34 @@
 
         .mini-table .desc { color: var(--text-muted); font-size: 13px; }
 
+        /* Inline status badges for commands */
+        .badge-new, .badge-deprecated {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+            line-height: 1.4;
+        }
+        .badge-new {
+            background: rgba(63,185,80,0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(63,185,80,0.25);
+        }
+        .badge-deprecated {
+            background: rgba(248,81,73,0.15);
+            color: var(--accent-red);
+            border: 1px solid rgba(248,81,73,0.25);
+        }
+
+        /* Deprecated row styling */
+        tr.deprecated td { opacity: 0.6; }
+        tr.deprecated code { text-decoration: line-through; }
+
         /* FLOW DIAGRAM */
         .flow {
             display: flex;
@@ -1199,6 +1227,19 @@
                     <tr><td><code>Ctrl+L</code></td><td class="desc">Clear screen</td></tr>
                     <tr><td><code>Esc</code></td><td class="desc">Cancel current operation</td></tr>
                     <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history</td></tr>
+                    <tr><td><code>Esc-Esc</code></td><td class="desc">Rewind file changes to any previous snapshot <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Tab</code></td><td class="desc">Resume local &amp; remote coding agent sessions <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+C</code></td><td class="desc">Cancel operation (×2 to exit session) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+D</code></td><td class="desc">Exit interactive session (Unix-style) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Shift+Enter</code></td><td class="desc">Insert line break in prompt <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+Enter</code></td><td class="desc">Submit multiline prompt <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Page Up / Down</code></td><td class="desc">Scroll in alt-screen mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+A</code></td><td class="desc">Move cursor to beginning of line <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+K</code></td><td class="desc">Delete from cursor to end of line <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+U</code></td><td class="desc">Delete from cursor to beginning of line <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+W</code></td><td class="desc">Delete word before cursor <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+H</code></td><td class="desc">Delete character before cursor <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Alt+← / →</code></td><td class="desc">Move cursor by word <span class="badge-new">New</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -1228,6 +1269,19 @@
                     <tr><td><code>/usage</code></td><td class="desc">Session metrics and statistics</td></tr>
                     <tr><td><code>/ide</code></td><td class="desc">Connect to an IDE workspace</td></tr>
                     <tr><td><code>/lsp</code></td><td class="desc">Manage language server configuration</td></tr>
+                    <tr><td><code>/clear</code></td><td class="desc">Clear session history and context <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/cwd</code></td><td class="desc">Show or change working directory <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/add-dir</code></td><td class="desc">Add directory for file access <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/session</code></td><td class="desc">Display current session info <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/theme</code></td><td class="desc">Configure terminal theme (auto/dark/light) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/terminal-setup</code></td><td class="desc">Enable multiline input mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/reset-allowed-tools</code></td><td class="desc">Reset all tool permissions <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/user</code></td><td class="desc">Show, list, or switch GitHub accounts <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/login</code> / <code>/logout</code></td><td class="desc">Sign in or out of Copilot <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/exit</code> / <code>/quit</code></td><td class="desc">Exit the CLI session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/help</code></td><td class="desc">Show all available commands and shortcuts <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/feedback</code></td><td class="desc">Submit feedback to GitHub <span class="badge-new">New</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -1252,6 +1306,24 @@
                     <tr><td><code>-s / --silent</code></td><td class="desc">Output only agent response (scripting)</td></tr>
                     <tr><td><code>--max-autopilot-continues N</code></td><td class="desc">Cap autopilot continuations</td></tr>
                     <tr><td><code>--no-custom-instructions</code></td><td class="desc">Skip loading instruction files</td></tr>
+                    <tr><td><code>--share [PATH]</code></td><td class="desc">Export session transcript to markdown file <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--share-gist</code></td><td class="desc">Export session to shareable GitHub gist <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--available-tools</code></td><td class="desc">Allowlist specific tools for the session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--excluded-tools</code></td><td class="desc">Denylist specific tools for the session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--additional-mcp-config</code></td><td class="desc">Add MCP config files per-session <span class="badge-new">New</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Deprecated Commands -->
+        <div class="qs-block">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-red);"></span> Deprecated Commands</div>
+            <table class="mini-table">
+                <thead><tr><th>Command</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr class="deprecated"><td><code>gh copilot suggest</code> / <code>gh cs</code></td><td class="desc">Removed Oct 2025 — replaced by Copilot CLI interactive mode <span class="badge-deprecated">Deprecated</span></td></tr>
+                    <tr class="deprecated"><td><code>gh copilot explain</code> / <code>gh ce</code></td><td class="desc">Removed Oct 2025 — replaced by Copilot CLI interactive mode <span class="badge-deprecated">Deprecated</span></td></tr>
+                    <tr class="deprecated"><td><code>gh-copilot</code> extension</td><td class="desc">Fully deprecated Oct 25, 2025 — migrate to standalone Copilot CLI <span class="badge-deprecated">Deprecated</span></td></tr>
                 </tbody>
             </table>
         </div>
