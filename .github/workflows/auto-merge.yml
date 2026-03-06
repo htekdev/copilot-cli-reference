@@ -1,0 +1,24 @@
+name: Auto Approve and Merge
+
+on:
+  pull_request_target:
+    types: [opened, labeled, synchronize]
+
+jobs:
+  auto-merge:
+    if: contains(github.event.pull_request.labels.*.name, 'copilot-update')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Auto approve PR
+        uses: hmarr/auto-approve-action@44888193675f29571e9b12c6a149095cfa6a278d # v4.0.0
+        with:
+          github-token: ${{ secrets.COPILOT_PAT }}
+
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_PAT }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.html_url }}"
