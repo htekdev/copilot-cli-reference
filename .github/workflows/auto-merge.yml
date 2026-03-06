@@ -17,9 +17,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.MERGE_PAT }}
         run: |
-          prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,author --jq '.[] | select(.author.login == "github-actions[bot]" or .author.login == "github-actions") | .number')
+          prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,author --jq '.[] | select(.author.login == "github-actions[bot]" or .author.login == "github-actions" or .author.login == "app/github-actions") | .number')
           if [ -z "$prs" ]; then
-            echo "No open PRs from github-actions[bot] found."
+            echo "No open PRs from GitHub Actions found."
             exit 0
           fi
           for pr in $prs; do
