@@ -904,7 +904,7 @@
     <div class="section-header">
         <span class="section-badge badge-purple">Section 2</span>
         <h2 class="section-title">Configuring &amp; Customizing Copilot CLI</h2>
-        <p class="section-subtitle">Every lever you can pull — instructions, skills, hooks, agents, plugins, and more.</p>
+        <p class="section-subtitle">Every lever you can pull — instructions, skills, hooks, agents, plugins, extensions, and more.</p>
     </div>
 
     <div class="config-grid">
@@ -1049,6 +1049,19 @@
             </div>
             <div class="config-desc">Registry of plugins in a Git repo. <code>marketplace.json</code> in <code>.github/plugin/</code>. Users add with <code>/plugin marketplace add org/repo</code>. Official marketplaces: <a href="https://github.com/github/copilot-plugins" style="color:var(--accent-blue)">github/copilot-plugins</a>, <a href="https://github.com/github/awesome-copilot" style="color:var(--accent-blue)">github/awesome-copilot</a>.</div>
             <code class="config-path">.github/plugin/marketplace.json</code>
+        </div>
+
+        <!-- Extensions -->
+        <div class="config-card">
+            <div class="config-card-header">
+                <div class="config-icon" style="background: rgba(88,166,255,0.15);">🧩</div>
+                <div>
+                    <div class="config-title">Extensions <span class="badge-new">New</span></div>
+                    <div class="config-scope">Scope: Session · Experimental</div>
+                </div>
+            </div>
+            <div class="config-desc">Ask Copilot to write custom tools and hooks for itself using the <code>@github/copilot-sdk</code>. Extend the CLI with your own capabilities beyond built-in features. Enable with <code>/experimental on</code>. Added in v1.0.3. <a href="https://github.com/github/copilot-cli/releases" target="_blank" style="color: var(--accent-blue); font-size: 11px;">Changelog ↗</a></div>
+            <code class="config-path">/experimental on · @github/copilot-sdk</code>
         </div>
 
         <!-- LSP Servers -->
