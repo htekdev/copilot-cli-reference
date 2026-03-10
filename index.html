@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v0.0.422 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; March 2026</p>
+    <p class="hero-version">v1.0.3 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; March 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1229,6 +1229,7 @@
                     <tr><td><code>Esc</code></td><td class="desc">Cancel current operation</td></tr>
                     <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history</td></tr>
                     <tr><td><code>Ctrl+R</code></td><td class="desc">Search command history (reverse incremental search) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+Z</code></td><td class="desc">Suspend/resume (Unix platforms) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Esc-Esc</code></td><td class="desc">Rewind file changes to any previous snapshot <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Tab</code></td><td class="desc">Resume local &amp; remote coding agent sessions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+C</code></td><td class="desc">Cancel operation (×2 to exit session) <span class="badge-new">New</span></td></tr>
@@ -1255,7 +1256,7 @@
                 <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
                 <tbody>
                     <tr><td><code>/init</code></td><td class="desc">Initialize copilot instructions for the repo</td></tr>
-                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 4.5, Sonnet 4, GPT-5, etc.)</td></tr>
+                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 4.6, Sonnet 4.5, GPT-5.4, etc.)</td></tr>
                     <tr><td><code>/plan</code></td><td class="desc">Create implementation plan before coding</td></tr>
                     <tr><td><code>/review</code></td><td class="desc">Run code review agent on changes</td></tr>
                     <tr><td><code>/delegate</code></td><td class="desc">Push work to Copilot coding agent (cloud)</td></tr>
@@ -1265,7 +1266,9 @@
                     <tr><td><code>/compact</code></td><td class="desc">Compress context to free token space</td></tr>
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
                     <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
-                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable MCP servers</td></tr>
+                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload MCP servers</td></tr>
+                    <tr><td><code>/restart</code></td><td class="desc">Hot restart CLI while preserving session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/update</code></td><td class="desc">View changelog and update instructions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/plugin</code></td><td class="desc">Install, update, list, uninstall plugins</td></tr>
                     <tr><td><code>/resume</code></td><td class="desc">Resume a previous session</td></tr>
                     <tr><td><code>/share</code></td><td class="desc">Export session to file or GitHub gist</td></tr>
@@ -1287,7 +1290,7 @@
                     <tr><td><code>/reset-allowed-tools</code></td><td class="desc">Reset all tool permissions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/user</code></td><td class="desc">Show, list, or switch GitHub accounts <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/login</code> / <code>/logout</code></td><td class="desc">Sign in or out of Copilot <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>/exit</code> / <code>/quit</code></td><td class="desc">Exit the CLI session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/exit</code> / <code>/quit</code></td><td class="desc">Exit the CLI session ('exit' or 'quit' as bare commands also work) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/help</code></td><td class="desc">Show all available commands and shortcuts <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/feedback</code></td><td class="desc">Submit feedback to GitHub <span class="badge-new">New</span></td></tr>
                 </tbody>
@@ -1321,6 +1324,10 @@
                     <tr><td><code>--additional-mcp-config</code></td><td class="desc">Add MCP config files per-session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--output-format json</code></td><td class="desc">Emit JSONL in prompt mode for programmatic integrations <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--plugin-dir PATH</code></td><td class="desc">Load a plugin from a local directory <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--binary-version</code></td><td class="desc">Query CLI binary version without launching <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--mouse / --no-mouse</code></td><td class="desc">Enable/disable mouse mode in alt screen <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--bash-env</code></td><td class="desc">Source BASH_ENV in shell sessions <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--alt-screen on/off</code></td><td class="desc">Control alternate screen buffer mode <span class="badge-new">New</span></td></tr>
                 </tbody>
             </table>
         </div>
