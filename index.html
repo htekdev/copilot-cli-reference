@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.12 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; March 2026</p>
+    <p class="hero-version">v1.0.17 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1247,11 +1247,11 @@
                     <tr><td><code>Tab</code></td><td class="desc">Resume local &amp; remote coding agent sessions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+C</code></td><td class="desc">Cancel operation (×2 to exit session) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+D</code></td><td class="desc">Exit interactive session (Unix-style) <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>Shift+Enter</code></td><td class="desc">Insert line break in prompt <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Shift+Enter</code></td><td class="desc">Insert line break in prompt (Kitty protocol terminals) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Enter</code></td><td class="desc">Submit multiline prompt <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>Page Up / Down</code></td><td class="desc">Scroll in alt-screen mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Page Up / Down</code></td><td class="desc">Scroll in alt-screen mode; navigate in diff viewer <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+F / Ctrl+B</code></td><td class="desc">Page down/up in scrollable views <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>Home / End</code></td><td class="desc">Jump to top/bottom of scroll buffer <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Home / End</code></td><td class="desc">Jump to top/bottom of scroll buffer; navigate in diff viewer <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+A</code></td><td class="desc">Move cursor to beginning of line <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+K</code></td><td class="desc">Delete from cursor to end of line <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+U</code></td><td class="desc">Delete from cursor to beginning of line <span class="badge-new">New</span></td></tr>
@@ -1282,14 +1282,14 @@
                     <tr><td><code>/compact</code></td><td class="desc">Compress context to free token space</td></tr>
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
                     <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
-                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload MCP servers</td></tr>
+                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload, auth MCP servers <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/extensions</code></td><td class="desc">View, enable, and disable CLI extensions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/restart</code></td><td class="desc">Hot restart CLI while preserving session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/update</code></td><td class="desc">View changelog and update instructions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/version</code></td><td class="desc">Display CLI version and check for updates <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/plugin</code></td><td class="desc">Install, update, list, uninstall plugins</td></tr>
                     <tr><td><code>/resume</code></td><td class="desc">Resume a previous session</td></tr>
-                    <tr><td><code>/share</code></td><td class="desc">Export session to file or GitHub gist</td></tr>
+                    <tr><td><code>/share</code></td><td class="desc">Export session to file, GitHub gist, or HTML <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/copy</code></td><td class="desc">Copy the last response to clipboard <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/context</code></td><td class="desc">Show token usage visualization</td></tr>
                     <tr><td><code>/usage</code></td><td class="desc">Session metrics and statistics</td></tr>

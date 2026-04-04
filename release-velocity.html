@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">95</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">108</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -695,6 +695,11 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.17", d: "2026-04-03", h: "Built-in skills included, MCP OAuth HTTPS redirect support, /resume performance improvements", t: "minor" },
+    { v: "1.0.16", d: "2026-04-02", h: "SQL prompt tag fixes, MCP tool display improvements, PermissionRequest hook, deprecated marketplaces setting removed", t: "patch" },
+    { v: "1.0.15", d: "2026-04-01", h: "/share html export, /mcp auth command, Home/End/PgUp/PgDn in diff viewer, Shift+Enter newline (Kitty), Ctrl+D no longer queues", t: "minor" },
+    { v: "1.0.14", d: "2026-03-31", h: "BYOM image fix, model picker override, terminal output fixes, Shift+Enter newline, Git marketplace errors, SDK improvements", t: "patch" },
+    { v: "1.0.13", d: "2026-03-29", h: "Performance optimizations, CPU usage reductions, keystrokes preservation during load, config normalization", t: "patch" },
     { v: "1.0.12", d: "2026-03-26", h: "MCP server fixes, clipboard copy on Windows, /diff rendering, plugin hooks receive env vars, .claude/settings.json support", t: "patch" },
     { v: "1.0.11", d: "2026-03-23", h: "Model picker display fix, MCP policy warnings, ~/.agents/skills directory, /clear vs /new distinction, monorepo support", t: "patch" },
     { v: "1.0.10", d: "2026-03-20", h: "Reduced memory for large files, /login device flow fixes, /copy HTML on Windows, /undo command, SDK elicitation dialogs, --effort alias", t: "minor" },
