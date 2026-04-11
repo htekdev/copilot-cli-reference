@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.17 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
+    <p class="hero-version">v1.0.24 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1238,7 +1238,8 @@
                     <tr><td><code>Ctrl+O</code></td><td class="desc">Expand recent timeline</td></tr>
                     <tr><td><code>Ctrl+E</code></td><td class="desc">Expand all timeline items</td></tr>
                     <tr><td><code>Ctrl+G</code></td><td class="desc">Edit prompt in external editor</td></tr>
-                    <tr><td><code>Ctrl+L</code></td><td class="desc">Clear screen</td></tr>
+                    <tr><td><code>Ctrl+L</code></td><td class="desc">Clear terminal screen without clearing session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+Y</code></td><td class="desc">In plan mode, opens most recent research report <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Esc</code></td><td class="desc">Cancel current operation</td></tr>
                     <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history</td></tr>
                     <tr><td><code>Ctrl+R</code></td><td class="desc">Search command history (reverse incremental search) <span class="badge-new">New</span></td></tr>
@@ -1246,7 +1247,8 @@
                     <tr><td><code>Esc-Esc</code></td><td class="desc">Rewind file changes to any previous snapshot <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Tab</code></td><td class="desc">Resume local &amp; remote coding agent sessions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+C</code></td><td class="desc">Cancel operation (×2 to exit session) <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>Ctrl+D</code></td><td class="desc">Exit interactive session (Unix-style) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+D</code></td><td class="desc">Exit interactive session (no longer queues messages) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+Q / Ctrl+Enter</code></td><td class="desc">Queue message to submit <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Shift+Enter</code></td><td class="desc">Insert line break in prompt (Kitty protocol terminals) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Enter</code></td><td class="desc">Submit multiline prompt <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Page Up / Down</code></td><td class="desc">Scroll in alt-screen mode; navigate in diff viewer <span class="badge-new">New</span></td></tr>
@@ -1303,6 +1305,7 @@
                     <tr><td><code>/add-dir</code></td><td class="desc">Add directory for file access <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/session</code></td><td class="desc">Display current session info <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/session rename</code></td><td class="desc">Rename current session (auto-generates name if not provided) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/theme</code></td><td class="desc">Configure terminal theme (auto/dark/light) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/terminal-setup</code></td><td class="desc">Enable multiline input mode <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/reset-allowed-tools</code></td><td class="desc">Reset all tool permissions <span class="badge-new">New</span></td></tr>
@@ -1333,6 +1336,8 @@
                     <tr><td><code>--experimental</code></td><td class="desc">Enable experimental features</td></tr>
                     <tr><td><code>--acp</code></td><td class="desc">Start Agent Client Protocol server</td></tr>
                     <tr><td><code>-s / --silent</code></td><td class="desc">Output only agent response (scripting)</td></tr>
+                    <tr><td><code>--mode MODE</code></td><td class="desc">Start directly in a specific agent mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--plan</code></td><td class="desc">Start directly in plan mode <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--max-autopilot-continues N</code></td><td class="desc">Cap autopilot continuations</td></tr>
                     <tr><td><code>--no-custom-instructions</code></td><td class="desc">Skip loading instruction files</td></tr>
                     <tr><td><code>--share [PATH]</code></td><td class="desc">Export session transcript to markdown file <span class="badge-new">New</span></td></tr>
