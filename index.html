@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.24 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
+    <p class="hero-version">v1.0.32 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1235,7 +1235,7 @@
                     <tr><td><code>Shift+Tab</code></td><td class="desc">Cycle modes (interactive → plan → autopilot)</td></tr>
                     <tr><td><code>Ctrl+S</code></td><td class="desc">Run command while preserving input</td></tr>
                     <tr><td><code>Ctrl+T</code></td><td class="desc">Toggle reasoning display</td></tr>
-                    <tr><td><code>Ctrl+O</code></td><td class="desc">Expand recent timeline</td></tr>
+                    <tr><td><code>Ctrl+O</code></td><td class="desc">Expand all timeline items</td></tr>
                     <tr><td><code>Ctrl+E</code></td><td class="desc">Expand all timeline items</td></tr>
                     <tr><td><code>Ctrl+G</code></td><td class="desc">Edit prompt in external editor</td></tr>
                     <tr><td><code>Ctrl+L</code></td><td class="desc">Clear terminal screen without clearing session <span class="badge-new">New</span></td></tr>
@@ -1293,6 +1293,7 @@
                     <tr><td><code>/resume</code></td><td class="desc">Resume a previous session</td></tr>
                     <tr><td><code>/share</code></td><td class="desc">Export session to file, GitHub gist, or HTML <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/copy</code></td><td class="desc">Copy the last response to clipboard <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/ask</code></td><td class="desc">Ask a quick question without affecting conversation history <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/context</code></td><td class="desc">Show token usage visualization</td></tr>
                     <tr><td><code>/usage</code></td><td class="desc">Session metrics and statistics</td></tr>
                     <tr><td><code>/chronicle</code></td><td class="desc">Show session timeline and command history <span class="badge-new">New</span></td></tr>
@@ -1306,6 +1307,8 @@
                     <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/session</code></td><td class="desc">Display current session info <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/session rename</code></td><td class="desc">Rename current session (auto-generates name if not provided) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/env</code></td><td class="desc">Show loaded environment (instructions, MCP servers, skills, agents, plugins) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/statusline</code></td><td class="desc">Customize status bar items (directory, branch, effort, context, quota) — alias: /footer <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/theme</code></td><td class="desc">Configure terminal theme (auto/dark/light) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/terminal-setup</code></td><td class="desc">Enable multiline input mode <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/reset-allowed-tools</code></td><td class="desc">Reset all tool permissions <span class="badge-new">New</span></td></tr>
@@ -1351,6 +1354,11 @@
                     <tr><td><code>--mouse / --no-mouse</code></td><td class="desc">Enable/disable mouse mode in alt screen <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--bash-env</code></td><td class="desc">Source BASH_ENV in shell sessions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--alt-screen on/off</code></td><td class="desc">Control alternate screen buffer mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--print-debug-info</code></td><td class="desc">Display version, terminal capabilities, and environment variables <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--connect ID</code></td><td class="desc">Directly connect to a remote session by ID <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--list-env</code></td><td class="desc">Log loaded plugins, agents, skills, and MCP servers in prompt mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--config-dir PATH</code></td><td class="desc">Specify custom config directory (respected when selecting active model) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--session-idle-timeout SECONDS</code></td><td class="desc">Configure session idle timeout (disabled by default) <span class="badge-new">New</span></td></tr>
                 </tbody>
             </table>
         </div>

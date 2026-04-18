@@ -496,15 +496,15 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">108</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">123</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-green);">161</div>
+            <div class="hero-stat-num" style="color: var(--accent-green);">204</div>
             <div class="hero-stat-label">Days Since First Release</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-purple);">1.8</div>
+            <div class="hero-stat-num" style="color: var(--accent-purple);">1.7</div>
             <div class="hero-stat-label">Days Between Releases</div>
         </div>
         <div class="hero-stat">
@@ -695,6 +695,14 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.32", d: "2026-04-17", h: "Short session ID prefixes (7+ hex chars), auto model selection, --print-debug-info flag, document file attachments, usage limit warnings, --connect flag", t: "patch" },
+    { v: "1.0.31", d: "2026-04-16", h: "Prompt frame rendering fix for Windows and Ubuntu terminals", t: "patch" },
+    { v: "1.0.30", d: "2026-04-16", h: "/statusline command (alias /footer) to customize status bar items, image paste from clipboard fix, plugin skills discovery fix", t: "minor" },
+    { v: "1.0.29", d: "2026-04-16", h: "Claude Opus 4.7 support, --list-env flag for CI pipelines, COPILOT_AGENT_SESSION_ID env var, remote MCP server type field optional", t: "minor" },
+    { v: "1.0.28", d: "2026-04-16", h: "COPILOT_DISABLE_TERMINAL_TITLE env var, rewind picker navigation simplified, MCP migration docs link, custom instructions refresh after /clear", t: "patch" },
+    { v: "1.0.27", d: "2026-04-15", h: "/ask command for quick questions without conversation history, copilot plugin marketplace update, status bar hints while typing", t: "minor" },
+    { v: "1.0.26", d: "2026-04-14", h: "ctrl+o expands all timeline items, remote tab shows coding agent tasks, plugin hooks receive PLUGIN_ROOT env vars, ACP server localhost binding", t: "minor" },
+    { v: "1.0.25", d: "2026-04-13", h: "/env command to show loaded environment, MCP servers install from registry with guided config, --config-dir flag respected, /share adds extensions", t: "minor" },
     { v: "1.0.24", d: "2026-04-10", h: "preToolUse hooks respect modifiedArgs, custom agent model accepts display names, terminal state restoration, exit screen redesign", t: "patch" },
     { v: "1.0.23", d: "2026-04-10", h: "--mode, --autopilot, --plan flags added, Ctrl+L clears screen without clearing session, /diff works while agent running, reasoning token usage display", t: "minor" },
     { v: "1.0.22", d: "2026-04-09", h: "MCP JSON schema sanitization, improved rendering performance, custom agents skills field, .vscode/mcp.json removed, sub-agent limits", t: "patch" },
