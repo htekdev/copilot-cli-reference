@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.32 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
+    <p class="hero-version">v1.0.36 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1317,6 +1317,8 @@
                     <tr><td><code>/exit</code> / <code>/quit</code></td><td class="desc">Exit the CLI session ('exit' or 'quit' as bare commands also work) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/help</code></td><td class="desc">Show all available commands and shortcuts <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/feedback</code></td><td class="desc">Submit feedback to GitHub <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/keep-alive</code></td><td class="desc">Prevent system sleep while CLI active <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/remote</code></td><td class="desc">Show remote control status or toggle with on/off <span class="badge-new">New</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -1334,6 +1336,7 @@
                     <tr><td><code>--agent AGENT</code></td><td class="desc">Use a specific custom agent</td></tr>
                     <tr><td><code>--continue</code></td><td class="desc">Resume most recent session</td></tr>
                     <tr><td><code>--resume [ID]</code></td><td class="desc">Resume a specific session</td></tr>
+                    <tr><td><code>--name NAME</code></td><td class="desc">Name a session on start <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--allow-tool 'X'</code></td><td class="desc">Pre-approve specific tools</td></tr>
                     <tr><td><code>--deny-tool 'X'</code></td><td class="desc">Block specific tools</td></tr>
                     <tr><td><code>--experimental</code></td><td class="desc">Enable experimental features</td></tr>

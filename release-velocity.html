@@ -496,11 +496,11 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">123</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">127</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-green);">204</div>
+            <div class="hero-stat-num" style="color: var(--accent-green);">210</div>
             <div class="hero-stat-label">Days Since First Release</div>
         </div>
         <div class="hero-stat">
@@ -695,6 +695,10 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.36", d: "2026-04-24", h: "Subcommand picker selection indicator, /keep-alive without experimental mode, /remote command, 'changes' statusline toggle, double Esc to cancel, preToolUse.matcher fixes", t: "patch" },
+    { v: "1.0.35", d: "2026-04-23", h: "Slash command tab-completion, shell escape uses $SHELL, session delete subcommands, GitHub contribution graph in /usage, HTTP hook support, user settings in ~/.copilot/settings.json", t: "minor" },
+    { v: "1.0.34", d: "2026-04-20", h: "Rate limit error message clarity improvement", t: "patch" },
+    { v: "1.0.33", d: "2026-04-20", h: "Remote session resume auto-inherits --remote flag, command aliases (/bug, /continue, /release-notes, /export, /reset, /upgrade), slash command picker suggests similar commands", t: "minor" },
     { v: "1.0.32", d: "2026-04-17", h: "Short session ID prefixes (7+ hex chars), auto model selection, --print-debug-info flag, document file attachments, usage limit warnings, --connect flag", t: "patch" },
     { v: "1.0.31", d: "2026-04-16", h: "Prompt frame rendering fix for Windows and Ubuntu terminals", t: "patch" },
     { v: "1.0.30", d: "2026-04-16", h: "/statusline command (alias /footer) to customize status bar items, image paste from clipboard fix, plugin skills discovery fix", t: "minor" },
