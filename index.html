@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.36 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; April 2026</p>
+    <p class="hero-version">v1.0.40 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; May 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1239,6 +1239,7 @@
                     <tr><td><code>Ctrl+E</code></td><td class="desc">Expand all timeline items</td></tr>
                     <tr><td><code>Ctrl+G</code></td><td class="desc">Edit prompt in external editor</td></tr>
                     <tr><td><code>Ctrl+L</code></td><td class="desc">Clear terminal screen without clearing session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+X → B</code></td><td class="desc">Move running task/shell to background <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Y</code></td><td class="desc">In plan mode, opens most recent research report <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Esc</code></td><td class="desc">Cancel current operation</td></tr>
                     <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history</td></tr>
@@ -1246,6 +1247,7 @@
                     <tr><td><code>Ctrl+Z</code></td><td class="desc">Suspend/resume (Unix platforms) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Esc-Esc</code></td><td class="desc">Rewind file changes to any previous snapshot <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Tab</code></td><td class="desc">Resume local &amp; remote coding agent sessions <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>s</code> (in picker)</td><td class="desc">Cycle session sort order (relevance/last used/created/name) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+C</code></td><td class="desc">Cancel operation (×2 to exit session) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+D</code></td><td class="desc">Exit interactive session (no longer queues messages) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Q / Ctrl+Enter</code></td><td class="desc">Queue message to submit <span class="badge-new">New</span></td></tr>
@@ -1344,7 +1346,7 @@
                     <tr><td><code>-s / --silent</code></td><td class="desc">Output only agent response (scripting)</td></tr>
                     <tr><td><code>--mode MODE</code></td><td class="desc">Start directly in a specific agent mode <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--plan</code></td><td class="desc">Start directly in plan mode <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>--max-autopilot-continues N</code></td><td class="desc">Cap autopilot continuations</td></tr>
+                    <tr><td><code>--max-autopilot-continues N</code></td><td class="desc">Cap autopilot continuations (default: 5) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--no-custom-instructions</code></td><td class="desc">Skip loading instruction files</td></tr>
                     <tr><td><code>--share [PATH]</code></td><td class="desc">Export session transcript to markdown file <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--share-gist</code></td><td class="desc">Export session to shareable GitHub gist <span class="badge-new">New</span></td></tr>
@@ -1360,8 +1362,29 @@
                     <tr><td><code>--print-debug-info</code></td><td class="desc">Display version, terminal capabilities, and environment variables <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--connect ID</code></td><td class="desc">Directly connect to a remote session by ID <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--list-env</code></td><td class="desc">Log loaded plugins, agents, skills, and MCP servers in prompt mode <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>--config-dir PATH</code></td><td class="desc">Specify custom config directory (respected when selecting active model) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--config-dir PATH</code></td><td class="desc">Specify custom config directory — <strong>deprecated</strong>, use <code>COPILOT_HOME</code> env var <span class="badge-deprecated">Deprecated</span></td></tr>
                     <tr><td><code>--session-idle-timeout SECONDS</code></td><td class="desc">Configure session idle timeout (disabled by default) <span class="badge-new">New</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CLI Subcommands -->
+        <div class="qs-block">
+            <div class="qs-block-title"><span class="dot" style="background: var(--accent-cyan);"></span> CLI Subcommands (Outside Session)</div>
+            <table class="mini-table">
+                <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td><code>copilot completion bash</code></td><td class="desc">Generate Bash completion script <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot completion zsh</code></td><td class="desc">Generate Zsh completion script <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot completion fish</code></td><td class="desc">Generate Fish completion script <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot login</code></td><td class="desc">Authenticate with GitHub</td></tr>
+                    <tr><td><code>copilot logout</code></td><td class="desc">Sign out of GitHub</td></tr>
+                    <tr><td><code>copilot plugin install</code></td><td class="desc">Install a plugin</td></tr>
+                    <tr><td><code>copilot plugin update</code></td><td class="desc">Update installed plugins</td></tr>
+                    <tr><td><code>copilot plugin list</code></td><td class="desc">List installed plugins</td></tr>
+                    <tr><td><code>copilot plugin uninstall</code></td><td class="desc">Remove a plugin</td></tr>
+                    <tr><td><code>copilot mcp add</code></td><td class="desc">Add an MCP server</td></tr>
+                    <tr><td><code>copilot help</code></td><td class="desc">Show CLI help</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1446,7 +1469,7 @@ my-project/
 <!-- ===== FOOTER ===== -->
 <footer>
     <p>Built for demo purposes · <a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Official Docs</a> · <a href="https://github.com/github/copilot-cli">GitHub Repo</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="learning-paths.html">🎓 Learning Paths</a> · <a href="release-velocity.html">🚀 Releases</a> · <a href="live-build-log.html">🔨 Build Log</a></p>
-    <p style="margin-top: 8px;">Last updated: March 2026</p>
+    <p style="margin-top: 8px;">Last updated: May 2026</p>
 </footer>
 
 <!-- Minimal JS for active nav highlighting -->
