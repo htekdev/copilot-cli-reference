@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">127</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">130</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -687,7 +687,7 @@
 <!-- FOOTER -->
 <footer>
     <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
-    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: March 2026</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: May 2026</p>
 </footer>
 
 <script>
@@ -695,6 +695,9 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.40", d: "2026-05-01", h: "PR branch decoration fix, /clear resets custom agent, smoother streaming, client_credentials OAuth for MCP, autopilot continuation limit configurable", t: "patch" },
+    { v: "1.0.39", d: "2026-04-28", h: "ACP allow-all toggle, /compact /context /usage /env for ACP, Ctrl+X→B backgrounds tasks, remote status hints, improved session picker", t: "patch" },
+    { v: "1.0.37", d: "2026-04-27", h: "Location-based permission persistence default, copilot completion subcommand for shell scripts, 's' key cycles session sort order, /ask markdown rendering", t: "minor" },
     { v: "1.0.36", d: "2026-04-24", h: "Subcommand picker selection indicator, /keep-alive without experimental mode, /remote command, 'changes' statusline toggle, double Esc to cancel, preToolUse.matcher fixes", t: "patch" },
     { v: "1.0.35", d: "2026-04-23", h: "Slash command tab-completion, shell escape uses $SHELL, session delete subcommands, GitHub contribution graph in /usage, HTTP hook support, user settings in ~/.copilot/settings.json", t: "minor" },
     { v: "1.0.34", d: "2026-04-20", h: "Rate limit error message clarity improvement", t: "patch" },
