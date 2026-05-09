@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.40 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; May 2026</p>
+    <p class="hero-version">v1.0.44 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; May 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1287,6 +1287,7 @@
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
                     <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
                     <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload, auth MCP servers <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/remote</code></td><td class="desc">Manage remote session connections and status <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/extensions</code></td><td class="desc">View, enable, and disable CLI extensions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/restart</code></td><td class="desc">Hot restart CLI while preserving session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/update</code></td><td class="desc">View changelog and update instructions <span class="badge-new">New</span></td></tr>
@@ -1332,6 +1333,7 @@
                 <thead><tr><th>Flag</th><th>Purpose</th></tr></thead>
                 <tbody>
                     <tr><td><code>-p "prompt"</code></td><td class="desc">Programmatic mode — execute and exit</td></tr>
+                    <tr><td><code>-C &lt;directory&gt;</code></td><td class="desc">Change working directory before starting, similar to git -C <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--autopilot</code></td><td class="desc">Enable autonomous continuation</td></tr>
                     <tr><td><code>--yolo</code></td><td class="desc">Allow all permissions (alias: --allow-all)</td></tr>
                     <tr><td><code>--model MODEL</code></td><td class="desc">Select AI model</td></tr>
