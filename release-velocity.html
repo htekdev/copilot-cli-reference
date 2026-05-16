@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">130</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">138</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -695,6 +695,10 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.48", d: "2026-05-14", h: "Model picker pricing display, applyTo glob fixes, CJK text rendering, context limits accuracy", t: "patch" },
+    { v: "1.0.47", d: "2026-05-13", h: "/fork naming improvements, Copilot Max model display fix, j/k navigation in /diff, cloud agent resume support", t: "patch" },
+    { v: "1.0.46", d: "2026-05-12", h: "Deprecated version warning, PowerShell fixes, diff view wrapping, read-only gh commands auto-approved, HTTP2 crash fix", t: "patch" },
+    { v: "1.0.45", d: "2026-05-11", h: "/autopilot toggle command, /fork command, PowerShell fallback, OpenTelemetry improvements, faster startup", t: "minor" },
     { v: "1.0.44", d: "2026-05-08", h: "userPromptSubmitted hooks for direct request handling, faster multi-account switching, prerelease update support, shell command fixes, quota display fix", t: "patch" },
     { v: "1.0.43", d: "2026-05-06", h: "Username toggle in /statusline, auto model routing, RCE protection for malicious bare repos, MCP child process termination fix, update progress display", t: "patch" },
     { v: "1.0.42", d: "2026-05-06", h: "-C flag for working directory change, MCP diagnostics with stderr, rubber-duck agent for GPT sessions (experimental), remote session export improvements", t: "minor" },
