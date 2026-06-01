@@ -8,6 +8,7 @@ description: |
 on:
   schedule: weekly
   workflow_dispatch:
+if: ${{ github.event_name != 'schedule' || secrets.COPILOT_GITHUB_TOKEN != '' }}
 
 timeout-minutes: 45
 strict: false
