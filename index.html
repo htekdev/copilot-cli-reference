@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.56 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; May 2026</p>
+    <p class="hero-version">v1.0.61 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; June 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1273,7 +1273,7 @@
                 <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
                 <tbody>
                     <tr><td><code>/init</code></td><td class="desc">Initialize copilot instructions for the repo</td></tr>
-                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 4.6, Sonnet 4.5, Opus 4.8, GPT-5.4, etc.)</td></tr>
+                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 4.6, Sonnet 4.5, Opus 4.8, Fable 5, GPT-5.4, etc.)</td></tr>
                     <tr><td><code>/plan</code></td><td class="desc">Create implementation plan before coding</td></tr>
                     <tr><td><code>/autopilot</code> / <code>/goal</code></td><td class="desc">Toggle autopilot mode or set a specific objective; /goal is an alias <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/review</code></td><td class="desc">Run code review agent on changes</td></tr>
@@ -1286,6 +1286,7 @@
                     <tr><td><code>/undo</code></td><td class="desc">Undo the last turn and revert file changes <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/rewind</code></td><td class="desc">Timeline picker to roll back to any point in conversation history <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/pr</code></td><td class="desc">Create PRs, fix CI failures, address review feedback, resolve conflicts <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/worktree</code></td><td class="desc">Create new git worktree and switch to it (alias: /move) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/compact</code></td><td class="desc">Compress context to free token space</td></tr>
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
                     <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
@@ -1307,10 +1308,13 @@
                     <tr><td><code>/chronicle search</code></td><td class="desc">Search all session content by keyword or topic <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/chronicle cost-tips</code></td><td class="desc">Personalized token usage and cost reduction recommendations <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/tasks</code></td><td class="desc">View and manage background tasks <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/after</code></td><td class="desc">Schedule task to run after specified time (experimental) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/every</code></td><td class="desc">Schedule recurring task with cron or natural language (experimental) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/changelog</code></td><td class="desc">View recent release notes and updates <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/ide</code></td><td class="desc">Connect to an IDE workspace</td></tr>
                     <tr><td><code>/lsp</code></td><td class="desc">Manage language server configuration</td></tr>
                     <tr><td><code>/clear</code></td><td class="desc">Clear session history and context <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/settings</code></td><td class="desc">Browse and edit all user settings in one place <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/cwd</code></td><td class="desc">Show or change working directory <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/add-dir</code></td><td class="desc">Add directory for file access <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
@@ -1347,7 +1351,7 @@
                     <tr><td><code>--model MODEL</code></td><td class="desc">Select AI model</td></tr>
                     <tr><td><code>--agent AGENT</code></td><td class="desc">Use a specific custom agent</td></tr>
                     <tr><td><code>--continue</code></td><td class="desc">Resume most recent session</td></tr>
-                    <tr><td><code>--resume [ID]</code></td><td class="desc">Resume a specific session</td></tr>
+                    <tr><td><code>--resume [ID]</code> / <code>-r [ID]</code></td><td class="desc">Resume a specific session (-r is shorthand) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--session-id &lt;ID&gt;</code></td><td class="desc">Resume known session/task or start new session with specific UUID <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--name NAME</code></td><td class="desc">Name a session on start <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--allow-tool 'X'</code></td><td class="desc">Pre-approve specific tools</td></tr>
@@ -1480,7 +1484,7 @@ my-project/
 <!-- ===== FOOTER ===== -->
 <footer>
     <p>Built for demo purposes · <a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Official Docs</a> · <a href="https://github.com/github/copilot-cli">GitHub Repo</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="learning-paths.html">🎓 Learning Paths</a> · <a href="release-velocity.html">🚀 Releases</a> · <a href="live-build-log.html">🔨 Build Log</a></p>
-    <p style="margin-top: 8px;">Last updated: May 2026</p>
+    <p style="margin-top: 8px;">Last updated: June 2026</p>
 </footer>
 
 <!-- Minimal JS for active nav highlighting -->

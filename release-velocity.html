@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">145</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">149</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -687,7 +687,7 @@
 <!-- FOOTER -->
 <footer>
     <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
-    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: May 2026</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: June 2026</p>
 </footer>
 
 <script>
@@ -695,6 +695,10 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.61", d: "2026-06-09", h: "/settings dialog, /worktree command, Claude Fable 5 support, /after and /every scheduling, auto-load MCP from .github/mcp.json, indexed search for large monorepos", t: "minor" },
+    { v: "1.0.60", d: "2026-06-05", h: "-r shorthand for --resume, vim navigation in /diff, rubber duck auto-invoke setting, max reasoning effort levels, cache write tokens in /usage, interactive MCP config screen", t: "patch" },
+    { v: "1.0.58", d: "2026-06-02", h: "Rubber Duck enabled by default, Remote JSON RPC enabled by default, experimental /every and /after scheduling, new GitHub TUI theme", t: "patch" },
+    { v: "1.0.57", d: "2026-06-01", h: "Canvas file:// preview support, hook progress streaming, delete remote sessions from picker, pluginDirectories on RPC, Wayland clipboard fix", t: "patch" },
     { v: "1.0.56", d: "2026-05-29", h: "Free/Student model selection, rubber duck toggle setting, atomic config writes, MCP structuredContent handling, diff view improvements, web_fetch markdown priority", t: "patch" },
     { v: "1.0.55", d: "2026-05-28", h: "/autopilot <objective> with /goal alias, Claude Opus 4.8 support, MCP per-server token usage, recursive custom agent discovery, exit_plan_mode tool scoping, cell renderer default", t: "minor" },
     { v: "1.0.54", d: "2026-05-24", h: "Bug fixes and improvements", t: "patch" },
