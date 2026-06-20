@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.61 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; June 2026</p>
+    <p class="hero-version">v1.0.63 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; June 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1255,6 +1255,9 @@
                     <tr><td><code>Ctrl+Enter</code></td><td class="desc">Submit multiline prompt <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Page Up / Down</code></td><td class="desc">Scroll in alt-screen mode; navigate in diff viewer <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+F / Ctrl+B</code></td><td class="desc">Page down/up in scrollable views <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>w</code> (in /diff)</td><td class="desc">Hide whitespace-only changes in diff view <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>n / N</code> (in /diff)</td><td class="desc">Navigate to next/previous match in diff search <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/</code> (in Issues/PR)</td><td class="desc">Search GitHub with server-side filtering <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Home / End</code></td><td class="desc">Jump to top/bottom of scroll buffer; navigate in diff viewer <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+A</code></td><td class="desc">Move cursor to beginning of line <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+K</code></td><td class="desc">Delete from cursor to end of line <span class="badge-new">New</span></td></tr>
@@ -1289,6 +1292,7 @@
                     <tr><td><code>/worktree</code></td><td class="desc">Create new git worktree and switch to it (alias: /move) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/compact</code></td><td class="desc">Compress context to free token space</td></tr>
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
+                    <tr><td><code>/subagents</code></td><td class="desc">Configure subagent model, reasoning effort, and context tier (alias: /agents) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
                     <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload, auth MCP servers <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/remote</code></td><td class="desc">Manage remote session connections and status <span class="badge-new">New</span></td></tr>
@@ -1333,6 +1337,7 @@
                     <tr><td><code>/help</code></td><td class="desc">Show all available commands and shortcuts <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/feedback</code></td><td class="desc">Submit feedback to GitHub <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/keep-alive</code></td><td class="desc">Prevent system sleep while CLI active <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/app</code></td><td class="desc">Open the GitHub app or browser fallback <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/remote</code></td><td class="desc">Show remote control status or toggle with on/off <span class="badge-new">New</span></td></tr>
                 </tbody>
             </table>
