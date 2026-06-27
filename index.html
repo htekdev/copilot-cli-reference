@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.63 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; June 2026</p>
+    <p class="hero-version">v1.0.65 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; June 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1242,8 +1242,8 @@
                     <tr><td><code>Ctrl+X → B</code></td><td class="desc">Move running task/shell to background <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Y</code></td><td class="desc">In plan mode, opens most recent research report <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Esc</code></td><td class="desc">Cancel current operation</td></tr>
-                    <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history</td></tr>
-                    <tr><td><code>Ctrl+R</code></td><td class="desc">Search command history (reverse incremental search) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>↑ / ↓</code></td><td class="desc">Navigate command history (includes past shell commands in normal mode) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Ctrl+R</code></td><td class="desc">Search command history including shell commands (reverse incremental search) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Z</code></td><td class="desc">Suspend/resume (Unix platforms) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Esc-Esc</code></td><td class="desc">Rewind file changes to any previous snapshot <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Tab</code></td><td class="desc">Resume local &amp; remote coding agent sessions <span class="badge-new">New</span></td></tr>
@@ -1283,7 +1283,7 @@
                     <tr><td><code>/security-review</code></td><td class="desc">Review code changes for security vulnerabilities <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/delegate</code></td><td class="desc">Push work to Copilot coding agent (cloud)</td></tr>
                     <tr><td><code>/fleet</code></td><td class="desc">Parallel subagent execution</td></tr>
-                    <tr><td><code>/fork</code></td><td class="desc">Fork current session into new independent session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/fork</code> / <code>/branch</code></td><td class="desc">Fork current session into new independent session (/branch is alias) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/research</code></td><td class="desc">Deep research with web + GitHub sources</td></tr>
                     <tr><td><code>/diff</code></td><td class="desc">Review all changes in current directory</td></tr>
                     <tr><td><code>/undo</code></td><td class="desc">Undo the last turn and revert file changes <span class="badge-new">New</span></td></tr>
@@ -1293,7 +1293,7 @@
                     <tr><td><code>/compact</code></td><td class="desc">Compress context to free token space</td></tr>
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
                     <tr><td><code>/subagents</code></td><td class="desc">Configure subagent model, reasoning effort, and context tier (alias: /agents) <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>/skills</code></td><td class="desc">List, enable, disable, add, remove skills</td></tr>
+                    <tr><td><code>/skills</code> / <code>/skill</code></td><td class="desc">List, enable, disable, add, remove skills (/skill is alias) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload, auth MCP servers <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/remote</code></td><td class="desc">Manage remote session connections and status <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/extensions</code></td><td class="desc">View, enable, and disable CLI extensions <span class="badge-new">New</span></td></tr>
@@ -1319,7 +1319,7 @@
                     <tr><td><code>/lsp</code></td><td class="desc">Manage language server configuration</td></tr>
                     <tr><td><code>/clear</code></td><td class="desc">Clear session history and context <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/settings</code></td><td class="desc">Browse and edit all user settings in one place <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>/cwd</code></td><td class="desc">Show or change working directory <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/cwd</code> / <code>/cd</code></td><td class="desc">Show or change working directory (/cd persists directory on session resume) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/add-dir</code></td><td class="desc">Add directory for file access <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/session</code></td><td class="desc">Display current session info <span class="badge-new">New</span></td></tr>
@@ -1404,6 +1404,7 @@
                     <tr><td><code>copilot plugin list</code></td><td class="desc">List installed plugins</td></tr>
                     <tr><td><code>copilot plugin uninstall</code></td><td class="desc">Remove a plugin</td></tr>
                     <tr><td><code>copilot mcp add</code></td><td class="desc">Add an MCP server</td></tr>
+                    <tr><td><code>copilot skill</code></td><td class="desc">List, add, and remove skills from file, URL, or directory <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot help</code></td><td class="desc">Show CLI help</td></tr>
                 </tbody>
             </table>
