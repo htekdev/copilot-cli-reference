@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">151</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">154</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -687,7 +687,7 @@
 <!-- FOOTER -->
 <footer>
     <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
-    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: June 2026</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: July 2026</p>
 </footer>
 
 <script>
@@ -695,6 +695,9 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.68", d: "2026-07-01", h: "kimi-k2.7-code model, /mcp config form chevron marker, IDE tools available during disconnects, tab completion shows slash command aliases, /pr automerge|agentmerge aliases", t: "patch" },
+    { v: "1.0.67", d: "2026-06-30", h: "Claude Sonnet 5 model, disable sandbox takes effect immediately, subagent sessions keep tool restrictions, Ctrl+Q enqueues slash-command completion, MCP OAuth Entra tenant fix", t: "patch" },
+    { v: "1.0.66", d: "2026-06-30", h: "Claude Opus 4.8 Fast (deprecates Opus 4.6 Fast), compact timeline highlight reel, /chronicle skills review, /pr auto self-paced CI fix loop, /worktree task-based naming, session limits apply per conversation", t: "patch" },
     { v: "1.0.65", d: "2026-06-24", h: "/cd persist working directory, /skill alias, copilot skill subcommand, resume open canvases, CI status bar, up/down history includes shell commands, MCP OAuth improvements", t: "patch" },
     { v: "1.0.64", d: "2026-06-23", h: "/branch alias for /fork, websocket BYOK support, path access symlink targets, pay-as-you-go budget display, mouse selection in lists, GitHub theme default, /diff session diff", t: "patch" },
     { v: "1.0.63", d: "2026-06-15", h: "/app command, /subagents picker, w key in /diff to hide whitespace, / search on Issues/PR tabs, improved image error handling, session-scoped extensions", t: "patch" },
