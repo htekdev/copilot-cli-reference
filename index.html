@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.68 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; July 2026</p>
+    <p class="hero-version">v1.0.70 &nbsp;·&nbsp; Claude Sonnet 4.5 (default) &nbsp;·&nbsp; July 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1254,6 +1254,7 @@
                     <tr><td><code>Shift+Enter</code></td><td class="desc">Insert line break in prompt (Kitty protocol terminals) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+Enter</code></td><td class="desc">Submit multiline prompt <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Page Up / Down</code></td><td class="desc">Scroll in alt-screen mode; navigate in diff viewer <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>Alt+Scroll</code></td><td class="desc">Scroll one line at a time (Option on macOS) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+F / Ctrl+B</code></td><td class="desc">Page down/up in scrollable views <span class="badge-new">New</span></td></tr>
                     <tr><td><code>w</code> (in /diff)</td><td class="desc">Hide whitespace-only changes in diff view <span class="badge-new">New</span></td></tr>
                     <tr><td><code>n / N</code> (in /diff)</td><td class="desc">Navigate to next/previous match in diff search <span class="badge-new">New</span></td></tr>
@@ -1276,7 +1277,7 @@
                 <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
                 <tbody>
                     <tr><td><code>/init</code></td><td class="desc">Initialize copilot instructions for the repo</td></tr>
-                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 5, Sonnet 4.6, Sonnet 4.5, Opus 4.8 Fast, Opus 4.8, Fable 5, kimi-k2.7-code, GPT-5.4, etc.) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 5, Sonnet 4.6, Sonnet 4.5, Opus 4.8 Fast, Opus 4.8, Fable 5, kimi-k2.7-code, GPT-5.6, GPT-5.4, etc.) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/plan</code></td><td class="desc">Create implementation plan before coding</td></tr>
                     <tr><td><code>/autopilot</code> / <code>/goal</code></td><td class="desc">Toggle autopilot mode or set a specific objective; /goal is an alias <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/review</code></td><td class="desc">Run code review agent on changes</td></tr>
@@ -1287,6 +1288,7 @@
                     <tr><td><code>/research</code></td><td class="desc">Deep research with web + GitHub sources</td></tr>
                     <tr><td><code>/diff</code></td><td class="desc">Review all changes in current directory</td></tr>
                     <tr><td><code>/undo</code></td><td class="desc">Undo the last turn and revert file changes <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/refine</code></td><td class="desc">Rewrite a rough, stream-of-consciousness prompt into a clear one <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/rewind</code></td><td class="desc">Timeline picker to roll back to any point in conversation history <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/pr</code></td><td class="desc">Create PRs, fix CI failures, address review feedback, resolve conflicts <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/worktree</code></td><td class="desc">Create new git worktree and switch to it (alias: /move) <span class="badge-new">New</span></td></tr>
@@ -1294,13 +1296,14 @@
                     <tr><td><code>/agent</code></td><td class="desc">Browse and select custom agents</td></tr>
                     <tr><td><code>/subagents</code></td><td class="desc">Configure subagent model, reasoning effort, and context tier (alias: /agents) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/skills</code> / <code>/skill</code></td><td class="desc">List, enable, disable, add, remove skills (/skill is alias) <span class="badge-new">New</span></td></tr>
-                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload, auth MCP servers <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/mcp</code></td><td class="desc">Add, edit, enable, disable, reload, auth, list MCP servers <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/remote</code></td><td class="desc">Manage remote session connections and status <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/extensions</code></td><td class="desc">View, enable, and disable CLI extensions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/restart</code></td><td class="desc">Hot restart CLI while preserving session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/update</code></td><td class="desc">View changelog and update instructions <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/version</code></td><td class="desc">Display CLI version and check for updates <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/plugin</code></td><td class="desc">Install, update, list, uninstall plugins</td></tr>
+                    <tr><td><code>/plugins</code></td><td class="desc">Dashboard to manage installed plugins <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/resume</code></td><td class="desc">Resume a previous session</td></tr>
                     <tr><td><code>/share</code></td><td class="desc">Export session to file, GitHub gist, or HTML <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/copy</code></td><td class="desc">Copy the last response to clipboard <span class="badge-new">New</span></td></tr>
@@ -1383,6 +1386,7 @@
                     <tr><td><code>--print-debug-info</code></td><td class="desc">Display version, terminal capabilities, and environment variables <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--connect ID</code></td><td class="desc">Directly connect to a remote session by ID <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--list-env</code></td><td class="desc">Log loaded plugins, agents, skills, and MCP servers in prompt mode <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--sandbox / --no-sandbox</code></td><td class="desc">Turn OS-level shell sandbox on/off for current session only (doesn't change saved setting) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--config-dir PATH</code></td><td class="desc">Specify custom config directory — <strong>deprecated</strong>, use <code>COPILOT_HOME</code> env var <span class="badge-deprecated">Deprecated</span></td></tr>
                     <tr><td><code>--session-idle-timeout SECONDS</code></td><td class="desc">Configure session idle timeout (disabled by default) <span class="badge-new">New</span></td></tr>
                 </tbody>
