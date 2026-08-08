@@ -225,6 +225,7 @@ jobs:
 
   agent:
     needs: activation
+    if: ${{ secrets.COPILOT_GITHUB_TOKEN != '' }}
     runs-on: ubuntu-latest
     permissions: read-all
     concurrency:
