@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.78 &nbsp;·&nbsp; Claude Opus 5 (default) &nbsp;·&nbsp; August 2026</p>
+    <p class="hero-version">v1.0.80 &nbsp;·&nbsp; Claude Opus 5 (default) &nbsp;·&nbsp; August 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1277,7 +1277,7 @@
                 <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
                 <tbody>
                     <tr><td><code>/init</code></td><td class="desc">Initialize copilot instructions for the repo</td></tr>
-                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 5, Sonnet 4.6, Sonnet 4.5, Opus 4.8 Fast, Opus 4.8, Fable 5, kimi-k2.7-code, grok-4.5, GPT-5.6, GPT-5.4, gemini-3.6-flash, etc.) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 5, Sonnet 4.6, Sonnet 4.5, Opus 4.8 Fast, Opus 4.8, Fable 5, kimi-k3, kimi-k2.7-code, grok-4.5, GPT-5.6, GPT-5.4, gemini-3.6-flash, etc.) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/plan</code></td><td class="desc">Create implementation plan before coding</td></tr>
                     <tr><td><code>/autopilot</code> / <code>/goal</code></td><td class="desc">Toggle autopilot mode or set a specific objective; /goal is an alias <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/review</code></td><td class="desc">Run code review agent on changes</td></tr>
@@ -1324,6 +1324,7 @@
                     <tr><td><code>/lsp</code></td><td class="desc">Manage language server configuration</td></tr>
                     <tr><td><code>/clear</code></td><td class="desc">Clear session history and context <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/settings</code></td><td class="desc">Browse and edit all user settings in one place <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/sandbox</code></td><td class="desc">Configure sandbox settings (Auth tab for git/gh/keychain, policy enforcement, allow/deny paths, network access) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/cwd</code> / <code>/cd</code></td><td class="desc">Show or change working directory (/cd persists directory on session resume) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/add-dir</code></td><td class="desc">Add directory for file access <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
@@ -1345,6 +1346,7 @@
                     <tr><td><code>/help</code></td><td class="desc">Show all available commands and shortcuts <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/feedback</code></td><td class="desc">Submit feedback to GitHub <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/keep-alive</code></td><td class="desc">Prevent system sleep while CLI active <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/ahp [start|stop|restart|connect|hosts|use|status]</code></td><td class="desc">Manage Mission Control/AHP daemons (staff feature) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/app</code></td><td class="desc">Open the GitHub app or browser fallback <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/remote</code></td><td class="desc">Show remote control status or toggle with on/off <span class="badge-new">New</span></td></tr>
                 </tbody>
