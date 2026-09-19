@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.84-5 &nbsp;·&nbsp; Claude Opus 5 / GPT-6 Astra &nbsp;·&nbsp; September 2026</p>
+    <p class="hero-version">v1.0.87-0 &nbsp;·&nbsp; Claude Opus 5 / GPT-6 Astra &nbsp;·&nbsp; September 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1324,6 +1324,7 @@
                     <tr><td><code>/ide</code></td><td class="desc">Connect to an IDE workspace</td></tr>
                     <tr><td><code>/lsp</code></td><td class="desc">Manage language server configuration</td></tr>
                     <tr><td><code>/clear</code></td><td class="desc">Clear session history and context <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/config</code></td><td class="desc">Open sidebar configuration screen to browse and edit settings <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/settings</code></td><td class="desc">Browse and edit all user settings in one place <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/sandbox</code></td><td class="desc">Configure sandbox settings (Auth tab for git/gh/keychain, policy enforcement, allow/deny paths, network access) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/cwd</code> / <code>/cd</code></td><td class="desc">Show or change working directory (/cd persists directory on session resume) <span class="badge-new">New</span></td></tr>
@@ -1416,11 +1417,17 @@
                     <tr><td><code>copilot plugin update</code></td><td class="desc">Update installed plugins</td></tr>
                     <tr><td><code>copilot plugin list</code></td><td class="desc">List installed plugins</td></tr>
                     <tr><td><code>copilot plugin uninstall</code></td><td class="desc">Remove a plugin</td></tr>
+                    <tr><td><code>copilot plugin enable</code></td><td class="desc">Enable an installed plugin <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot plugin disable</code></td><td class="desc">Disable an installed plugin <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot plugin marketplace</code></td><td class="desc">Manage plugin marketplaces (list, add, remove, browse, update) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot instruction list</code></td><td class="desc">List instructions available to the CLI <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot lsp list</code></td><td class="desc">List configured language servers <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot mcp add</code></td><td class="desc">Add an MCP server</td></tr>
+                    <tr><td><code>copilot mcp enable</code></td><td class="desc">Enable an MCP server <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot mcp disable</code></td><td class="desc">Disable an MCP server <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot skill</code></td><td class="desc">List, add, and remove skills from file, URL, or directory <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot skill enable</code></td><td class="desc">Enable a skill <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot skill disable</code></td><td class="desc">Disable a skill <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot help</code></td><td class="desc">Show CLI help</td></tr>
                 </tbody>
             </table>
@@ -1506,7 +1513,7 @@ my-project/
 <!-- ===== FOOTER ===== -->
 <footer>
     <p>Built for demo purposes · <a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Official Docs</a> · <a href="https://github.com/github/copilot-cli">GitHub Repo</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="learning-paths.html">🎓 Learning Paths</a> · <a href="release-velocity.html">🚀 Releases</a> · <a href="live-build-log.html">🔨 Build Log</a></p>
-    <p style="margin-top: 8px;">Last updated: August 2026</p>
+    <p style="margin-top: 8px;">Last updated: September 2026</p>
 </footer>
 
 <!-- Minimal JS for active nav highlighting -->

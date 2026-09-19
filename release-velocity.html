@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">160</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">163</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -687,7 +687,7 @@
 <!-- FOOTER -->
 <footer>
     <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
-    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: August 2026</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: September 2026</p>
 </footer>
 
 <script>
@@ -695,6 +695,9 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.87-0", d: "2026-09-18", h: "User/managed startup defaults for Auto routing tier, consecutive steering prompts with Up recall, worktreePathTemplate setting", t: "patch" },
+    { v: "1.0.86", d: "2026-09-17", h: "Custom agent repository instruction files, marketplace plugin/skill preservation on resume, sandbox policy local-network reporting", t: "patch" },
+    { v: "1.0.85", d: "2026-09-16", h: "Vim mode GA with /vim command, /config sidebar, /settings context management, copilot instruction/lsp list commands, GPT-6 Astra support", t: "minor" },
     { v: "1.0.84-5", d: "2026-09-12", h: "Session/memory import commands, improved shell completions, Rust grammar parser", t: "patch" },
     { v: "1.0.84-4", d: "2026-09-11", h: "New instruction/lsp/skill list commands, consolidated plugin commands", t: "patch" },
     { v: "1.0.84-3", d: "2026-09-10", h: "Improved /copy to include task completion messages", t: "patch" },
