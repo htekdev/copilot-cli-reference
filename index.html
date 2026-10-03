@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.88 &nbsp;·&nbsp; Claude Opus 5 / GPT-6 Astra &nbsp;·&nbsp; September 2026</p>
+    <p class="hero-version">v1.0.91 &nbsp;·&nbsp; Claude Opus 5 / GPT-6 Astra &nbsp;·&nbsp; October 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1327,6 +1327,7 @@
                     <tr><td><code>/config</code></td><td class="desc">Open sidebar configuration screen to browse and edit settings <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/settings</code></td><td class="desc">Browse and edit all user settings in one place <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/sandbox</code></td><td class="desc">Configure sandbox settings (Auth tab for git/gh/keychain, policy enforcement, allow/deny paths, network access) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/sandbox ca</code></td><td class="desc">Manage proxy certificate authority (check, create, trust, rotate, remove) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/cwd</code> / <code>/cd</code></td><td class="desc">Show or change working directory (/cd persists directory on session resume) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/add-dir</code></td><td class="desc">Add directory for file access <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/list-dirs</code></td><td class="desc">Show allowed directories <span class="badge-new">New</span></td></tr>
@@ -1386,6 +1387,7 @@
                     <tr><td><code>--available-tools</code></td><td class="desc">Allowlist specific tools for the session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--excluded-tools</code></td><td class="desc">Denylist specific tools for the session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--additional-mcp-config</code></td><td class="desc">Add MCP config files per-session <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>--mcp-github-auth</code></td><td class="desc">Scope GitHub account auth to approved MCP server origins <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--output-format json</code></td><td class="desc">Emit JSONL in prompt mode for programmatic integrations <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--plugin-dir PATH</code></td><td class="desc">Load a plugin from a local directory <span class="badge-new">New</span></td></tr>
                     <tr><td><code>--binary-version</code></td><td class="desc">Query CLI binary version without launching <span class="badge-new">New</span></td></tr>
