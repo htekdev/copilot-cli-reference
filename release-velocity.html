@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">166</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">194</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -695,6 +695,12 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.96-1", d: "2026-10-10", h: "Interactive sandbox settings with environment secret suggestion and masking host configuration", t: "patch" },
+    { v: "1.0.96-0", d: "2026-10-09", h: "Faster interactive sessions in git repos, improved permission decision timeline visibility, /add-dir grants sandbox access", t: "patch" },
+    { v: "1.0.95", d: "2026-10-09", h: "Native Microsoft Entra broker auth on macOS, copilot config supports sandbox credential injectHosts with key completion", t: "patch" },
+    { v: "1.0.94", d: "2026-10-08", h: "Claude Haiku 5.5 model support, MCP recovery improvements, Assisted permissions show shell code to judge", t: "patch" },
+    { v: "1.0.93", d: "2026-10-07", h: "Enterprise permissions.limitTo, safe /user commands during turns, plugin skill commands persistence, sandbox localhost allowlists", t: "patch" },
+    { v: "1.0.92", d: "2026-10-05", h: "copilot config subcommands for settings, Ctrl+E environment picker, Entra MCP token renewal, large request handling improvements", t: "patch" },
     { v: "1.0.91", d: "2026-10-01", h: "copilot sandbox ca commands for proxy certificate authority, read-only shell pipelines execution-evidence review", t: "patch" },
     { v: "1.0.90", d: "2026-09-30", h: "GPT-6.1 Sol model support, --mcp-github-auth flag for scoped auth, session-scoped read-only directory approvals", t: "patch" },
     { v: "1.0.89", d: "2026-09-28", h: "Claude Code .claude/rules support, GPT-6 Sol/Luna models, Esc-Esc prompt recall, claude-opus-5.5 support, improved MCP filtering", t: "patch" },
