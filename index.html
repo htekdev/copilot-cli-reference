@@ -641,7 +641,7 @@
 <div class="hero" id="top">
     <h1 class="hero-title">GitHub Copilot CLI</h1>
     <p class="hero-sub">The complete reference — every surface, every config, every command. One page.</p>
-    <p class="hero-version">v1.0.91 &nbsp;·&nbsp; Claude Opus 5 / GPT-6 Astra &nbsp;·&nbsp; October 2026</p>
+    <p class="hero-version">v1.0.96-1 &nbsp;·&nbsp; Claude Opus 5 / Claude Haiku 5.5 / GPT-6 Astra &nbsp;·&nbsp; October 2026</p>
 </div>
 
 <hr class="section-divider">
@@ -1236,7 +1236,7 @@
                     <tr><td><code>Ctrl+S</code></td><td class="desc">Run command while preserving input</td></tr>
                     <tr><td><code>Ctrl+T</code></td><td class="desc">Toggle reasoning display</td></tr>
                     <tr><td><code>Ctrl+O</code></td><td class="desc">Expand all timeline items</td></tr>
-                    <tr><td><code>Ctrl+E</code></td><td class="desc">Expand all timeline items</td></tr>
+                    <tr><td><code>Ctrl+E</code></td><td class="desc">Pre-conversation environment picker to switch between local and cloud runs <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+G</code></td><td class="desc">Edit prompt in external editor</td></tr>
                     <tr><td><code>Ctrl+L</code></td><td class="desc">Clear terminal screen without clearing session <span class="badge-new">New</span></td></tr>
                     <tr><td><code>Ctrl+X → B</code></td><td class="desc">Move running task/shell to background <span class="badge-new">New</span></td></tr>
@@ -1278,7 +1278,7 @@
                 <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
                 <tbody>
                     <tr><td><code>/init</code></td><td class="desc">Initialize copilot instructions for the repo</td></tr>
-                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 5, Sonnet 4.6, Sonnet 4.5, Opus 4.8 Fast, Opus 4.8, Fable 5, kimi-k3, kimi-k2.7-code, grok-4.5, GPT-5.6, GPT-5.4, gemini-3.6-flash, etc.) <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>/model</code></td><td class="desc">Select AI model (Sonnet 5, Sonnet 4.6, Sonnet 4.5, Opus 4.8 Fast, Opus 4.8, Fable 5, Haiku 5.5, kimi-k3, kimi-k2.7-code, grok-4.5, GPT-5.6, GPT-5.4, gemini-3.6-flash, etc.) <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/plan</code></td><td class="desc">Create implementation plan before coding</td></tr>
                     <tr><td><code>/autopilot</code> / <code>/goal</code></td><td class="desc">Toggle autopilot mode or set a specific objective; /goal is an alias <span class="badge-new">New</span></td></tr>
                     <tr><td><code>/review</code></td><td class="desc">Run code review agent on changes</td></tr>
@@ -1413,6 +1413,10 @@
                     <tr><td><code>copilot completion bash</code></td><td class="desc">Generate Bash completion script <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot completion zsh</code></td><td class="desc">Generate Zsh completion script <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot completion fish</code></td><td class="desc">Generate Fish completion script <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot config list</code></td><td class="desc">List all settings <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot config read</code></td><td class="desc">Read a specific setting <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot config set</code></td><td class="desc">Set a configuration value <span class="badge-new">New</span></td></tr>
+                    <tr><td><code>copilot config remove</code></td><td class="desc">Remove a configuration setting <span class="badge-new">New</span></td></tr>
                     <tr><td><code>copilot login</code></td><td class="desc">Authenticate with GitHub</td></tr>
                     <tr><td><code>copilot logout</code></td><td class="desc">Sign out of GitHub</td></tr>
                     <tr><td><code>copilot plugin install</code></td><td class="desc">Install a plugin</td></tr>
