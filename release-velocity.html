@@ -687,7 +687,7 @@
 <!-- FOOTER -->
 <footer>
     <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
-    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: September 2026</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: October 2026</p>
 </footer>
 
 <script>
@@ -695,6 +695,14 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.100-1", d: "2026-10-16", h: "Unified Sessions browser by default for /sessions and /resume, improved account discovery capping", t: "patch" },
+    { v: "1.0.100-0", d: "2026-10-16", h: "Prompt to update sandbox proxy certificate authority when masked hosts change, fixed Gemini tool calls", t: "patch" },
+    { v: "1.0.99-3", d: "2026-10-16", h: "Add --disable-client-telemetry flag to turn off client telemetry uploads, improved diff review retention", t: "patch" },
+    { v: "1.0.99-2", d: "2026-10-16", h: "Show notice when administrator-managed settings override selected model, enable semantic code search by default", t: "patch" },
+    { v: "1.0.99-1", d: "2026-10-15", h: "Add --trust-folder for one-off prompt-mode sessions, install verified Skills and plugins from GitHub links", t: "patch" },
+    { v: "1.0.99-0", d: "2026-10-15", h: "Open /share without arguments for full-screen action menu, sandbox allows local network access by default", t: "minor" },
+    { v: "1.0.98", d: "2026-10-14", h: "Add support for Gemini 4 Argon model, /ask Ctrl+E to expand and Ctrl+Y to copy answers, improved hook reliability", t: "patch" },
+    { v: "1.0.97", d: "2026-10-13", h: "Add agent-scoped declarative hooks for custom agents, inline images render by default on supported terminals", t: "patch" },
     { v: "1.0.96-1", d: "2026-10-10", h: "Interactive sandbox settings with environment secret suggestion and masking host configuration", t: "patch" },
     { v: "1.0.96-0", d: "2026-10-09", h: "Faster interactive sessions in git repos, improved permission decision timeline visibility, /add-dir grants sandbox access", t: "patch" },
     { v: "1.0.95", d: "2026-10-09", h: "Native Microsoft Entra broker auth on macOS, copilot config supports sandbox credential injectHosts with key completion", t: "patch" },
