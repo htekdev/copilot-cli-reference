@@ -60,6 +60,7 @@ safe-outputs:
     draft: false
     if-no-changes: "warn"
   noop:
+    report-as-issue: false
 ---
 
 # Weekly Content Update Agent
