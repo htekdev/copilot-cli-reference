@@ -6,13 +6,22 @@ description: |
   updates the static HTML reference site with current data.
 
 on:
-  schedule: weekly
+  schedule:
+    - cron: "46 0 * * 6"
   workflow_dispatch:
 
 timeout-minutes: 45
 strict: false
 
-permissions: read-all
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  copilot-requests: write
+
+engine:
+  id: copilot
+  copilot-sdk: true
 
 network:
   allowed:
