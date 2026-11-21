@@ -496,7 +496,7 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">194</div>
+            <div class="hero-stat-num" style="color: var(--accent-blue);" id="total-releases">245</div>
             <div class="hero-stat-label">Total Releases</div>
         </div>
         <div class="hero-stat">
@@ -687,7 +687,7 @@
 <!-- FOOTER -->
 <footer>
     <p>Data sourced from the official <a href="https://github.com/github/copilot-cli/blob/main/changelog.md">changelog.md</a> and <a href="https://github.com/github/copilot-cli/releases">GitHub releases</a>.</p>
-    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: October 2026</p>
+    <p style="margin-top: 4px;"><a href="index.html">← Back to Home</a> · <a href="references.html">📚 References</a> · <a href="how-it-was-made.html">🛠️ How This Was Made</a> · <a href="demo-agenda.html">📋 Demo Agenda</a> · <a href="live-build-log.html">🔨 Build Log</a> · Last updated: November 2026</p>
 </footer>
 
 <script>
@@ -695,6 +695,43 @@
 // RELEASE DATA — sourced from github/copilot-cli changelog.md
 // ============================================================
 const releases = [
+    { v: "1.0.115-3", d: "2026-11-20", h: "@ mention picker fix", t: "patch" },
+    { v: "1.0.115-2", d: "2026-11-20", h: "Windows sandbox package queries on by default, macOS Mach lookup allowlist", t: "patch" },
+    { v: "1.0.115-1", d: "2026-11-19", h: "MCP sign-in refresh-scope fix", t: "patch" },
+    { v: "1.0.115-0", d: "2026-11-19", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.114", d: "2026-11-18", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.114-0", d: "2026-11-17", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.113", d: "2026-11-17", h: "Admin setting to disable built-in Browser Use", t: "patch" },
+    { v: "1.0.113-1", d: "2026-11-17", h: "Admin setting to disable built-in Browser Use", t: "patch" },
+    { v: "1.0.113-0", d: "2026-11-16", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.112", d: "2026-11-13", h: "/compact error message and /plugin manager fixes", t: "patch" },
+    { v: "1.0.112-0", d: "2026-11-13", h: "Improved startup on macOS Ventura 13.5+", t: "patch" },
+    { v: "1.0.111", d: "2026-11-13", h: "Regex support in managed permission rules, --host-allow-session-creation", t: "patch" },
+    { v: "1.0.111-0", d: "2026-11-13", h: "Regex support in managed permission rules", t: "patch" },
+    { v: "1.0.110", d: "2026-11-12", h: "Experimental masked dialog for git/ssh/sudo password prompts", t: "patch" },
+    { v: "1.0.110-3", d: "2026-11-12", h: "Fewer Entra sign-in error popups", t: "patch" },
+    { v: "1.0.110-2", d: "2026-11-11", h: "Interrupted responses labeled incomplete", t: "patch" },
+    { v: "1.0.110-1", d: "2026-11-10", h: "--resume marks session in use immediately", t: "patch" },
+    { v: "1.0.110-0", d: "2026-11-10", h: "Experimental masked password prompt dialog", t: "patch" },
+    { v: "1.0.109", d: "2026-11-10", h: "CIDR support for sandbox host rules, Claude Fable 5.2 in model picker", t: "patch" },
+    { v: "1.0.109-1", d: "2026-11-10", h: "CIDR support for sandbox host rules", t: "patch" },
+    { v: "1.0.109-0", d: "2026-11-09", h: "Confirmation before /share or /export follows symlinks", t: "patch" },
+    { v: "1.0.108", d: "2026-11-09", h: "/index commands, managed shared tgrep indexing, Windows enumeratePaths", t: "patch" },
+    { v: "1.0.108-1", d: "2026-11-07", h: "Grok PDF attachment fallback", t: "patch" },
+    { v: "1.0.108-0", d: "2026-11-07", h: "sandbox enumeratePaths on Windows", t: "patch" },
+    { v: "1.0.107", d: "2026-11-06", h: "/code command, Fusion tier config, Kitty inline images", t: "patch" },
+    { v: "1.0.106", d: "2026-11-06", h: "/code command, Fusion tier config, Kitty inline images", t: "patch" },
+    { v: "1.0.106-9", d: "2026-11-04", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-8", d: "2026-11-04", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-7", d: "2026-11-03", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-6", d: "2026-11-03", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-5", d: "2026-11-03", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-4", d: "2026-11-02", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-3", d: "2026-11-02", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-2", d: "2026-11-01", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-11", d: "2026-11-05", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-10", d: "2026-11-05", h: "Fixes and changes", t: "patch" },
+    { v: "1.0.106-1", d: "2026-10-31", h: "Fixes and changes", t: "patch" },
     { v: "1.0.105", d: "2026-10-27", h: "Copilot Fusion model support in long-context sessions", t: "patch" },
     { v: "1.0.104-1", d: "2026-10-23", h: "Fixes and changes", t: "patch" },
     { v: "1.0.104-0", d: "2026-10-23", h: "Assisted Permissions available without experimental mode, Auto fallback improvements", t: "patch" },
